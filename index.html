@@ -167,6 +167,14 @@
   .appbtn.wa{background:linear-gradient(160deg,#4AE07F,var(--wa-2))}
   .appbtn.tel{background:linear-gradient(160deg,#5BE07A,var(--tel-2))}
   .appbtn.sms{background:linear-gradient(160deg,#5C9BFA,var(--sms-2))}
+  .appbtn.send{background:linear-gradient(160deg,var(--accent),var(--accent-strong))}
+  .appbtn.send[data-armed]{outline:2px solid var(--warning);outline-offset:2px}
+  .btn[data-armed]{background:var(--warning);border-color:var(--warning);color:#fff}
+  .camp{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border-soft)}
+  .camp:last-child{border-bottom:0}
+  .camp .cinfo{flex:1;min-width:0}
+  .camp .cname{font-weight:700;font-size:13.5px;overflow-wrap:anywhere}
+  .camp .cmeta{font-size:11.5px;color:var(--text-muted);margin-top:3px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
   .appbtn.copy{background:linear-gradient(160deg,var(--neutral),#6E6858)}
 
   .appbar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
@@ -451,7 +459,20 @@
       gs_howto:"خطوات الإعداد (5 دقائق) في ملف README ← «ملف Google Sheets مشترك».",
       gs_auto:"يتحدّث تلقائيًا بعد كل تعديل", gs_syncing:"جارٍ التحديث…", gs_synced:"محدَّث ✓ آخر تحديث {tm}",
       gs_fail:"تعذّر تحديث الملف — تحقّق من الرابط والاتصال", gs_badtoken:"كلمة السر لا تطابق السكربت",
-      gs_ok:"تم تحديث ملف Google Sheets", gs_not_set:"أدخل الرابط وكلمة السر أولًا", gs_unlinked:"تم إلغاء الربط"
+      gs_ok:"تم تحديث ملف Google Sheets", gs_not_set:"أدخل الرابط وكلمة السر أولًا", gs_unlinked:"تم إلغاء الربط",
+      mx_title:"واتساب مباشر وإعلانات Meta", mx_hint:"إرسال التذكيرات مباشرة من رقم واتساب الأعمال، وتفعيل حملات Meta من هنا. المفاتيح محفوظة في سكربت Google خاص فيك وليست داخل الموقع.",
+      mx_url:"رابط سكربت Meta (Web app URL)", mx_link:"ربط", mx_save:"حفظ", mx_unlink:"إلغاء الربط", mx_settings:"إعدادات الربط",
+      mx_howto:"خطوات الإعداد في ملف README ← «واتساب مباشر وإعلانات Meta».", mx_bad_url:"الصق رابط Web app الذي ينتهي بـ /exec",
+      mx_checking:"جارٍ فحص الربط…", mx_ok:"متصل بحساب {e}", mx_wa_on:"واتساب ✓", mx_wa_off:"واتساب غير مُعدّ", mx_ads_on:"الإعلانات ✓", mx_ads_off:"الإعلانات غير مُعدّة",
+      mx_login:"يتطلب تسجيل الدخول في الموقع", mx_unauth:"حسابك غير مسموح في السكربت — أضف بريدك إلى ALLOWED_EMAILS",
+      mx_net:"تعذّر الاتصال بالسكربت — تحقق من الرابط والإنترنت", mx_api:"رد Meta: {m}", mx_unlinked:"تم إلغاء الربط",
+      wa_direct:"إرسال التذكير مباشرة عبر واتساب", wa_direct_renew:"إرسال طلب التجديد مباشرة عبر واتساب", wa_confirm:"اضغط مرة ثانية للتأكيد والإرسال",
+      wa_confirm_to:"اضغط مرة ثانية لإرسال التذكير إلى {n}", wa_sending:"جارٍ الإرسال…", wa_sent:"تم إرسال الرسالة إلى {n} ✓", wa_last:"آخر رسالة مباشرة: {d}",
+      ads_title:"إعلانات Meta", ads_hint:"حملاتك في Ads Manager. التفعيل يشغّل الحملة ومجموعاتها وإعلاناتها ويبدأ صرف الميزانية.",
+      ads_load:"عرض الحملات", ads_refresh:"تحديث", ads_loading:"جارٍ التحميل…", ads_none:"لا توجد حملات في الحساب الإعلاني",
+      ads_activate:"تفعيل", ads_pause:"إيقاف", ads_confirm_on:"تأكيد التفعيل؟ سيبدأ الصرف", ads_confirm_off:"تأكيد الإيقاف؟",
+      ads_on:"تم تفعيل الحملة ✓", ads_off:"تم إيقاف الحملة", ads_daily:"يومي {b}", ads_life:"إجمالي {b}",
+      st_ACTIVE:"نشطة", st_PAUSED:"متوقفة", st_CAMPAIGN_PAUSED:"متوقفة", st_ADSET_PAUSED:"المجموعة متوقفة", st_IN_PROCESS:"قيد المعالجة", st_WITH_ISSUES:"فيها مشكلة", st_DISAPPROVED:"مرفوضة", st_PENDING_REVIEW:"قيد المراجعة", st_ARCHIVED:"مؤرشفة", st_DELETED:"محذوفة", st_PENDING_BILLING_INFO:"بانتظار الدفع"
     },
     en:{
       title:"Rent Ledger", sub:"Yousef Stores · rent management & collection",
@@ -544,7 +565,20 @@
       gs_howto:"5-minute setup steps in README → “Shared Google Sheets file”.",
       gs_auto:"Updates automatically after every change", gs_syncing:"Updating…", gs_synced:"Up to date ✓ last update {tm}",
       gs_fail:"Could not update the sheet — check the link and connection", gs_badtoken:"Password does not match the script",
-      gs_ok:"Google Sheets file updated", gs_not_set:"Enter the link and password first", gs_unlinked:"Unlinked"
+      gs_ok:"Google Sheets file updated", gs_not_set:"Enter the link and password first", gs_unlinked:"Unlinked",
+      mx_title:"Direct WhatsApp & Meta ads", mx_hint:"Send reminders straight from your WhatsApp Business number and activate Meta campaigns from here. Keys stay in your own Google script, never in the site.",
+      mx_url:"Meta script Web app URL", mx_link:"Link", mx_save:"Save", mx_unlink:"Unlink", mx_settings:"Link settings",
+      mx_howto:"Setup steps in README → “Direct WhatsApp & Meta ads”.", mx_bad_url:"Paste the Web app URL ending in /exec",
+      mx_checking:"Checking the link…", mx_ok:"Connected as {e}", mx_wa_on:"WhatsApp ✓", mx_wa_off:"WhatsApp not set up", mx_ads_on:"Ads ✓", mx_ads_off:"Ads not set up",
+      mx_login:"Sign in to the site first", mx_unauth:"Your account is not allowed in the script — add your email to ALLOWED_EMAILS",
+      mx_net:"Could not reach the script — check the link and connection", mx_api:"Meta replied: {m}", mx_unlinked:"Unlinked",
+      wa_direct:"Send reminder directly via WhatsApp", wa_direct_renew:"Send renewal request directly via WhatsApp", wa_confirm:"Tap again to confirm and send",
+      wa_confirm_to:"Tap again to send the reminder to {n}", wa_sending:"Sending…", wa_sent:"Message sent to {n} ✓", wa_last:"Last direct message: {d}",
+      ads_title:"Meta ads", ads_hint:"Your Ads Manager campaigns. Activating turns on the campaign, its ad sets and ads, and starts spending the budget.",
+      ads_load:"Show campaigns", ads_refresh:"Refresh", ads_loading:"Loading…", ads_none:"No campaigns in the ad account",
+      ads_activate:"Activate", ads_pause:"Pause", ads_confirm_on:"Confirm? Spending starts", ads_confirm_off:"Confirm pause?",
+      ads_on:"Campaign activated ✓", ads_off:"Campaign paused", ads_daily:"daily {b}", ads_life:"total {b}",
+      st_ACTIVE:"Active", st_PAUSED:"Paused", st_CAMPAIGN_PAUSED:"Paused", st_ADSET_PAUSED:"Ad set paused", st_IN_PROCESS:"Processing", st_WITH_ISSUES:"Has issues", st_DISAPPROVED:"Rejected", st_PENDING_REVIEW:"In review", st_ARCHIVED:"Archived", st_DELETED:"Deleted", st_PENDING_BILLING_INFO:"Awaiting payment"
     }
   };
 
@@ -580,6 +614,7 @@
     search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>',
     chevL:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
     chevR:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>',
+    send:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.4 20.4 21 12 3.4 3.6l-.01 6.53L15 12 3.39 13.87z"/></svg>',
     check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>'
   };
 
@@ -986,11 +1021,11 @@
     try{ await db.collection("payments").doc(docId).set(merged); toast(t("saved")); }
     catch(e){ toast(t("save_fail")); }
   }
-  async function savePerson(personId,patch){
+  async function savePerson(personId,patch,quiet){
     var merged=Object.assign({},state.people[personId]||{},patch);
     state.people[personId]=merged; render(); scheduleSheetSync();
     if(!db) return;
-    try{ await db.collection("people").doc(personId).set(merged); toast(t("saved")); }
+    try{ await db.collection("people").doc(personId).set(merged); if(!quiet) toast(t("saved")); }
     catch(e){ toast(t("save_fail")); }
   }
   async function trashPerson(personId){
@@ -1039,6 +1074,8 @@
       '<a class="appbtn tel" href="tel:+'+d+'" aria-label="'+t("act_call")+'" title="'+t("act_call")+'">'+ICON.tel+'</a>' +
       '<a class="appbtn wa" href="https://wa.me/'+d+'?text='+msg+'" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp">'+ICON.wa+'</a>' +
       '<a class="appbtn sms" href="sms:+'+d+'?&body='+msg+'" aria-label="'+t("act_sms")+'" title="'+t("act_sms")+'">'+ICON.sms+'</a>' +
+      (waReady() && (kind==="renew" || outstandingFor(person,month)>0)
+        ? '<button type="button" class="appbtn send" data-mx="wa" data-pid="'+person.id+'" data-m="'+month+'" data-kind="'+(kind==="renew"?"renew":"reminder")+'" aria-label="'+t(kind==="renew"?"wa_direct_renew":"wa_direct")+'" title="'+t(kind==="renew"?"wa_direct_renew":"wa_direct")+'">'+ICON.send+'</button>' : '') +
     '</span>';
   }
   function appBar(person, month){
@@ -1056,7 +1093,10 @@
       '<a class="appwide wa" href="https://wa.me/'+d+'?text='+msg+'" target="_blank" rel="noopener">'+ICON.wa+'<span>'+t("act_wa")+'</span></a>' +
       '<a class="appwide sms" href="sms:+'+d+'?&body='+msg+'">'+ICON.sms+'<span>'+t("act_sms")+'</span></a>' +
     '</div>' +
-    '<button type="button" class="btn ghost sm block" data-act="copyremind" data-msg="'+esc(raw)+'">'+t("act_copy")+'</button>';
+    '<button type="button" class="btn ghost sm block" data-act="copyremind" data-msg="'+esc(raw)+'">'+t("act_copy")+'</button>' +
+    (waReady() && outstandingFor(person,month)>0
+      ? '<button type="button" class="btn sm block" data-mx="wa" data-pid="'+person.id+'" data-m="'+month+'" data-kind="reminder">'+ICON.send.replace('<svg','<svg style="width:15px;height:15px"')+'<span>'+t("wa_direct")+'</span></button>' : '') +
+    (person.lastWaAt && person.lastWaMonth===month ? '<div class="hint">'+t("wa_last",{d:new Date(person.lastWaAt).toLocaleString("en-GB",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})})+'</div>' : '');
   }
 
   /* ======================= render ======================= */
@@ -1083,6 +1123,7 @@
     else c.innerHTML=renderPeople();
     wireEvents();
     if(state.tab==="stats") drawTrend();
+    maybeCheckMeta();
   }
 
   function renderLogin(){
@@ -1630,6 +1671,7 @@
     }
     html+='</div>';
     html+=renderProfitCard();
+    if(adsReady()) html+='<div id="mx-ads">'+adsCardHTML()+'</div>';
     return html;
   }
 
@@ -1681,6 +1723,7 @@
       (state.mode==="cloud"?'<button class="btn ghostdanger block" style="margin-top:9px" data-act="logout">'+t("logout")+'</button>':'') +
     '</div>';
     html+=renderSheetsCard();
+    html+=renderMetaCard();
     return html;
   }
 
@@ -2088,6 +2131,144 @@
     }
     return html+'</div>';
   }
+
+  /* ======================= WhatsApp & Meta ads (عبر سكربت meta-api.gs) ======================= */
+  // المفاتيح في سكربت Google الخاص بالمستخدم؛ الموقع يرسل فقط توكن تسجيل الدخول ليثبت هويته
+  var meta={checked:false, checking:false, cfg:null, err:"", ads:null, adsLoading:false, adsErr:""};
+  function metaUrl(){ var m=state.settings.metaApi; return (m && m.url) || ""; }
+  function isMetaUrl(u){ return /^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(u||""); }
+  function waReady(){ return !!(meta.cfg && meta.cfg.whatsapp); }
+  function adsReady(){ return !!(meta.cfg && meta.cfg.ads); }
+  async function metaCall(action, extra){
+    var url=metaUrl();
+    if(!isMetaUrl(url)) throw {code:"bad_url"};
+    if(!(state.mode==="cloud" && state.user && window.firebase)) throw {code:"login"};
+    var idToken=await firebase.auth().currentUser.getIdToken();
+    var out;
+    try{
+      var res=await fetch(url,{method:"POST", body:JSON.stringify(Object.assign({idToken:idToken, action:action}, extra||{}))});
+      out=await res.json();
+    }catch(e){ throw {code:"net"}; }
+    if(!out || !out.ok) throw {code:(out&&out.error)==="unauthorized"?"unauth":"api", message:out&&out.error};
+    return out;
+  }
+  function metaErr(e){
+    var c=e&&e.code;
+    if(c==="login") return t("mx_login");
+    if(c==="unauth") return t("mx_unauth");
+    if(c==="bad_url") return t("mx_bad_url");
+    if(c==="net") return t("mx_net");
+    return t("mx_api",{m:esc(String((e&&e.message)||"?").slice(0,160))});
+  }
+  async function checkMeta(){
+    meta.checked=true; meta.checking=true; meta.err="";
+    try{ meta.cfg=await metaCall("config"); }
+    catch(e){ meta.cfg=null; meta.err=metaErr(e); }
+    meta.checking=false; render();
+  }
+  function maybeCheckMeta(){
+    if(!meta.checked && !meta.checking && metaUrl() && state.mode==="cloud" && state.user && state.dbReady) checkMeta();
+  }
+  function renderMetaCard(){
+    var url=metaUrl();
+    var fields='<div class="fgrid" style="margin-top:12px"><div class="field full"><label for="mx-url">'+t("mx_url")+'</label>' +
+      '<input id="mx-url" type="url" dir="ltr" placeholder="https://script.google.com/macros/s/…/exec" value="'+esc(url)+'"></div></div>' +
+      '<button class="btn block" style="margin-top:10px" data-mx="save">'+t(url?"mx_save":"mx_link")+'</button>';
+    var html='<div class="card"><h3>'+t("mx_title")+'</h3><div class="hint">'+t("mx_hint")+'</div>';
+    if(state.mode!=="cloud") return html+'<div class="hint" style="color:var(--warning);font-weight:700">'+t("mx_login")+'</div></div>';
+    if(!url) return html+fields+'<div class="hint" style="margin-top:8px">'+t("mx_howto")+'</div></div>';
+    var st;
+    if(meta.checking) st='<span class="badge soon">'+t("mx_checking")+'</span>';
+    else if(meta.err) st='<span class="badge duenow">'+meta.err+'</span>';
+    else if(meta.cfg) st='<span class="badge ok">'+t("mx_ok",{e:esc(meta.cfg.email||"")})+'</span> ' +
+      '<span class="badge '+(meta.cfg.whatsapp?"ok":"")+'">'+t(meta.cfg.whatsapp?"mx_wa_on":"mx_wa_off")+'</span> ' +
+      '<span class="badge '+(meta.cfg.ads?"ok":"")+'">'+t(meta.cfg.ads?"mx_ads_on":"mx_ads_off")+'</span>';
+    else st='';
+    return html+'<div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">'+st+'</div>' +
+      '<details class="disclose"><summary>'+t("mx_settings")+'</summary>'+fields +
+      '<button class="btn ghostdanger block" style="margin-top:9px" data-mx="unlink">'+t("mx_unlink")+'</button></details></div>';
+  }
+  function money(minor, cur){ return (Number(minor||0)/100).toLocaleString("en-US")+" "+(cur||""); }
+  function adsCardHTML(){
+    var html='<div class="card"><h3>'+t("ads_title")+'</h3><div class="hint">'+t("ads_hint")+'</div>';
+    if(meta.adsErr) html+='<div style="margin-top:10px"><span class="badge duenow">'+meta.adsErr+'</span></div>';
+    if(meta.ads){
+      html+='<div style="margin-top:8px">';
+      if(!meta.ads.campaigns.length) html+='<div class="hint">'+t("ads_none")+'</div>';
+      meta.ads.campaigns.forEach(function(c){
+        var eff=c.effective_status||c.status, on=c.status==="ACTIVE";
+        var pill=eff==="ACTIVE"?"paid":(/PAUSED|ARCHIVED|DELETED/.test(eff)?"none":(/DISAPPROVED|WITH_ISSUES|BILLING/.test(eff)?"overdue":"partial"));
+        var budget=c.daily_budget?t("ads_daily",{b:money(c.daily_budget,meta.ads.currency)}):(c.lifetime_budget?t("ads_life",{b:money(c.lifetime_budget,meta.ads.currency)}):"");
+        html+='<div class="camp"><div class="cinfo"><div class="cname">'+esc(c.name)+'</div>' +
+          '<div class="cmeta"><span class="pill '+pill+'">'+esc(t("st_"+eff)!=="st_"+eff?t("st_"+eff):eff)+'</span>'+(budget?'<span>'+budget+'</span>':'')+'</div></div>' +
+          (/ARCHIVED|DELETED/.test(c.status)?'':'<button class="btn sm '+(on?"ghost":"")+'" data-mx="'+(on?"pause":"activate")+'" data-cid="'+esc(c.id)+'">'+t(on?"ads_pause":"ads_activate")+'</button>') +
+        '</div>';
+      });
+      html+='</div>';
+    }
+    html+='<div class="fgrid" style="margin-top:10px"><button class="btn ghost" data-mx="ads"'+(meta.adsLoading?' disabled':'')+'>'+t(meta.adsLoading?"ads_loading":(meta.ads?"ads_refresh":"ads_load"))+'</button>'+adButton().replace(' block','').replace('margin-top:8px','margin:0')+'</div>';
+    return html+'</div>';
+  }
+  function paintAds(){ var el=document.getElementById("mx-ads"); if(el) el.innerHTML=adsCardHTML(); }
+  async function loadAds(){
+    meta.adsLoading=true; meta.adsErr=""; paintAds();
+    try{ meta.ads=await metaCall("ads_list"); }catch(e){ meta.adsErr=metaErr(e); }
+    meta.adsLoading=false; paintAds();
+  }
+  // ضغطة أولى «تسليح» والثانية خلال 4 ثوانٍ تنفّذ — لحماية من الإرسال أو الصرف بالخطأ
+  function armed(el, label){
+    if(el.hasAttribute("data-armed")) return true;
+    el.setAttribute("data-armed","1");
+    var span=el.querySelector("span"), old=null;
+    if(label){ if(span){ old=span.textContent; span.textContent=label; } else if(el.classList.contains("btn")){ old=el.textContent; el.textContent=label; } }
+    setTimeout(function(){
+      if(!el.isConnected) return;
+      el.removeAttribute("data-armed");
+      if(old!=null){ if(span) span.textContent=old; else el.textContent=old; }
+    },4000);
+    return false;
+  }
+  async function sendWa(el){
+    var pid=el.getAttribute("data-pid"), month=el.getAttribute("data-m"), kind=el.getAttribute("data-kind");
+    var person=Object.assign({id:pid}, state.people[pid]||{});
+    if(!armed(el, t("wa_confirm"))){ if(!el.querySelector("span")) toast(t("wa_confirm_to",{n:person.name})); return; }
+    el.disabled=true; el.removeAttribute("data-armed"); toast(t("wa_sending"));
+    var params = kind==="renew"
+      ? [person.name, (renewalInfo(person)||{renewalDate:new Date()}).renewalDate.toLocaleDateString("en-GB")]
+      : [person.name, monthLabelIn(month,"en"), fmtPlain(outstandingFor(person,month))];
+    try{
+      await metaCall("wa_send",{to:digitsOf(person.contact), kind:kind, params:params});
+      savePerson(pid,{lastWaAt:new Date().toISOString(), lastWaMonth:month}, true);
+      toast(t("wa_sent",{n:person.name}));
+    }catch(e){ toast(metaErr(e)); el.disabled=false; }
+  }
+  async function setCampaign(el, on){
+    if(!armed(el, t(on?"ads_confirm_on":"ads_confirm_off"))) return;
+    el.disabled=true;
+    try{
+      await metaCall(on?"ads_activate":"ads_pause",{campaignId:el.getAttribute("data-cid")});
+      toast(t(on?"ads_on":"ads_off"));
+      await loadAds();
+    }catch(e){ meta.adsErr=metaErr(e); paintAds(); }
+  }
+  document.getElementById("content").addEventListener("click", function(e){
+    var el=e.target.closest("[data-mx]"); if(!el || el.disabled) return;
+    var a=el.getAttribute("data-mx");
+    if(a==="wa"){ e.preventDefault(); e.stopPropagation(); sendWa(el); }
+    else if(a==="ads") loadAds();
+    else if(a==="activate") setCampaign(el, true);
+    else if(a==="pause") setCampaign(el, false);
+    else if(a==="save"){
+      var url=(document.getElementById("mx-url").value||"").trim();
+      if(!isMetaUrl(url)){ toast(t("mx_bad_url")); return; }
+      meta={checked:false, checking:false, cfg:null, err:"", ads:null, adsLoading:false, adsErr:""};
+      saveSettings({metaApi:{url:url}});
+    }
+    else if(a==="unlink"){
+      meta={checked:true, checking:false, cfg:null, err:"", ads:null, adsLoading:false, adsErr:""};
+      saveSettings({metaApi:null}); toast(t("mx_unlinked"));
+    }
+  });
 
   /* ======================= boot ======================= */
   document.querySelectorAll(".lang button").forEach(function(b){
