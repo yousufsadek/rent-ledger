@@ -230,11 +230,14 @@
   .switch .knob{position:absolute;top:3px;inset-inline-start:3px;width:22px;height:22px;border-radius:99px;background:#fff;transition:inset-inline-start .18s;box-shadow:0 1px 4px rgba(0,0,0,.28)}
   .switch input:checked ~ .knob{inset-inline-start:21px}
 
-  .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-  .field{display:flex;flex-direction:column;gap:5px}
+  .fgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px}
+  .field{display:flex;flex-direction:column;gap:5px;min-width:0}
   .field.full{grid-column:1/-1}
   .field label{font-size:11px;color:var(--text-muted);font-weight:700}
   .field input,.field select,.field textarea{border:1px solid var(--border);border-radius:10px;padding:9px 10px;font-size:13.5px;background:var(--bg-2);width:100%}
+  .field input,.field select{min-width:0;max-width:100%;height:40px}
+  .field input[type="date"]{-webkit-appearance:none;appearance:none;display:block;text-align:start}
+  .field input[type="date"]::-webkit-date-and-time-value{text-align:start}
   .field textarea{resize:vertical;min-height:40px}
   .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--accent);outline-offset:-1px;background:var(--surface)}
 
@@ -386,6 +389,7 @@
       settle:"التخالص مع الوالد", st_pending:"لم يتم التخالص بعد", st_f2y:"الوالد حوّل لي", st_y2f:"أنا حوّلت للوالد", st_na:"لا يلزم تخالص",
       b_st_pending:"بانتظار التخالص", b_st_done:"تم التخالص", settle_date:"تاريخ التخالص", settle_col:"التخالص مع الوالد",
       settle_hint:"المبلغ المتوقع تحويله: {a}", settle_kpi:"بانتظار التخالص مع الوالد",
+      settle_method:"وسيلة التخالص", settle_report:"التخالص مع الوالد", sr_f2y:"الوالد حوّل لي", sr_y2f:"أنا حوّلت للوالد", sr_other:"غير محدد", sr_total:"الإجمالي", sr_net:"الصافي", sr_net_me:"لصالحي", sr_net_father:"لصالح الوالد", sr_hint:"المبالغ محسوبة من المدفوع ونِسب الحصص",
       carry_line:"رصيد مُرحَّل: {c} · إجمالي المستحق هذا الشهر: {t}",
       b_renewal:"استحقاق تجديد", b_cheque:"شيك تأمين", b_deposit:"مبلغ تأمين", b_nodeposit:"بدون ضمان",
       act_call:"اتصال", act_wa:"واتساب", act_sms:"رسالة", act_copy:"نسخ نص الرسالة",
@@ -495,6 +499,7 @@
       settle:"Settlement with father", st_pending:"Not settled yet", st_f2y:"Father transferred to me", st_y2f:"I transferred to father", st_na:"No settlement needed",
       b_st_pending:"Awaiting settlement", b_st_done:"Settled", settle_date:"Settlement date", settle_col:"Settlement with father",
       settle_hint:"Expected transfer: {a}", settle_kpi:"Awaiting settlement with father",
+      settle_method:"Settlement method", settle_report:"Settlement with father", sr_f2y:"Father transferred to me", sr_y2f:"I transferred to father", sr_other:"Unspecified", sr_total:"Total", sr_net:"Net", sr_net_me:"in my favour", sr_net_father:"in father's favour", sr_hint:"Amounts are computed from the paid amount and share percentages",
       carry_line:"Carried-over balance: {c} · total due this month: {t}",
       b_renewal:"Renewal due", b_cheque:"Security cheque", b_deposit:"Deposit", b_nodeposit:"No deposit",
       act_call:"Call", act_wa:"WhatsApp", act_sms:"Message", act_copy:"Copy message text",
@@ -628,6 +633,7 @@
   var METHODS = [["Cash","m_cash"],["Cheque","m_cheque"],["Fawran","m_fawran"]];
   // التخالص مع الوالد: pending لم يتم · f2y الوالد حوّل ليوسف · y2f يوسف حوّل للوالد · na لا يلزم
   var SETTLES = [["pending","st_pending"],["f2y","st_f2y"],["y2f","st_y2f"],["na","st_na"]];
+  var SETTLE_METHODS = [["Cash","m_cash"],["Fawran","m_fawran"]];
   function settleLabel(v){ for(var i=0;i<SETTLES.length;i++) if(SETTLES[i][0]===v) return t(SETTLES[i][1]); return ""; }
   // المبلغ المتوقع تحويله حسب الاتجاه ونِسب الحصص في الإعدادات
   function settleAmount(p,doc){
@@ -989,6 +995,7 @@
       ["billedAmount","amountPaid"].forEach(function(k){ if(k in y) y[k]=num(y[k]); });
       ["paymentDate","dueDate","settleDate"].forEach(function(k){ if(k in y) y[k]=dat(y[k]); });
       if("settle" in y && ["pending","f2y","y2f","na"].indexOf(y.settle)<0) y.settle=null;
+      if("settleMethod" in y && ["Cash","Fawran"].indexOf(y.settleMethod)<0) y.settleMethod=null;
       out.payments[id]=y;
     });
     if(isPlainObj(d.settings)){
@@ -1030,7 +1037,7 @@
     var merged=Object.assign({
       personId:personId, month:month,
       billedAmount:(existing.billedAmount!=null?existing.billedAmount:(person.rent||0)),
-      paid:false, amountPaid:0, dueDate:null, paymentDate:null, method:null, notes:null, settle:null, settleDate:null,
+      paid:false, amountPaid:0, dueDate:null, paymentDate:null, method:null, notes:null, settle:null, settleDate:null, settleMethod:null,
       business:person.business||null
     }, existing, patch, {updatedAt:new Date().toISOString()});
     state.payments[docId]=merged; render(); scheduleSheetSync();
@@ -1324,9 +1331,15 @@
       return '<option value="'+m[0]+'"'+(settle===m[0]?" selected":"")+'>'+t(m[1])+'</option>';
     }).join("");
     var settleAmt=settleAmount(p,doc);
+    var settleDone=(settle==="f2y"||settle==="y2f");
+    var settleMethod = doc&&doc.settleMethod?doc.settleMethod:"";
+    var settleMethOpts='<option value="">—</option>'+SETTLE_METHODS.map(function(m){
+      return '<option value="'+m[0]+'"'+(settleMethod===m[0]?" selected":"")+'>'+t(m[1])+'</option>';
+    }).join("");
     var settleBlock = p.type!=="store" ? "" :
       '<div class="field"><label for="stl-'+rid+'">'+t("settle")+'</label><select id="stl-'+rid+'" data-act="settle" data-pid="'+p.id+'" data-m="'+month+'">'+settleOpts+'</select></div>' +
       '<div class="field"><label for="stld-'+rid+'">'+t("settle_date")+'</label><input type="date" id="stld-'+rid+'" data-act="settledate" data-pid="'+p.id+'" data-m="'+month+'" value="'+settleDate+'"></div>' +
+      (settleDone?'<div class="field full"><label for="stlm-'+rid+'">'+t("settle_method")+'</label><select id="stlm-'+rid+'" data-act="settlemethod" data-pid="'+p.id+'" data-m="'+month+'">'+settleMethOpts+'</select></div>':'') +
       (settleAmt>0?'<div class="field full"><div class="noteflag">'+t("settle_hint",{a:fmt(settleAmt)})+'</div></div>':'');
     if(r&&r.dueSoon) badges+='<span class="badge '+(r.daysLeft<0?"duenow":"soon")+'">'+t("b_renewal")+'</span>';
 
@@ -1665,6 +1678,15 @@
       if(!monthSet[d.month]) return;
       if(d.method&&methodCounts.hasOwnProperty(d.method)){ methodCounts[d.method]++; methodTotal++; }
     });
+    // التخالص مع الوالد: مجموع كل اتجاه مقسّمًا حسب الوسيلة
+    var sr={f2y:{Cash:0,Fawran:0,other:0,total:0}, y2f:{Cash:0,Fawran:0,other:0,total:0}};
+    Object.keys(state.payments).forEach(function(k){
+      var d=state.payments[k], sp=state.people[d.personId];
+      if(!monthSet[d.month] || !sp || sp.type!=="store" || !sr[d.settle]) return;
+      var a=settleAmount(sp,d); if(!a) return;
+      var mk2=(d.settleMethod==="Cash"||d.settleMethod==="Fawran")?d.settleMethod:"other";
+      sr[d.settle][mk2]+=a; sr[d.settle].total+=a;
+    });
 
     var html=renderMonthbar();
     html+=renderYousefCard(state.month);
@@ -1693,6 +1715,21 @@
 
     html+='<div class="card"><h3>'+t("trend_title")+'</h3><div class="hint">'+t("trend_hint")+'</div>' +
       '<div class="trendwrap"><canvas id="trendcanvas" height="150"></canvas></div></div>';
+
+    html+='<div class="card"><h3>'+t("settle_report")+'</h3><div class="hint">'+statsRangeLabel()+' · '+t("sr_hint")+'</div>';
+    if(sr.f2y.total+sr.y2f.total===0){ html+='<div class="hint" style="margin-top:8px">'+t("no_data")+'</div>'; }
+    else{
+      var srNet=sr.f2y.total-sr.y2f.total;
+      [["f2y","sr_f2y"],["y2f","sr_y2f"]].forEach(function(x){
+        var o=sr[x[0]];
+        html+='<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
+          '<div style="display:flex;justify-content:space-between;gap:10px;font-weight:700"><span>'+t(x[1])+'</span><span>'+fmt(o.total)+'</span></div>' +
+          '<div class="hint" style="margin-top:4px">'+t("m_cash")+': <b>'+fmt(o.Cash)+'</b> · '+t("m_fawran")+': <b>'+fmt(o.Fawran)+'</b>'+(o.other?' · '+t("sr_other")+': <b>'+fmt(o.other)+'</b>':'')+'</div>' +
+        '</div>';
+      });
+      if(srNet!==0) html+='<div class="noteflag" style="margin-top:10px">'+t("sr_net")+': <b>'+fmt(Math.abs(srNet))+'</b> '+t(srNet>0?"sr_net_me":"sr_net_father")+'</div>';
+    }
+    html+='</div>';
 
     html+='<div class="card"><h3>'+t("method_title")+'</h3>';
     if(methodTotal===0){ html+='<div class="hint">'+t("no_data")+'</div>'; }
@@ -1892,8 +1929,9 @@
       var pid=el.getAttribute("data-pid"), m=el.getAttribute("data-m"), v=el.value||null;
       var ex=state.payments[pid+"__"+m]||{};
       var done=(v==="f2y"||v==="y2f");
-      savePayment(pid,m,{settle:v, settleDate: done ? (ex.settleDate||todayISO()) : null});
+      savePayment(pid,m,{settle:v, settleDate: done ? (ex.settleDate||todayISO()) : null, settleMethod: done ? (ex.settleMethod||null) : null});
     });
+    on('[data-act="settlemethod"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{settleMethod:el.value||null}); });
     on('[data-act="settledate"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{settleDate:el.value||null}); });
     on('[data-act="notes"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{notes:el.value||null}); });
     on("details.prow","toggle",function(el){ state.openRow = el.open?el.getAttribute("data-rid"):null; });
@@ -2005,8 +2043,8 @@
   }
   function monthSheetRows(mk){
     var header = LANG==="en"
-      ? ["Tenant","Business","Required","Due date","Payment date","Paid?","Amount paid","Balance","Days late","Status","Pay day","Method","Contact","Notes","Settlement with father","Settlement date"]
-      : ["اسم المستأجر","النشاط","الإيجار المطلوب","تاريخ الاستحقاق","تاريخ الدفع","دفع؟","المبلغ المدفوع","الرصيد المتبقي","أيام التأخير","الحالة","يوم الدفع","طريقة الدفع","التواصل","ملاحظات","التخالص مع الوالد","تاريخ التخالص"];
+      ? ["Tenant","Business","Required","Due date","Payment date","Paid?","Amount paid","Balance","Days late","Status","Pay day","Method","Contact","Notes","Settlement with father","Settlement date","Settlement method"]
+      : ["اسم المستأجر","النشاط","الإيجار المطلوب","تاريخ الاستحقاق","تاريخ الدفع","دفع؟","المبلغ المدفوع","الرصيد المتبقي","أيام التأخير","الحالة","يوم الدفع","طريقة الدفع","التواصل","ملاحظات","التخالص مع الوالد","تاريخ التخالص","وسيلة التخالص"];
     var rows=[header];
     function addPersonRow(p){
       var doc=payDoc(p.id,mk);
@@ -2022,7 +2060,7 @@
       rows.push([p.name,p.business||"",required,dueDate,paymentDate,
         (doc&&doc.paid)?(LANG==="en"?"Yes":"نعم"):(LANG==="en"?"No":"لا"),
         paidAmt,Math.max(0,required-paidAmt),daysLate,st.text,paidDay,(doc&&doc.method)||"",p.contact||"",(doc&&doc.notes)||p.note||"",
-        p.type==="store"?settleLabel(doc&&doc.settle):"",(doc&&doc.settleDate)||""]);
+        p.type==="store"?settleLabel(doc&&doc.settle):"",(doc&&doc.settleDate)||"",(doc&&doc.settleMethod)||""]);
     }
     var partners=activePartners();
     if(partners.length){ partners.forEach(addPersonRow); rows.push([]); }
