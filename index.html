@@ -383,6 +383,9 @@
       paid_q:"تم السداد", base_rent:"قيمة الإيجار", amount_paid:"المبلغ المسدَّد",
       payment_date:"تاريخ السداد", method:"وسيلة السداد", note:"ملاحظات", optional:"اختياري",
       m_cash:"نقدًا", m_cheque:"شيك", m_fawran:"فوران",
+      settle:"التخالص مع الوالد", st_pending:"لم يتم التخالص بعد", st_f2y:"الوالد حوّل لي", st_y2f:"أنا حوّلت للوالد", st_na:"لا يلزم تخالص",
+      b_st_pending:"بانتظار التخالص", b_st_done:"تم التخالص", settle_date:"تاريخ التخالص", settle_col:"التخالص مع الوالد",
+      settle_hint:"المبلغ المتوقع تحويله: {a}", settle_kpi:"بانتظار التخالص مع الوالد",
       carry_line:"رصيد مُرحَّل: {c} · إجمالي المستحق هذا الشهر: {t}",
       b_renewal:"استحقاق تجديد", b_cheque:"شيك تأمين", b_deposit:"مبلغ تأمين", b_nodeposit:"بدون ضمان",
       act_call:"اتصال", act_wa:"واتساب", act_sms:"رسالة", act_copy:"نسخ نص الرسالة",
@@ -489,6 +492,9 @@
       paid_q:"Payment received", base_rent:"Rent amount", amount_paid:"Amount received",
       payment_date:"Date received", method:"Payment method", note:"Notes", optional:"Optional",
       m_cash:"Cash", m_cheque:"Cheque", m_fawran:"Fawran",
+      settle:"Settlement with father", st_pending:"Not settled yet", st_f2y:"Father transferred to me", st_y2f:"I transferred to father", st_na:"No settlement needed",
+      b_st_pending:"Awaiting settlement", b_st_done:"Settled", settle_date:"Settlement date", settle_col:"Settlement with father",
+      settle_hint:"Expected transfer: {a}", settle_kpi:"Awaiting settlement with father",
       carry_line:"Carried-over balance: {c} · total due this month: {t}",
       b_renewal:"Renewal due", b_cheque:"Security cheque", b_deposit:"Deposit", b_nodeposit:"No deposit",
       act_call:"Call", act_wa:"WhatsApp", act_sms:"Message", act_copy:"Copy message text",
@@ -620,6 +626,16 @@
 
   /* ======================= state ======================= */
   var METHODS = [["Cash","m_cash"],["Cheque","m_cheque"],["Fawran","m_fawran"]];
+  // التخالص مع الوالد: pending لم يتم · f2y الوالد حوّل ليوسف · y2f يوسف حوّل للوالد · na لا يلزم
+  var SETTLES = [["pending","st_pending"],["f2y","st_f2y"],["y2f","st_y2f"],["na","st_na"]];
+  function settleLabel(v){ for(var i=0;i<SETTLES.length;i++) if(SETTLES[i][0]===v) return t(SETTLES[i][1]); return ""; }
+  // المبلغ المتوقع تحويله حسب الاتجاه ونِسب الحصص في الإعدادات
+  function settleAmount(p,doc){
+    var paid=doc?(doc.amountPaid||0):0, s=state.settings, v=doc&&doc.settle;
+    if(!paid||(v!=="f2y"&&v!=="y2f")) return 0;
+    var yPct = p.group==="AE" ? (s.storeAEYousefPct!=null?s.storeAEYousefPct:1) : (s.store1to8YousefPct!=null?s.store1to8YousefPct:0.5);
+    return Math.round(paid*(v==="f2y"?yPct:(1-yPct)));
+  }
   var ARREARS_START_MONTH = "2026-09";
   var RENEWAL_WARN_DAYS = 30;
   var TERM_MONTHS = { month:1, "6":6, year:12 };
@@ -971,7 +987,8 @@
       if(!/^[\w-]{1,80}__\d{4}-\d{2}$/.test(id) || !isPlainObj(y)) return;
       y=Object.assign({},y);
       ["billedAmount","amountPaid"].forEach(function(k){ if(k in y) y[k]=num(y[k]); });
-      ["paymentDate","dueDate"].forEach(function(k){ if(k in y) y[k]=dat(y[k]); });
+      ["paymentDate","dueDate","settleDate"].forEach(function(k){ if(k in y) y[k]=dat(y[k]); });
+      if("settle" in y && ["pending","f2y","y2f","na"].indexOf(y.settle)<0) y.settle=null;
       out.payments[id]=y;
     });
     if(isPlainObj(d.settings)){
@@ -1013,7 +1030,7 @@
     var merged=Object.assign({
       personId:personId, month:month,
       billedAmount:(existing.billedAmount!=null?existing.billedAmount:(person.rent||0)),
-      paid:false, amountPaid:0, dueDate:null, paymentDate:null, method:null, notes:null,
+      paid:false, amountPaid:0, dueDate:null, paymentDate:null, method:null, notes:null, settle:null, settleDate:null,
       business:person.business||null
     }, existing, patch, {updatedAt:new Date().toISOString()});
     state.payments[docId]=merged; render(); scheduleSheetSync();
@@ -1225,7 +1242,7 @@
       {title:t("grp_partner"), list:activePartners().filter(function(p){return matchesQuery(p,q);})}
     ];
     var stores=activeByGroup("AE").concat(activeByGroup("ONE_TO_EIGHT"));
-    var billedSum=0,paidSum=0,overdueCount=0,notRecorded=0;
+    var billedSum=0,paidSum=0,overdueCount=0,notRecorded=0,settlePending=0;
     stores.forEach(function(p){
       var doc=payDoc(p.id,month);
       billedSum+=requiredFor(p,month);
@@ -1233,6 +1250,7 @@
       var st=statusOf(p,doc,month);
       if(st.key==="overdue") overdueCount++;
       if(st.key==="none") notRecorded++;
+      if(doc&&doc.settle==="pending") settlePending++;
     });
     var rate = billedSum>0?paidSum/billedSum:0;
 
@@ -1243,6 +1261,7 @@
       kpi(t("kpi_rate"), pct(rate), rate>=0.9?"ok":(rate>=0.5?"warn":"danger"), rate) +
       kpi(t("kpi_overdue"), overdueCount+" / "+notRecorded, overdueCount>0?"danger":"") +
     '</div>';
+    if(settlePending>0) html+='<div class="noteflag" style="margin-top:10px">'+t("settle_kpi")+': <b>'+settlePending+'</b></div>';
     html+=renderFollowupCard(month);
     html+=renderRenewalCard(month);
 
@@ -1295,6 +1314,20 @@
     // شارة الضمان انتقلت لصفحة المستأجرين — هون بنخلي الصف هادي، بس تنبيه التجديد لما يقرب
     var badges="";
     var r=renewalInfo(p);
+    var settle = doc&&doc.settle?doc.settle:"";
+    var settleDate = doc&&doc.settleDate?doc.settleDate:"";
+    if(p.type==="store"){
+      if(settle==="pending") badges+='<span class="badge soon">'+t("b_st_pending")+'</span>';
+      else if(settle==="f2y"||settle==="y2f") badges+='<span class="badge ok">'+t("b_st_done")+'</span>';
+    }
+    var settleOpts='<option value="">—</option>'+SETTLES.map(function(m){
+      return '<option value="'+m[0]+'"'+(settle===m[0]?" selected":"")+'>'+t(m[1])+'</option>';
+    }).join("");
+    var settleAmt=settleAmount(p,doc);
+    var settleBlock = p.type!=="store" ? "" :
+      '<div class="field"><label for="stl-'+rid+'">'+t("settle")+'</label><select id="stl-'+rid+'" data-act="settle" data-pid="'+p.id+'" data-m="'+month+'">'+settleOpts+'</select></div>' +
+      '<div class="field"><label for="stld-'+rid+'">'+t("settle_date")+'</label><input type="date" id="stld-'+rid+'" data-act="settledate" data-pid="'+p.id+'" data-m="'+month+'" value="'+settleDate+'"></div>' +
+      (settleAmt>0?'<div class="field full"><div class="noteflag">'+t("settle_hint",{a:fmt(settleAmt)})+'</div></div>':'');
     if(r&&r.dueSoon) badges+='<span class="badge '+(r.daysLeft<0?"duenow":"soon")+'">'+t("b_renewal")+'</span>';
 
     var carryLine = carry>0 ? '<div class="noteflag">'+t("carry_line",{c:fmt(carry), t:fmt(totalRequired)})+'</div>' : "";
@@ -1327,6 +1360,7 @@
           '<div class="field"><label for="amt-'+rid+'">'+t("amount_paid")+'</label><input type="number" id="amt-'+rid+'" data-act="amount" data-pid="'+p.id+'" data-m="'+month+'" value="'+amountPaid+'" placeholder="0"></div>' +
           '<div class="field"><label for="date-'+rid+'">'+t("payment_date")+'</label><input type="date" id="date-'+rid+'" data-act="date" data-pid="'+p.id+'" data-m="'+month+'" value="'+paymentDate+'"></div>' +
           '<div class="field"><label for="meth-'+rid+'">'+t("method")+'</label><select id="meth-'+rid+'" data-act="method" data-pid="'+p.id+'" data-m="'+month+'">'+methodOpts+'</select></div>' +
+          settleBlock +
           '<div class="field full"><label for="note-'+rid+'">'+t("note")+'</label><textarea id="note-'+rid+'" data-act="notes" data-pid="'+p.id+'" data-m="'+month+'" rows="2" placeholder="'+t("optional")+'">'+esc(notes)+'</textarea></div>' +
         '</div>' +
         appBar(p, month) +
@@ -1854,6 +1888,13 @@
     on('[data-act="amount"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{amountPaid:Number(el.value)||0}); });
     on('[data-act="date"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{paymentDate:el.value||null}); });
     on('[data-act="method"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{method:el.value||null}); });
+    on('[data-act="settle"]',"change",function(el){
+      var pid=el.getAttribute("data-pid"), m=el.getAttribute("data-m"), v=el.value||null;
+      var ex=state.payments[pid+"__"+m]||{};
+      var done=(v==="f2y"||v==="y2f");
+      savePayment(pid,m,{settle:v, settleDate: done ? (ex.settleDate||todayISO()) : null});
+    });
+    on('[data-act="settledate"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{settleDate:el.value||null}); });
     on('[data-act="notes"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{notes:el.value||null}); });
     on("details.prow","toggle",function(el){ state.openRow = el.open?el.getAttribute("data-rid"):null; });
 
@@ -1964,8 +2005,8 @@
   }
   function monthSheetRows(mk){
     var header = LANG==="en"
-      ? ["Tenant","Business","Required","Due date","Payment date","Paid?","Amount paid","Balance","Days late","Status","Pay day","Method","Contact","Notes"]
-      : ["اسم المستأجر","النشاط","الإيجار المطلوب","تاريخ الاستحقاق","تاريخ الدفع","دفع؟","المبلغ المدفوع","الرصيد المتبقي","أيام التأخير","الحالة","يوم الدفع","طريقة الدفع","التواصل","ملاحظات"];
+      ? ["Tenant","Business","Required","Due date","Payment date","Paid?","Amount paid","Balance","Days late","Status","Pay day","Method","Contact","Notes","Settlement with father","Settlement date"]
+      : ["اسم المستأجر","النشاط","الإيجار المطلوب","تاريخ الاستحقاق","تاريخ الدفع","دفع؟","المبلغ المدفوع","الرصيد المتبقي","أيام التأخير","الحالة","يوم الدفع","طريقة الدفع","التواصل","ملاحظات","التخالص مع الوالد","تاريخ التخالص"];
     var rows=[header];
     function addPersonRow(p){
       var doc=payDoc(p.id,mk);
@@ -1980,7 +2021,8 @@
       else if(dueDate&&!paymentDate&&st.key==="overdue") daysLate=Math.max(0,Math.round((new Date()-new Date(dueDate))/86400000));
       rows.push([p.name,p.business||"",required,dueDate,paymentDate,
         (doc&&doc.paid)?(LANG==="en"?"Yes":"نعم"):(LANG==="en"?"No":"لا"),
-        paidAmt,Math.max(0,required-paidAmt),daysLate,st.text,paidDay,(doc&&doc.method)||"",p.contact||"",(doc&&doc.notes)||p.note||""]);
+        paidAmt,Math.max(0,required-paidAmt),daysLate,st.text,paidDay,(doc&&doc.method)||"",p.contact||"",(doc&&doc.notes)||p.note||"",
+        p.type==="store"?settleLabel(doc&&doc.settle):"",(doc&&doc.settleDate)||""]);
     }
     var partners=activePartners();
     if(partners.length){ partners.forEach(addPersonRow); rows.push([]); }
