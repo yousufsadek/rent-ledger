@@ -792,6 +792,9 @@
     var prev=shiftMonth(month,-1);
     if(prev<ARREARS_START_MONTH) return 0;
     if(person.startMonth && prev<person.startMonth) return 0;
+    // لا يُرحَّل إلا رصيد شهر انتهى فعلًا: الشهر الحالي والأشهر القادمة لم تنتهِ بعد،
+    // وترحيلها كان يُراكم الإيجار غير المدفوع شهرًا فوق شهر في الأشهر المستقبلية
+    if(prev>=monthKeyNow()) return 0;
     return outstandingFor(person,prev);
   }
   function outstandingFor(person,month){
