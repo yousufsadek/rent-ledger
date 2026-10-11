@@ -112,6 +112,16 @@
   .lang{display:flex;background:var(--surface-2);border:1px solid var(--border);border-radius:99px;padding:3px;flex:none}
   .lang button{border:0;background:transparent;color:var(--text-muted);font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:99px;cursor:pointer;line-height:1}
   .lang button[aria-pressed="true"]{background:var(--surface);color:var(--text);box-shadow:var(--shadow-sm)}
+  .acct{width:34px;height:34px;border-radius:99px;border:1px solid color-mix(in srgb,var(--danger) 40%,var(--border));background:var(--surface-2);color:var(--danger);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;padding:0}
+  .acct[hidden]{display:none}
+  .acct svg{width:17px;height:17px}
+  .pwwrap{position:relative}
+  .pwwrap input{padding-inline-end:64px}
+  .pwtoggle{position:absolute;inset-inline-end:6px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:var(--accent);font-size:11.5px;font-weight:700;cursor:pointer;padding:6px 8px}
+  .loginrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;flex-wrap:wrap}
+  .remember{display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer;user-select:none}
+  .remember input{width:17px;height:17px;accent-color:var(--accent);margin:0}
+  .linkbtn{border:0;background:transparent;color:var(--accent);font-size:12.5px;font-weight:700;cursor:pointer;padding:4px 0;text-decoration:underline}
 
   .tabs{display:flex;gap:3px;background:var(--surface-2);border-radius:13px;padding:4px;margin-top:11px}
   .tab{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 6px;border:0;border-radius:10px;background:transparent;color:var(--text-muted);font-size:13px;font-weight:600;cursor:pointer;transition:background .16s,color .16s}
@@ -261,6 +271,47 @@
   .segbtn{flex:1;text-align:center;padding:8px 5px;border:0;border-radius:9px;background:transparent;color:var(--text-muted);font-size:12px;font-weight:600;cursor:pointer}
   .segbtn[aria-selected="true"]{background:var(--surface);color:var(--text);box-shadow:var(--shadow-sm)}
 
+  .chiprow{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+  .fchip{border:1px solid var(--border);background:var(--surface-2);border-radius:99px;padding:7px 12px;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;display:inline-flex;gap:7px;align-items:center;font-family:inherit}
+  .fchip b{background:var(--danger-soft);color:var(--danger);border-radius:99px;padding:1px 8px;font-size:11.5px;font-family:var(--font-display)}
+  .fchip.zero b{background:var(--success-soft);color:var(--success)}
+  .fchip[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:transparent}
+  .fchip[aria-pressed="true"] b{background:rgba(255,255,255,.22);color:#fff}
+  .prtop .pmain{flex:1;min-width:0}
+  .prtop .pmain .pname2{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}
+  .psub{font-size:12px;color:var(--text-muted);margin-top:3px}
+  .psub b{color:var(--text);font-family:var(--font-display);font-weight:800}
+  .pactions{display:flex;gap:8px;flex-wrap:wrap}
+  .personrow.editing{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .editfoot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;border-top:1px dashed var(--border);padding-top:11px}
+  .stmthead{display:flex;align-items:center;gap:10px}
+  .stmthead h3{flex:1;min-width:0;font-size:15px}
+  table.stats td.num, table.stats th.num{text-align:end;font-family:var(--font-display);font-weight:700}
+  table.stats tr.totalrow td{border-top:2px solid var(--border);font-weight:800}
+  .scrollx table.stmt{min-width:0}
+  table.stmt td, table.stmt th{padding-inline:4px}
+  table.stmt td small{display:block;color:var(--text-muted);font-size:10.5px;margin-top:1px}
+  .auditlist{max-height:440px;overflow-y:auto;margin-top:10px;border-top:1px solid var(--border-soft)}
+  .auditrow{padding:10px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px}
+  .auditrow:last-child{border-bottom:0}
+  .auditrow .ahead{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:700}
+  .auditrow .achg{margin-top:4px;line-height:1.7}
+  .auditrow .achg span{color:var(--text-muted)}
+  .auditrow .ameta{margin-top:3px;font-size:11px;color:var(--text-faint);direction:ltr;text-align:end}
+  .verow{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px dashed var(--border);font-size:12.5px}
+  .verow .vd{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  .verow .va{font-family:var(--font-display);font-weight:800;white-space:nowrap}
+  .verow .vx{border:0;background:transparent;color:var(--danger);font-size:17px;line-height:1;cursor:pointer;padding:4px 6px}
+  .scrollx table.annual{min-width:0}
+  table.annual td, table.annual th{padding-inline:4px}
+  .rkrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border-soft);font-size:13px}
+  .rkrow:last-child{border-bottom:0}
+  .rkrow .rkn{width:24px;height:24px;border-radius:99px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:800;flex:none;font-family:var(--font-display)}
+  .rkrow .rkname{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rkrow small{color:var(--text-muted);font-size:11.5px;white-space:nowrap}
+  .occpanel{border:1px solid color-mix(in srgb,var(--accent-2) 45%,var(--border));background:var(--accent-2-soft);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:10px}
+  .occpanel h4{font-size:13px}
+  .occpanel .field input,.occpanel .field select{background:var(--surface)}
   /* ---------- stats ---------- */
   .yrow{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
   .ystat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:11px 12px}
@@ -354,6 +405,7 @@
         <button data-lang="ar" aria-pressed="true">ع</button>
         <button data-lang="en" aria-pressed="false">EN</button>
       </div>
+      <button type="button" class="acct" id="acctbtn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button>
     </div>
     <div class="tabs" role="tablist" id="tabs"></div>
   </div>
@@ -448,11 +500,51 @@
       west:"غربي", east:"شرقي", w_side:"غرب", e_side:"شرق",
       ad_btn:"فتح Ads Manager",
       no_contact:"لا يوجد رقم تواصل", add_contact:"إضافة الرقم", no_contract:"لا توجد بيانات عقد", no_dueday:"لا يوجد يوم استحقاق", nc_short:"بدون رقم",
-      rn_title:"عقود تستحق التجديد", rn_hint:"تنبيه قبل شهر من انتهاء العقد — أرسل طلب التجديد مباشرة",
+      rn_title:"عقود تستوجب المتابعة", rn_hint:"مخازن حلّ موعد متابعتها أو ينتهي عقدها خلال {n} يومًا — من الأقرب إلى الأبعد",
+      ca_due:"حلّ موعد المتابعة", ca_followup:"المتابعة {d}",
       rn_left:"باقي {n} يوم", rn_passed:"انتهى العقد", rn_on:"ينتهي {d}",
       dep_col:"الضمان", extra_exp:"مصروف خاص بالشهر", gift:"هدية الوالدة — التزام شهري", internet:"اشتراك الإنترنت — شهري",
+      forecast:"متوقع", kpi_expected:"الدخل المتوقع عند التحصيل الكامل", kpi_prepaid:"محصَّل مقدمًا",
+      forecast_note:"شهر لم يبدأ بعد — الأرقام تقديرية على أساس التحصيل الكامل.",
+      exp_share:"الحصة المتوقعة قبل المصروفات", exp_net:"صافي الربح المتوقع", expected_x:"المتوقع من {x}",
+      e_ae:"المتوقع — هنجر A–E", e_ote:"المتوقع — هنجر 1–8", net_y_exp:"صافي ربح يوسف المتوقع", net_f_exp:"صافي ربح الوالد المتوقع",
+      count_obligations:"التزام", none_ob:"لا توجد التزامات في هذا الشهر",
+      ob_start:"شهر البداية", ob_end:"شهر النهاية", ob_hint:"اترك الحقلين فارغين لالتزام غير محدد المدة. خارج المدة لا يُعرض الالتزام ولا يُحتسب.",
+      ob_from:"من {a}", ob_to:"حتى {b}", ob_open:"غير محدد المدة", ob_bad_range:"شهر النهاية يجب ألّا يسبق شهر البداية", ob_bad_month:"صيغة الشهر: سنة-شهر، مثال 2026-11",
+      dc_title:"اكتمال بيانات المستأجرين", dc_hint:"اضغط على أي بند لعرض السجلات الناقصة فقط.", dc_ok:"بيانات جميع المستأجرين مكتملة",
+      dc_contact:"دون رقم تواصل", dc_contract:"دون بيانات عقد", dc_deposit:"دون ضمان", dc_clear:"عرض الكل", dc_showing:"تصفية: {f}",
+      edit:"تعديل", done:"تم", per_month:"شهريًا", del_q:"حذف «{n}»؟", status_lbl:"الحالة",
+      stmt:"كشف حساب", stmt_title:"كشف حساب — {n}", back:"رجوع", stmt_asof:"حتى {d}",
+      stmt_month:"الشهر", stmt_due:"المستحق", stmt_paid:"المدفوع", stmt_date:"تاريخ السداد", stmt_method:"وسيلة السداد", stmt_bal:"الرصيد التراكمي",
+      stmt_total:"الإجمالي", stmt_tdue:"إجمالي المستحق", stmt_tpaid:"إجمالي المدفوع", stmt_balance:"الرصيد المتبقي", stmt_credit:"رصيد دائن", stmt_prev:"رصيد سابق", stmt_adv:"مقدَّم",
+      stmt_hint:"الرصيد التراكمي = إجمالي المستحق − إجمالي المدفوع منذ أول شهر مسجَّل. قد يختلف عن «الرصيد المُرحَّل» في تبويب الدفعات، الذي يبدأ احتسابه من {m}.",
+      stmt_copy:"نسخ ملخص الكشف", stmt_wa:"إرسال عبر واتساب", stmt_copied:"تم نسخ ملخص الكشف", stmt_empty:"لا توجد حركات مسجَّلة",
+      stmt_line:"{m}: مستحق {a} · مدفوع {b} · الرصيد {c}",
+      au_title:"سجل التعديلات", au_hint:"آخر {n} حركة على الدفعات — للقراءة فقط", au_empty:"لا توجد حركات مسجَّلة بعد",
+      au_create:"تسجيل", au_update:"تعديل", au_delete:"حذف", au_yes:"نعم", au_no:"لا", au_local:"هذا الجهاز",
+      au_denied:"سجل التعديلات غير مفعَّل بعد: أضف قاعدة مجموعة audit إلى قواعد أمان Firestore (الخطوات في ملف README). بقية الموقع يعمل كالمعتاد.",
+      ve_title:"مصروفات متغيرة", ve_hint:"مصروف غير ثابت يخص هذا الشهر فقط، ويُخصم من صافي ربح الجهة المتحمِّلة.",
+      ve_desc:"الوصف", ve_amount:"المبلغ", ve_by:"الجهة المتحمِّلة", ve_yousef:"يوسف", ve_father:"الوالد", ve_split:"مناصفة",
+      ve_add:"إضافة مصروف", ve_none:"لا توجد مصروفات متغيرة لهذا الشهر", ve_need:"أدخل الوصف ومبلغًا أكبر من صفر",
+      ve_del_q:"حذف المصروف «{n}»؟", ve_half:"{n} (النصف)", ve_line:"مصروف متغير: {n} — {b}", ve_desc_ph:"مثال: صيانة باب المخزن",
+      r_12:"آخر 12 شهرًا", an_title:"التقرير السنوي — شهرًا بشهر", an_month:"الشهر", an_collected:"المحصَّل", an_net_y:"صافي يوسف", an_net_f:"صافي الوالد", an_total:"الإجمالي",
+      an_note:"النطاق يبدأ من أول شهر مسجَّل. الأشهر التي لم تبدأ بعد تظهر «—» ولا تدخل في الإجمالي.",
+      rk_title:"ترتيب المستأجرين حسب أشهر التأخير", rk_none:"لا يوجد مستأجرون متأخرون في هذه الفترة", rk_unpaid:"غير محصَّل: {a}",
+      oc_end:"إنهاء الإشغال الحالي", oc_end_title:"إنهاء إشغال «{n}»", oc_end_date:"تاريخ نهاية الإشغال", oc_after:"بعد الإنهاء",
+      oc_vacant:"تعليم المخزن شاغرًا", oc_new:"تسجيل مستأجر جديد", oc_new_name:"اسم المستأجر الجديد", oc_first_month:"أول شهر إيجار",
+      oc_confirm:"تأكيد الإنهاء", oc_confirm_q:"سيُؤرشَف «{n}» بتاريخ {d} مع كامل دفعاته، ولن يدخل في مستحقات الأشهر التالية. متابعة؟",
+      oc_bad_date:"أدخل تاريخ نهاية صحيحًا", oc_bad_first:"أول شهر للمستأجر الجديد لا يسبق شهر نهاية السابق", oc_done:"تمت الأرشفة",
+      oc_archive:"الأرشيف — مستأجرون سابقون", oc_archive_hint:"سجلات محفوظة بكامل دفعاتها للقراءة. أرقام الأشهر السابقة لا تتأثر بالأرشفة.",
+      oc_archived:"مؤرشَف", oc_period:"من {a} إلى {b}", oc_paid_total:"إجمالي المدفوع: {a}", oc_owed:"ذمة غير مسدَّدة: {a}", oc_settled:"لا ذمة",
+      oc_undo:"إلغاء الأرشفة", oc_undo_q:"إعادة «{n}» إلى قائمة المستأجرين الحاليين؟ إن كان المخزن مؤجَّرًا لمستأجر جديد فسيظهر الاثنان معًا.",
+      oc_unit:"المخزن", oc_unit_auto:"تلقائي من الاسم", oc_unit_none:"—",
+      oc_rate:"نسبة الإشغال", oc_occupied:"{a} من {b} مخزنًا مؤجَّرًا", oc_vacant_list:"المخازن الشاغرة:", oc_full:"جميع المخازن مؤجَّرة",
+      oc_nomap:"تعذّر ربط المستأجرين بالمخازن — حدِّد «المخزن» لكل مستأجر من زر «تعديل».",
       login_title:"تسجيل الدخول", login_hint:"سجّل الدخول لعرض الدفتر ومزامنته بين أجهزتك.",
       email:"البريد الإلكتروني", password:"كلمة المرور", login_btn:"دخول", logout:"تسجيل الخروج",
+      remember_me:"تذكّرني على هذا الجهاز", forgot_pw:"نسيت كلمة المرور؟", show_pw:"إظهار", hide_pw:"إخفاء", login_wait:"جارٍ الدخول…",
+      logout_confirm:"هل تريد تسجيل الخروج من هذا الجهاز؟", reset_need_email:"اكتب بريدك الإلكتروني أولًا ثم اضغط «نسيت كلمة المرور»",
+      reset_confirm:"سنرسل رابط إعادة تعيين كلمة المرور إلى {e} — متابعة؟", reset_sent:"إن كان البريد مسجّلًا فسيصلك رابط إعادة التعيين — راجع بريدك (والرسائل غير المرغوبة)", reset_fail:"تعذّر إرسال الرابط — تحقق من البريد والاتصال",
       login_fail:"البريد الإلكتروني أو كلمة المرور غير صحيحة", perm_denied:"لا تملك صلاحية الوصول إلى البيانات — راجع قواعد Firestore",
       data_title:"البيانات والنسخ الاحتياطي",
       mode_local:"البيانات محفوظة على هذا الجهاز وهذا المتصفح فقط. خذ نسخة احتياطية بانتظام، وفعّل Firebase للمزامنة بين الأجهزة.",
@@ -558,11 +650,51 @@
       west:"west", east:"east", w_side:"W", e_side:"E",
       ad_btn:"Open Ads Manager",
       no_contact:"No contact number", add_contact:"Add number", no_contract:"No contract details", no_dueday:"No due day set", nc_short:"No number",
-      rn_title:"Contracts due for renewal", rn_hint:"Flagged one month before expiry — send the renewal request directly",
+      rn_title:"Contracts needing follow-up", rn_hint:"Units whose follow-up date has arrived or whose contract ends within {n} days — nearest first",
+      ca_due:"Follow-up due", ca_followup:"Follow up {d}",
       rn_left:"{n} days left", rn_passed:"Contract expired", rn_on:"ends {d}",
       dep_col:"Deposit", extra_exp:"One-off expense for this month", gift:"Gift to mother — monthly commitment", internet:"Internet subscription — monthly",
+      forecast:"Forecast", kpi_expected:"Expected income at full collection", kpi_prepaid:"Collected in advance",
+      forecast_note:"This month has not started yet — figures are estimates assuming full collection.",
+      exp_share:"Expected share before expenses", exp_net:"Expected net profit", expected_x:"Expected from {x}",
+      e_ae:"Expected — hangar A–E", e_ote:"Expected — hangar 1–8", net_y_exp:"Yousef's expected net profit", net_f_exp:"Father's expected net profit",
+      count_obligations:"commitments", none_ob:"No commitments in this month",
+      ob_start:"Start month", ob_end:"End month", ob_hint:"Leave both empty for an open-ended commitment. Outside its range a commitment is neither shown nor counted.",
+      ob_from:"from {a}", ob_to:"until {b}", ob_open:"Open-ended", ob_bad_range:"End month cannot be before start month", ob_bad_month:"Month format: YYYY-MM, e.g. 2026-11",
+      dc_title:"Tenant data completeness", dc_hint:"Tap an item to show only the records missing it.", dc_ok:"All tenant records are complete",
+      dc_contact:"No contact number", dc_contract:"No contract details", dc_deposit:"No deposit", dc_clear:"Show all", dc_showing:"Filter: {f}",
+      edit:"Edit", done:"Done", per_month:"per month", del_q:"Delete “{n}”?", status_lbl:"Status",
+      stmt:"Statement", stmt_title:"Statement — {n}", back:"Back", stmt_asof:"as of {d}",
+      stmt_month:"Month", stmt_due:"Due", stmt_paid:"Paid", stmt_date:"Payment date", stmt_method:"Method", stmt_bal:"Running balance",
+      stmt_total:"Total", stmt_tdue:"Total due", stmt_tpaid:"Total paid", stmt_balance:"Outstanding balance", stmt_credit:"Credit balance", stmt_prev:"Previous balance", stmt_adv:"advance",
+      stmt_hint:"Running balance = total due − total paid since the first recorded month. It may differ from the “carried over” balance in the Payments tab, which only starts from {m}.",
+      stmt_copy:"Copy statement summary", stmt_wa:"Send via WhatsApp", stmt_copied:"Statement summary copied", stmt_empty:"No recorded entries",
+      stmt_line:"{m}: due {a} · paid {b} · balance {c}",
+      au_title:"Audit log", au_hint:"Last {n} payment changes — read-only", au_empty:"No changes recorded yet",
+      au_create:"Recorded", au_update:"Edited", au_delete:"Deleted", au_yes:"Yes", au_no:"No", au_local:"this device",
+      au_denied:"The audit log is not enabled yet: add a rule for the audit collection to your Firestore security rules (steps in the README). Everything else works as usual.",
+      ve_title:"Variable expenses", ve_hint:"A one-off expense for this month only, deducted from the net profit of whoever bears it.",
+      ve_desc:"Description", ve_amount:"Amount", ve_by:"Borne by", ve_yousef:"Yousef", ve_father:"Father", ve_split:"Split 50/50",
+      ve_add:"Add expense", ve_none:"No variable expenses for this month", ve_need:"Enter a description and an amount above zero",
+      ve_del_q:"Delete expense “{n}”?", ve_half:"{n} (half)", ve_line:"Variable expense: {n} — {b}", ve_desc_ph:"e.g. warehouse door repair",
+      r_12:"Last 12 months", an_title:"Annual report — month by month", an_month:"Month", an_collected:"Collected", an_net_y:"Yousef net", an_net_f:"Father net", an_total:"Total",
+      an_note:"The range starts at the first recorded month. Months that have not started show “—” and are excluded from the total.",
+      rk_title:"Tenants ranked by overdue months", rk_none:"No overdue tenants in this period", rk_unpaid:"uncollected: {a}",
+      oc_end:"End current occupancy", oc_end_title:"End occupancy of “{n}”", oc_end_date:"Occupancy end date", oc_after:"After ending",
+      oc_vacant:"Mark the unit vacant", oc_new:"Register a new tenant", oc_new_name:"New tenant name", oc_first_month:"First rent month",
+      oc_confirm:"Confirm", oc_confirm_q:"“{n}” will be archived as of {d} with all payments kept, and will no longer be billed in later months. Continue?",
+      oc_bad_date:"Enter a valid end date", oc_bad_first:"The new tenant's first month cannot be before the previous tenant's end month", oc_done:"Archived",
+      oc_archive:"Archive — former tenants", oc_archive_hint:"Kept read-only with all their payments. Past months' figures are not affected by archiving.",
+      oc_archived:"Archived", oc_period:"from {a} to {b}", oc_paid_total:"Total paid: {a}", oc_owed:"Unpaid balance: {a}", oc_settled:"No balance",
+      oc_undo:"Unarchive", oc_undo_q:"Move “{n}” back to current tenants? If the unit has a new tenant, both will be listed.",
+      oc_unit:"Unit", oc_unit_auto:"Auto from name", oc_unit_none:"—",
+      oc_rate:"Occupancy rate", oc_occupied:"{a} of {b} units rented", oc_vacant_list:"Vacant units:", oc_full:"All units are rented",
+      oc_nomap:"Tenants could not be matched to units — set the “Unit” of each tenant from “Edit”.",
       login_title:"Sign in", login_hint:"Sign in to view the ledger and sync it across your devices.",
       email:"Email", password:"Password", login_btn:"Sign in", logout:"Sign out",
+      remember_me:"Remember me on this device", forgot_pw:"Forgot password?", show_pw:"Show", hide_pw:"Hide", login_wait:"Signing in…",
+      logout_confirm:"Sign out of this device?", reset_need_email:"Enter your email first, then tap “Forgot password”",
+      reset_confirm:"We will send a password reset link to {e} — continue?", reset_sent:"If the email is registered, a reset link is on its way — check your inbox (and spam)", reset_fail:"Could not send the link — check the email and your connection",
       login_fail:"Incorrect email or password", perm_denied:"No permission to access the data — check your Firestore rules",
       data_title:"Data & backup",
       mode_local:"Data is stored on this device and browser only. Back up regularly, and enable Firebase to sync across devices.",
@@ -606,6 +738,7 @@
     document.documentElement.setAttribute("dir", LANG==="ar" ? "rtl" : "ltr");
     document.getElementById("hdr-title").textContent = t("title");
     document.getElementById("hdr-sub").textContent = t("sub");
+    if(typeof syncAcctBtn==="function") syncAcctBtn();
     document.title = t("title");
     document.querySelectorAll(".lang button").forEach(function(b){
       b.setAttribute("aria-pressed", b.getAttribute("data-lang")===LANG ? "true":"false");
@@ -644,6 +777,7 @@
   }
   var ARREARS_START_MONTH = "2026-09";
   var RENEWAL_WARN_DAYS = 30;
+  var CONTRACT_ALERT_DAYS = 45;   // بطاقة «عقود تستوجب المتابعة»: العقود المنتهية خلال هذه المدة
   var TERM_MONTHS = { month:1, "6":6, year:12 };
   var TERM_KEYS = { month:"term_month", "6":"term_6", year:"term_year" };
   var DEPOSIT_KEYS = { cheque:"dep_cheque", cash:"dep_cash", none:"dep_none" };
@@ -655,8 +789,9 @@
     settings:{ currency:"QAR", storeAEYousefPct:1, store1to8YousefPct:0.5, store1to8FatherPct:0.5,
                aeYousefExpense:5500, oteYousefExpense:3000, fatherOteExpense:3000, aeFatherExpense:500,
                motherGiftExpense:1500, internetExpense:250, monthlyExtras:{} },
+    audit:[], auditDenied:false,
     dbReady:false, dbMissing:false, mode:null, user:null, needLogin:false, authError:"", fresh:{},
-    openRow:null, payQuery:"", peopleQuery:"", confirmDeleteId:null, statsRange:"1",
+    openRow:null, payQuery:"", peopleQuery:"", peopleFilter:null, editPersonId:null, endOccId:null, addUnit:null, statementId:null, statementBack:null, statsRange:"1",
     payView:"list", planDir:"v"
   };
   try{
@@ -667,6 +802,8 @@
 
   /* ======================= helpers ======================= */
   function monthKeyNow(){ var d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"); }
+  function isFutureMonth(mk){ return mk>monthKeyNow(); }
+  function forecastBadge(){ return '<span class="badge soon" data-forecast="1">'+t("forecast")+'</span>'; }
   function monthLabelIn(mk, lang){
     var p=mk.split("-"), y=p[0], m=parseInt(p[1],10)-1;
     return (lang==="ar"?AR_MONTHS:EN_MONTHS)[m]+" "+y;
@@ -765,8 +902,23 @@
       .filter(function(p){ return !!p.trashed; })
       .sort(function(a,b){ return (b.trashedAt||"").localeCompare(a.trashedAt||""); });
   }
-  function activeByGroup(g){ return peopleList().filter(function(p){ return p.type==="store" && p.group===g && p.active!==false; }); }
-  function activePartners(){ return peopleList().filter(function(p){ return p.type==="partner" && p.active!==false; }); }
+  // سجل الإشغال: المستأجر المؤرشَف (archived + endMonth) يبقى في أشهر إشغاله بكامل أرقامه ويخرج مما بعدها.
+  // والمستأجر الذي حلّ محله (prevTenantId) لا يظهر في الأشهر السابقة لبدايته. بلا هذه الحقول: السلوك القديم كما هو.
+  function inOccupancy(p,month){
+    if(!month) return !p.archived;
+    if(afterEnd(p,month)) return false;
+    if(p.prevTenantId && beforeStart(p,month)) return false;
+    return true;
+  }
+  function activeByGroup(g, month){
+    return peopleList().filter(function(p){ return p.type==="store" && p.group===g && p.active!==false && inOccupancy(p,month); });
+  }
+  // بدون شهر: كل الالتزامات المفعّلة. مع شهر: ما يقع ذلك الشهر ضمن مدته فقط (startMonth…endMonth)
+  function activePartners(month){
+    return peopleList().filter(function(p){
+      return p.type==="partner" && p.active!==false && !(month && (beforeStart(p,month) || afterEnd(p,month)));
+    });
+  }
   function payDoc(pid,m){ return state.payments[pid+"__"+m]||null; }
   function sumPaid(pid,m){ var d=state.payments[pid+"__"+m]; return d?(d.amountPaid||0):0; }
 
@@ -774,8 +926,12 @@
   function beforeStart(person,month){
     return !!(person && person.startMonth && month < person.startMonth && !payDoc(person.id,month));
   }
+  // شهر النهاية (endMonth) اختياري: بعده لا يُحتسب شيء، إلا إن وُجدت دفعة مسجّلة في ذلك الشهر
+  function afterEnd(person,month){
+    return !!(person && person.endMonth && month > person.endMonth && !payDoc(person.id,month));
+  }
   function requiredFor(person,month){
-    if(beforeStart(person,month)) return 0;
+    if(beforeStart(person,month) || afterEnd(person,month)) return 0;
     var doc=payDoc(person.id,month);
     var base = doc && doc.billedAmount!=null ? doc.billedAmount : (person.rent||0);
     return base + carryoverFor(person,month);
@@ -783,7 +939,7 @@
   // إيجار الشهر نفسه دون الرصيد المُرحَّل — يُستخدم في التقارير متعددة الأشهر
   // حتى لا يُحتسب المتأخر مرتين (مرة في شهره ومرة في الشهر التالي)
   function baseRequiredFor(person,month){
-    if(beforeStart(person,month)) return 0;
+    if(beforeStart(person,month) || afterEnd(person,month)) return 0;
     var doc=payDoc(person.id,month);
     return doc && doc.billedAmount!=null ? doc.billedAmount : (person.rent||0);
   }
@@ -836,6 +992,24 @@
             dueSoon:actionDaysLeft<=0};
   }
   function missingDeposit(p){ return !p.depositType||p.depositType==="none"; }
+  // مؤشر اكتمال البيانات: نواقص المستأجرين المفعّلين (المخازن فقط)
+  var DC_TESTS = {
+    contact:  function(p){ return !digitsOf(p.contact); },
+    contract: function(p){ return !p.contractStart||!p.contractTerm; },
+    deposit:  function(p){ return missingDeposit(p); }
+  };
+  function dcStores(){ return peopleList().filter(function(p){ return p.type==="store" && p.active!==false && !p.archived; }); }
+  function dcMissing(key){ return dcStores().filter(DC_TESTS[key]); }
+  function renderCompleteness(){
+    var keys=["contact","contract","deposit"], total=0, chips="";
+    keys.forEach(function(k){
+      var n=dcMissing(k).length; total+=n;
+      chips+='<button type="button" class="fchip'+(n?"":" zero")+'" data-act="pfilter" data-f="'+k+'" aria-pressed="'+(state.peopleFilter===k?"true":"false")+'">'+t("dc_"+k)+' <b>'+n+'</b></button>';
+    });
+    if(!total && !state.peopleFilter) return '<div class="card okcard" id="dccard"><h3 style="color:var(--success)"><span style="width:18px;height:18px;display:inline-flex;color:var(--success)">'+ICON.check+'</span>'+t("dc_ok")+'</h3></div>';
+    return '<div class="card" id="dccard"><h3>'+t("dc_title")+'</h3><div class="hint">'+t("dc_hint")+'</div><div class="chiprow">'+chips+
+      (state.peopleFilter?'<button type="button" class="fchip" data-act="pfilter" data-f="">'+t("dc_clear")+'</button>':'')+'</div></div>';
+  }
   function matchesQuery(p,q){
     if(!q) return true;
     q=q.trim().toLowerCase(); if(!q) return true;
@@ -846,10 +1020,11 @@
   // طبقة تخزين بنفس واجهة Firestore: collection().onSnapshot / doc().set
   // — محليًا (localStorage) افتراضيًا، أو Firebase إذا تم ملء firebase-config.js
   var LOCAL_KEY = "rentbook_data";
+  var AUDIT_SHOW = 50, AUDIT_LOCAL_MAX = 200;
   function LocalDB(){
-    var data = {people:{}, payments:{}, meta:{}}, subs = {};
+    var data = {people:{}, payments:{}, meta:{}, audit:{}}, subs = {};
     function load(){
-      try{ var raw = localStorage.getItem(LOCAL_KEY); if(raw){ var d = JSON.parse(raw); data = {people:d.people||{}, payments:d.payments||{}, meta:d.meta||{}}; } }catch(e){}
+      try{ var raw = localStorage.getItem(LOCAL_KEY); if(raw){ var d = JSON.parse(raw); data = {people:d.people||{}, payments:d.payments||{}, meta:d.meta||{}, audit:d.audit||{}}; } }catch(e){}
     }
     function clone(v){ return JSON.parse(JSON.stringify(v)); }
     function emit(col){ (subs[col]||[]).forEach(function(f){ f(); }); }
@@ -863,6 +1038,7 @@
         set:function(v){
           var c = data[col] = data[col]||{}, before = c[id];
           c[id] = clone(v);
+          if(col==="audit"){ var ak=Object.keys(c).sort(); while(ak.length>AUDIT_LOCAL_MAX) delete c[ak.shift()]; }
           try{ persist(); }catch(e){ if(before===undefined) delete c[id]; else c[id]=before; return Promise.reject(e); }
           emit(col); return Promise.resolve();
         },
@@ -920,6 +1096,20 @@
       if(snap.exists){ state.settings=Object.assign({},state.settings,snap.data()); render(); }
       fresh("settings", snap);
     }, onErr));
+    // سجل التعديلات: اشتراك مستقل — فشله (قواعد الأمان لم تُحدَّث بعد) لا يؤثر على بقية البيانات
+    state.audit=[]; state.auditDenied=false;
+    try{
+      var acol=db.collection("audit");
+      var aq=(typeof acol.orderBy==="function") ? acol.orderBy("at","desc").limit(AUDIT_SHOW) : acol;
+      unsubs.push(aq.onSnapshot(function(snap){
+        var arr=snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+        arr.sort(function(a,b){ return String(b.at||"").localeCompare(String(a.at||"")); });
+        state.audit=arr.slice(0,AUDIT_SHOW); state.auditDenied=false;
+        if(state.tab==="stats") render();
+      }, function(e){
+        if(e && e.code==="permission-denied"){ state.auditDenied=true; if(state.tab==="stats") render(); }
+      }));
+    }catch(e){}
   }
   async function initDb(){
     var cfg = window.FIREBASE_CONFIG;
@@ -942,7 +1132,8 @@
     // يعمل بدون إنترنت ويزامن عند عودة الاتصال
     try{ await fs.enablePersistence({synchronizeTabs:true}); }catch(e){}
     firebase.auth().onAuthStateChanged(function(user){
-      state.user = user || null;
+      state.user = user || null; state.loggingIn = false;
+      syncAcctBtn();
       if(!user){
         unsubs.forEach(function(u){ try{ u(); }catch(e){} }); unsubs = [];
         db = null; state.dbReady = false; state.needLogin = true;
@@ -952,14 +1143,41 @@
       state.needLogin = false; db = fs; subscribe(); render();
     });
   }
+  function syncAcctBtn(){
+    var b=document.getElementById("acctbtn"); if(!b) return;
+    b.hidden = !(state.mode==="cloud" && state.user);
+    b.title = t("logout") + (state.user&&state.user.email ? " — "+state.user.email : "");
+    b.setAttribute("aria-label", t("logout"));
+  }
+  function askLogout(){ if(confirm(t("logout_confirm"))) logout(); }
+  // «تذكّرني»: مفعّل = تبقى الجلسة بعد إغلاق المتصفح، غير مفعّل = تنتهي بإغلاق التبويب
+  function rememberPref(){ try{ return localStorage.getItem("rentbook_remember")!=="0"; }catch(e){ return true; } }
+  async function resetPassword(email){
+    if(!email){ state.authError=t("reset_need_email"); render(); return; }
+    if(!confirm(t("reset_confirm",{e:email}))) return;
+    try{ await firebase.auth().sendPasswordResetEmail(email); toast(t("reset_sent")); }
+    catch(e){
+      if(e && e.code==="auth/user-not-found") toast(t("reset_sent"));
+      else { state.authError=t("reset_fail"); render(); }
+    }
+  }
   async function logout(){
     try{ await firebase.auth().signOut(); }catch(e){}
     try{ var fs=firebase.firestore(); await fs.terminate(); await fs.clearPersistence(); }catch(e){}
     location.reload();
   }
-  async function login(email, password){
-    try{ await firebase.auth().signInWithEmailAndPassword(email, password); }
-    catch(e){ state.authError = t("login_fail"); render(); }
+  async function login(email, password, remember){
+    state.loggingIn = true; render();
+    try{
+      localStorage.setItem("rentbook_remember", remember?"1":"0");
+      if(remember) localStorage.setItem("rentbook_email", email); else localStorage.removeItem("rentbook_email");
+    }catch(e){}
+    try{
+      var P = firebase.auth.Auth.Persistence;
+      await firebase.auth().setPersistence(remember ? P.LOCAL : P.SESSION);
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+    }
+    catch(e){ state.loggingIn = false; state.authError = t("login_fail"); render(); }
   }
 
   /* ---------- backup / restore ---------- */
@@ -987,8 +1205,12 @@
       if(!/^[\w-]{1,80}$/.test(id) || !isPlainObj(p)) return;
       p=Object.assign({},p);
       ["rent","dueDay","depositAmount","order"].forEach(function(k){ if(k in p) p[k]=num(p[k]); });
-      ["contractStart","trashedAt"].forEach(function(k){ if(k in p) p[k]=dat(p[k]); });
+      ["contractStart","trashedAt","endDate","archivedAt"].forEach(function(k){ if(k in p) p[k]=dat(p[k]); });
+      if("archived" in p) p.archived = p.archived===true;
+      if("unit" in p) p.unit = (p.unit!=null && /^[A-Za-z0-9]{1,4}$/.test(String(p.unit))) ? String(p.unit).toUpperCase() : null;
+      if("prevTenantId" in p && !/^[\w-]{1,80}$/.test(String(p.prevTenantId))) delete p.prevTenantId;
       if("startMonth" in p && !/^\d{4}-\d{2}$/.test(String(p.startMonth))) delete p.startMonth;
+      if("endMonth" in p && !/^\d{4}-\d{2}$/.test(String(p.endMonth))) delete p.endMonth;
       out.people[id]=p;
     });
     Object.keys(d.payments).forEach(function(id){
@@ -1005,6 +1227,17 @@
       var st=Object.assign({},d.settings);
       delete st.gsheet;
       Object.keys(st).forEach(function(k){ if(typeof st[k]==="string" && !/^[\p{L}\p{N} ._-]{0,24}$/u.test(st[k])) st[k]=num(st[k]); });
+      if("variableExpenses" in st){
+        var ve={};
+        if(isPlainObj(st.variableExpenses)) Object.keys(st.variableExpenses).forEach(function(mk){
+          var arr=st.variableExpenses[mk];
+          if(!/^\d{4}-\d{2}$/.test(mk) || !Array.isArray(arr)) return;
+          arr=arr.filter(function(x){ return isPlainObj(x) && ["yousef","father","split"].indexOf(x.by)>=0 && num(x.amount)>0; })
+                 .map(function(x){ return {id:String(x.id||"").replace(/[^\w-]/g,"").slice(0,40), desc:String(x.desc||"").slice(0,60), amount:num(x.amount), by:x.by}; });
+          if(arr.length) ve[mk]=arr;
+        });
+        st.variableExpenses=ve;
+      }
       if(state.settings && state.settings.gsheet) st.gsheet=state.settings.gsheet;
       out.settings=st;
     }
@@ -1033,8 +1266,33 @@
       toast(t("restore_ok")); scheduleSheetSync();
     }catch(e){ toast(t("save_fail")); }
   }
+  /* ---------- audit log ---------- */
+  var AUDIT_FIELDS = [["billedAmount","base_rent"],["amountPaid","amount_paid"],["paid","paid_q"],["paymentDate","payment_date"],
+                      ["method","method"],["notes","note"],["settle","settle"],["settleDate","settle_date"],["settleMethod","settle_method"]];
+  // يسجّل الحقول التي تغيّرت فقط (قبل/بعد) مع بريد المستخدم والتوقيت. لا ينتظر الحفظ ولا يعطّله إن فشل.
+  function logPaymentAudit(personId, month, existed, before, after){
+    try{
+      var person=state.people[personId]||{}, b={}, a={}, changed=false;
+      var base = existed ? before : {billedAmount:(person.rent||0), paid:false, amountPaid:0};
+      AUDIT_FIELDS.forEach(function(f){
+        var k=f[0], x=base[k]==null?null:base[k], y=after[k]==null?null:after[k];
+        if(x!==y){ b[k]=x; a[k]=y; changed=true; }
+      });
+      if(!changed) return;
+      var hadMoney = existed && ((before.amountPaid||0)>0 || before.paid===true);
+      var cleared = hadMoney && !((after.amountPaid||0)>0) && after.paid!==true;
+      var entry={ at:new Date().toISOString(), email:(state.user&&state.user.email)||"local",
+        action: !existed ? "create" : (cleared ? "delete" : "update"),
+        personId:personId, personName:person.name||"", month:month, before:b, after:a };
+      if(!db) return;
+      var id=Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,8);
+      var w=db.collection("audit").doc(id).set(entry);
+      if(w && w.catch) w.catch(function(e){ if(e && e.code==="permission-denied"){ state.auditDenied=true; } });
+    }catch(e){}
+  }
   async function savePayment(personId,month,patch){
     var docId=personId+"__"+month;
+    var existed=!!state.payments[docId];
     var existing=state.payments[docId]||{};
     var person=state.people[personId]||{};
     var merged=Object.assign({
@@ -1044,6 +1302,7 @@
       business:person.business||null
     }, existing, patch, {updatedAt:new Date().toISOString()});
     state.payments[docId]=merged; render(); scheduleSheetSync();
+    logPaymentAudit(personId, month, existed, existing, merged);
     if(!db) return;
     try{ await db.collection("payments").doc(docId).set(merged); toast(t("saved")); }
     catch(e){ toast(t("save_fail")); }
@@ -1055,10 +1314,24 @@
     try{ await db.collection("people").doc(personId).set(merged); if(!quiet) toast(t("saved")); }
     catch(e){ toast(t("save_fail")); }
   }
+  // إنهاء الإشغال: تغيير إضافي فقط — يُضاف للسجل archived/endDate/endMonth (وunit إن أمكن استنتاجه) ولا يُمس أي حقل قائم ولا أي دفعة
+  async function endOccupancy(pid, endDate, next){
+    var p=state.people[pid]; if(!p) return;
+    var unit=unitFor(Object.assign({id:pid},p));
+    var patch={archived:true, endDate:endDate, endMonth:endDate.slice(0,7), archivedAt:new Date().toISOString()};
+    if(unit && !p.unit) patch.unit=unit;
+    state.editPersonId=null; state.endOccId=null;
+    await savePerson(pid, patch, true);
+    if(next){
+      await addPerson(next.name, "store", next.rent, next.dueDay, next.business, p.group,
+        {startMonth:next.startMonth, unit:unit, prevTenantId:pid, order:p.order||null});
+    }
+    toast(t("oc_done"));
+  }
   async function trashPerson(personId){
     var merged=Object.assign({},state.people[personId]||{},{trashed:true,trashedAt:new Date().toISOString()});
     state.people[personId]=merged;
-    if(state.confirmDeleteId===personId) state.confirmDeleteId=null;
+    if(state.editPersonId===personId) state.editPersonId=null;
     render(); scheduleSheetSync();
     if(!db) return;
     try{ await db.collection("people").doc(personId).set(merged); toast(t("moved_trash")); }
@@ -1079,12 +1352,13 @@
     catch(e){ toast(t("save_fail")); }
   }
   var addCounter=0;
-  async function addPerson(name,type,rent,dueDay,business,group){
+  async function addPerson(name,type,rent,dueDay,business,group,more){
     addCounter++;
     var id="p_"+Date.now().toString(36)+addCounter;
     var data={ name:name, nameAr:null, type:type, group: type==="store"?(group||"ONE_TO_EIGHT"):null,
       business:business||null, rent:rent||0, dueDay:dueDay||null, contact:null,
       active:true, order:peopleList().length+1, note:null, role:null, startMonth:monthKeyNow() };
+    if(more) Object.keys(more).forEach(function(k){ if(more[k]!=null) data[k]=more[k]; });
     state.people[id]=data; render(); scheduleSheetSync();
     if(!db) return;
     try{ await db.collection("people").doc(id).set(data); toast(t("added")); }
@@ -1133,7 +1407,7 @@
       return '<button class="tab" data-tab="'+x[0]+'" role="tab" aria-selected="'+(state.tab===x[0]?"true":"false")+'">'+x[2]+'<span>'+t(x[1])+'</span></button>';
     }).join("");
     document.querySelectorAll(".tab").forEach(function(btn){
-      btn.addEventListener("click", function(){ state.tab=btn.getAttribute("data-tab"); try{ localStorage.setItem("rentbook_tab",state.tab); }catch(e){} render(); window.scrollTo({top:0,behavior:"smooth"}); });
+      btn.addEventListener("click", function(){ state.statementId=null; state.tab=btn.getAttribute("data-tab"); try{ localStorage.setItem("rentbook_tab",state.tab); }catch(e){} render(); window.scrollTo({top:0,behavior:"smooth"}); });
     });
   }
 
@@ -1157,18 +1431,33 @@
     return '<form class="card" id="loginform" style="margin-top:24px">' +
       '<h3>'+t("login_title")+'</h3><div class="hint">'+t("login_hint")+'</div>' +
       '<div class="fgrid" style="margin-top:12px">' +
-        '<div class="field full"><label for="li-email">'+t("email")+'</label><input id="li-email" type="email" autocomplete="username" dir="ltr" required value="'+esc(state.loginEmail||"")+'"></div>' +
-        '<div class="field full"><label for="li-pass">'+t("password")+'</label><input id="li-pass" type="password" autocomplete="current-password" dir="ltr" required></div>' +
+        '<div class="field full"><label for="li-email">'+t("email")+'</label><input id="li-email" type="email" autocomplete="username" dir="ltr" required value="'+esc(state.loginEmail!=null?state.loginEmail:savedEmail())+'"></div>' +
+        '<div class="field full"><label for="li-pass">'+t("password")+'</label><div class="pwwrap" dir="ltr"><input id="li-pass" type="password" autocomplete="current-password" dir="ltr" required>' +
+          '<button type="button" class="pwtoggle" id="li-show" aria-pressed="false">'+t("show_pw")+'</button></div></div>' +
       '</div>' +
+      '<div class="loginrow"><label class="remember"><input type="checkbox" id="li-remember"'+((state.loginRemember!=null?state.loginRemember:rememberPref())?' checked':'')+'><span>'+t("remember_me")+'</span></label>' +
+        '<button type="button" class="linkbtn" id="li-forgot">'+t("forgot_pw")+'</button></div>' +
       (state.authError?'<div class="hint" style="color:var(--danger);font-weight:700">'+esc(state.authError)+'</div>':'') +
-      '<button class="btn block" style="margin-top:12px" type="submit">'+t("login_btn")+'</button></form>';
+      '<button class="btn block" style="margin-top:12px" type="submit"'+(state.loggingIn?' disabled':'')+'>'+t(state.loggingIn?"login_wait":"login_btn")+'</button></form>';
   }
+  function savedEmail(){ try{ return localStorage.getItem("rentbook_email")||""; }catch(e){ return ""; } }
   function wireLogin(){
     var f=document.getElementById("loginform");
     f.addEventListener("submit",function(e){
       e.preventDefault(); state.authError="";
       state.loginEmail=document.getElementById("li-email").value.trim();
-      login(state.loginEmail, document.getElementById("li-pass").value);
+      state.loginRemember=document.getElementById("li-remember").checked;
+      login(state.loginEmail, document.getElementById("li-pass").value, state.loginRemember);
+    });
+    var pw=document.getElementById("li-pass"), sh=document.getElementById("li-show");
+    sh.addEventListener("click",function(){
+      var show=pw.type==="password"; pw.type=show?"text":"password";
+      sh.textContent=t(show?"hide_pw":"show_pw"); sh.setAttribute("aria-pressed",show?"true":"false");
+    });
+    document.getElementById("li-forgot").addEventListener("click",function(){
+      state.authError=""; state.loginEmail=document.getElementById("li-email").value.trim();
+      state.loginRemember=document.getElementById("li-remember").checked;
+      resetPassword(state.loginEmail);
     });
   }
 
@@ -1176,7 +1465,7 @@
     var rtl = LANG==="ar";
     return '<div class="monthbar">' +
       '<button class="nav" data-act="prevm" aria-label="prev">'+(rtl?ICON.chevR:ICON.chevL)+'</button>' +
-      '<div class="monthlabel"><div class="m">'+monthLabel(state.month)+'</div>' +
+      '<div class="monthlabel"><div class="m">'+monthLabel(state.month)+(isFutureMonth(state.month)?' '+forecastBadge():'')+'</div>' +
         (state.month!==monthKeyNow()?'<button class="today-btn" data-act="todaym">'+t("back_month")+'</button>':'') +
       '</div>' +
       '<button class="nav" data-act="nextm" aria-label="next">'+(rtl?ICON.chevL:ICON.chevR)+'</button>' +
@@ -1190,7 +1479,7 @@
   }
 
   function renderFollowupCard(month){
-    var all=activeByGroup("AE").concat(activeByGroup("ONE_TO_EIGHT"));
+    var all=activeByGroup("AE",month).concat(activeByGroup("ONE_TO_EIGHT",month));
     var items=all.map(function(p){
       var doc=payDoc(p.id,month);
       var st=statusOf(p,doc,month);
@@ -1221,14 +1510,14 @@
   function renderRenewalCard(month){
     var items=[];
     peopleList().forEach(function(p){
-      if(p.type!=="store"||p.active===false) return;
+      if(p.type!=="store"||p.active===false||p.archived) return;
       var r=renewalInfo(p);
-      if(r && r.actionDaysLeft<=0) items.push({p:p, r:r});
+      if(r && (r.actionDaysLeft<=0 || r.daysLeft<=CONTRACT_ALERT_DAYS)) items.push({p:p, r:r});
     });
     if(!items.length) return "";
     items.sort(function(a,b){ return a.r.daysLeft-b.r.daysLeft; });
-    var html='<div class="card accented2"><h3 style="color:var(--accent-2)">'+t("rn_title")+' ('+items.length+')</h3>' +
-      '<div class="hint">'+t("rn_hint")+'</div><div class="fu-list">';
+    var html='<div class="card accented2" id="contractcard"><h3 style="color:var(--accent-2)">'+t("rn_title")+' ('+items.length+')</h3>' +
+      '<div class="hint">'+t("rn_hint",{n:CONTRACT_ALERT_DAYS})+'</div><div class="fu-list">';
     items.forEach(function(it){
       var d=it.r.renewalDate.toLocaleDateString("en-GB");
       var late=it.r.daysLeft<0;
@@ -1237,7 +1526,9 @@
           '<div class="fu-name">'+esc(it.p.name)+'</div>' +
           '<div class="fu-meta"><span class="badge '+(late?"duenow":"soon")+'">'+
             (late?t("rn_passed"):t("rn_left",{n:it.r.daysLeft}))+'</span>' +
-            '<span>'+t("rn_on",{d:d})+'</span></div>' +
+            '<span>'+t("rn_on",{d:d})+'</span>' +
+            (it.r.actionDaysLeft<=0 ? '<span class="badge duenow">'+t("ca_due")+'</span>'
+                                    : '<span class="badge">'+t("ca_followup",{d:it.r.actionDate.toLocaleDateString("en-GB")})+'</span>')+'</div>' +
         '</div>' + appBtns(it.p, month, "renew") +
       '</div>';
     });
@@ -1247,11 +1538,11 @@
   function renderPay(){
     var month=state.month, q=state.payQuery;
     var groups=[
-      {title:t("grp_ae"), list:activeByGroup("AE").filter(function(p){return matchesQuery(p,q);})},
-      {title:t("grp_ote"), list:activeByGroup("ONE_TO_EIGHT").filter(function(p){return matchesQuery(p,q);})},
-      {title:t("grp_partner"), list:activePartners().filter(function(p){return matchesQuery(p,q);})}
+      {title:t("grp_ae"), list:activeByGroup("AE",month).filter(function(p){return matchesQuery(p,q);})},
+      {title:t("grp_ote"), list:activeByGroup("ONE_TO_EIGHT",month).filter(function(p){return matchesQuery(p,q);})},
+      {title:t("grp_partner"), ob:true, list:activePartners(month).filter(function(p){return matchesQuery(p,q);})}
     ];
-    var stores=activeByGroup("AE").concat(activeByGroup("ONE_TO_EIGHT"));
+    var stores=activeByGroup("AE",month).concat(activeByGroup("ONE_TO_EIGHT",month));
     var billedSum=0,paidSum=0,overdueCount=0,notRecorded=0,settlePending=0;
     stores.forEach(function(p){
       var doc=payDoc(p.id,month);
@@ -1264,15 +1555,24 @@
     });
     var rate = billedSum>0?paidSum/billedSum:0;
 
+    var future=isFutureMonth(month);
     var html=renderMonthbar();
-    html+='<div class="kpis">' +
-      kpi(t("kpi_due"), fmt(billedSum)) +
-      kpi(t("kpi_collected"), fmt(paidSum), "ok") +
-      kpi(t("kpi_rate"), pct(rate), rate>=0.9?"ok":(rate>=0.5?"warn":"danger"), rate) +
-      kpi(t("kpi_overdue"), overdueCount+" / "+notRecorded, overdueCount>0?"danger":"") +
-    '</div>';
+    // شهر لم يبدأ: لا مؤشرات تأخير ولا نسبة تحصيل — فقط الدخل المتوقع وما حُصِّل مقدمًا
+    if(future){
+      html+='<div class="kpis">' +
+        kpi(t("kpi_expected"), fmt(billedSum), "accent") +
+        kpi(t("kpi_prepaid"), fmt(paidSum), paidSum>0?"ok":"") +
+      '</div>';
+    } else {
+      html+='<div class="kpis">' +
+        kpi(t("kpi_due"), fmt(billedSum)) +
+        kpi(t("kpi_collected"), fmt(paidSum), "ok") +
+        kpi(t("kpi_rate"), pct(rate), rate>=0.9?"ok":(rate>=0.5?"warn":"danger"), rate) +
+        kpi(t("kpi_overdue"), overdueCount+" / "+notRecorded, overdueCount>0?"danger":"") +
+      '</div>';
+    }
     if(settlePending>0) html+='<div class="noteflag" style="margin-top:10px">'+t("settle_kpi")+': <b>'+settlePending+'</b></div>';
-    html+=renderFollowupCard(month);
+    html+= future ? '<div class="card"><h3>'+forecastBadge()+' '+monthLabel(month)+'</h3><div class="hint">'+t("forecast_note")+'</div></div>' : renderFollowupCard(month);
     html+=renderRenewalCard(month);
 
     html+='<div class="segrow" style="margin-top:14px">' +
@@ -1292,8 +1592,8 @@
     html+='<div class="searchbar"><span class="si">'+ICON.search+'</span><input type="text" id="payq" placeholder="'+t("search_pay")+'" value="'+esc(q)+'"></div>';
 
     groups.forEach(function(g){
-      html+='<div class="section-title"><h2>'+g.title+'</h2><span class="count">'+g.list.length+' '+t("count_tenants")+'</span></div>';
-      if(g.list.length===0){ html+='<div class="empty">'+(q?t("no_results"):t("none_here"))+'</div>'; }
+      html+='<div class="section-title"><h2>'+g.title+'</h2><span class="count">'+g.list.length+' '+t(g.ob?"count_obligations":"count_tenants")+'</span></div>';
+      if(g.list.length===0){ html+='<div class="empty">'+(q?t("no_results"):t(g.ob?"none_ob":"none_here"))+'</div>'; }
       else{
         html+='<div class="rowlist">';
         g.list.forEach(function(p){ html+=renderPayRow(p,month); });
@@ -1344,7 +1644,8 @@
       '<div class="field"><label for="stld-'+rid+'">'+t("settle_date")+'</label><input type="date" id="stld-'+rid+'" data-act="settledate" data-pid="'+p.id+'" data-m="'+month+'" value="'+settleDate+'"></div>' +
       (settleDone?'<div class="field full"><label for="stlm-'+rid+'">'+t("settle_method")+'</label><select id="stlm-'+rid+'" data-act="settlemethod" data-pid="'+p.id+'" data-m="'+month+'">'+settleMethOpts+'</select></div>':'') +
       (settleAmt>0?'<div class="field full"><div class="noteflag">'+t("settle_hint",{a:fmt(settleAmt)})+'</div></div>':'');
-    if(r&&r.dueSoon) badges+='<span class="badge '+(r.daysLeft<0?"duenow":"soon")+'">'+t("b_renewal")+'</span>';
+    if(p.archived) badges+='<span class="badge">'+t("oc_archived")+'</span>';
+    if(r&&r.dueSoon&&!p.archived) badges+='<span class="badge '+(r.daysLeft<0?"duenow":"soon")+'">'+t("b_renewal")+'</span>';
 
     var carryLine = carry>0 ? '<div class="noteflag">'+t("carry_line",{c:fmt(carry), t:fmt(totalRequired)})+'</div>' : "";
     var avCls = st.key==="paid"?"paid":(st.key==="overdue"?"overdue":(st.key==="partial"?"partial":""));
@@ -1357,7 +1658,7 @@
           (p.business?'<div class="pbiz">'+esc(p.business)+'</div>':'') +
         '</div>' +
         '<div class="pright">' +
-          '<span class="pill '+st.key+'">'+st.text+'</span>' +
+          ((isFutureMonth(month)&&(st.key==="none"||st.key==="due")) ? '<span class="pill due">'+t("forecast")+'</span>' : '<span class="pill '+st.key+'">'+st.text+'</span>') +
           '<span class="pamt">'+fmt(amountPaid||0)+' <small>'+t("of")+' '+fmt(totalRequired)+'</small></span>' +
         '</div>' +
         '<span class="chev">'+ICON.chevR+'</span>' +
@@ -1380,6 +1681,7 @@
           '<div class="field full"><label for="note-'+rid+'">'+t("note")+'</label><textarea id="note-'+rid+'" data-act="notes" data-pid="'+p.id+'" data-m="'+month+'" rows="2" placeholder="'+t("optional")+'">'+esc(notes)+'</textarea></div>' +
         '</div>' +
         appBar(p, month) +
+        (p.type==="store"?'<button type="button" class="btn ghost sm block" style="margin-top:8px" data-act="openstmt" data-pid="'+p.id+'">'+t("stmt")+'</button>':"") +
         (p.type==="store"?adButton():"") +
         (p.note?'<div class="noteflag">'+esc(p.note)+'</div>':'') +
       '</div>' +
@@ -1434,12 +1736,35 @@
     var core=String(name||"").replace(/store|stores|مخزن|مخازن/ig," ");
     return (core.match(/\d+|[A-Za-z]/g)||[]).map(function(x){ return x.toUpperCase(); });
   }
-  function personForCell(cellId){
-    var list=activeByGroup("AE").concat(activeByGroup("ONE_TO_EIGHT"));
-    for(var i=0;i<list.length;i++){
-      if(planTokens(list[i].name).indexOf(cellId.toUpperCase())>=0) return list[i];
-    }
+  // المخزن: الحقل الاختياري unit إن وُجد، وإلا يُستنتج من الاسم كما في السابق
+  function cellMatches(p, cellId){
+    var id=String(cellId).toUpperCase();
+    return p.unit ? String(p.unit).toUpperCase()===id : planTokens(p.name).indexOf(id)>=0;
+  }
+  function personForCell(cellId, month){
+    var list=activeByGroup("AE",month).concat(activeByGroup("ONE_TO_EIGHT",month)).filter(function(p){ return cellMatches(p,cellId); });
+    if(month){ for(var i=0;i<list.length;i++){ if(!beforeStart(list[i],month)) return list[i]; } }
+    return list[0]||null;
+  }
+  function allCells(){
+    return PLAN.ae.cells.map(function(c){ return {id:c.id, group:"AE"}; }).concat(PLAN.ote.cells.map(function(c){ return {id:c.id, group:"ONE_TO_EIGHT"}; }))
+      .sort(function(a,b){ return a.group===b.group ? String(a.id).localeCompare(String(b.id),"en",{numeric:true}) : (a.group==="AE"?-1:1); });
+  }
+  function cellGroup(id){ var c=allCells().filter(function(x){ return x.id===String(id).toUpperCase(); })[0]; return c?c.group:null; }
+  function unitFor(p){
+    if(p.unit) return String(p.unit).toUpperCase();
+    var cells=allCells().filter(function(c){ return c.group===p.group; });
+    for(var i=0;i<cells.length;i++){ var hit=personForCell(cells[i].id, monthKeyNow()); if(hit && hit.id===p.id) return cells[i].id; }
     return null;
+  }
+  // الإشغال الفعلي في شهر: مخزن له مستأجر بدأ إشغاله ولم ينتهِ في ذلك الشهر
+  function occupancyFor(month){
+    var cells=allCells(), vacant=[], occ=0;
+    cells.forEach(function(c){
+      var list=activeByGroup(c.group,month).filter(function(p){ return cellMatches(p,c.id) && !beforeStart(p,month); });
+      if(list.length) occ++; else vacant.push(c.id);
+    });
+    return {total:cells.length, occupied:occ, vacant:vacant, rate:cells.length?occ/cells.length:0};
   }
   // الوضع الأفقي = دوران المخطط 90°، مع إبقاء الأرقام معتدلة
   function rot(r, bh, horiz){
@@ -1455,7 +1780,7 @@
       out+='<rect x="'+cr.x+'" y="'+cr.y+'" width="'+cr.w+'" height="'+cr.h+'" fill="var(--bg-2)" stroke="var(--border)" stroke-width="0.12" stroke-dasharray="0.8 0.7"/>';
     }
     b.cells.forEach(function(c){
-      var p=personForCell(c.id);
+      var p=personForCell(c.id, month);
       var st = p ? statusOf(p, payDoc(p.id,month), month) : {key:"vacant", text:t("vacant")};
       var sty = PLAN_STYLE[st.key]||PLAN_STYLE.none;
       var r=rot(c, b.h, horiz);
@@ -1507,9 +1832,15 @@
   function statsRangeMonths(){
     var range=state.statsRange||"1";
     if(range==="all") return allMonthsWithData();
-    var n = range==="3"?3:(range==="2"?2:1);
+    var n = range==="12"?12:(range==="3"?3:(range==="2"?2:1));
     var arr=[], mk=state.month;
     for(var i=0;i<n;i++){ arr.unshift(mk); mk=shiftMonth(mk,-1); }
+    // النطاق السنوي لا يمتد إلى ما قبل أول شهر مسجَّل، حتى لا تُحتسب أشهر بلا بيانات كمستحقات غير محصَّلة
+    if(range==="12"){
+      var first=allMonthsWithData()[0];
+      var kept=arr.filter(function(m){ return m>=first; });
+      if(kept.length) arr=kept;
+    }
     return arr;
   }
   function statsRangeLabel(){
@@ -1522,6 +1853,20 @@
     return '<button class="segbtn" data-act="statsrange" data-range="'+val+'" aria-selected="'+((state.statsRange||"1")===val?"true":"false")+'">'+t(key)+'</button>';
   }
 
+  // المصروفات المتغيرة: settings.variableExpenses[شهر] = [{id, desc, amount, by: yousef|father|split}]
+  // حقل اختياري — غيابه يعني صفرًا، فتبقى أرقام الأشهر التي بلا مصروفات كما هي تمامًا.
+  var VE_BY = {yousef:"ve_yousef", father:"ve_father", split:"ve_split"};
+  function varExpenses(month){
+    var v=state.settings.variableExpenses, a=v && v[month];
+    return Array.isArray(a) ? a.filter(function(x){ return x && VE_BY[x.by] && Number(x.amount)>0; }) : [];
+  }
+  function varShareOf(x, who){ return x.by===who ? Number(x.amount) : (x.by==="split" ? Number(x.amount)/2 : 0); }
+  function varShare(month, who){ return varExpenses(month).reduce(function(a,x){ return a+varShareOf(x,who); },0); }
+  function varLines(month, who){
+    return varExpenses(month).filter(function(x){ return varShareOf(x,who)>0; }).map(function(x){
+      return pline(x.by==="split"?t("ve_half",{n:esc(x.desc)}):esc(x.desc), "− "+fmt(varShareOf(x,who)));
+    }).join("");
+  }
   function yousefMonthShare(month){
     var s=state.settings;
     var aeP=peopleList().filter(function(p){return p.type==="store"&&p.group==="AE"&&p.active!==false;});
@@ -1542,12 +1887,15 @@
     var ex = (s.monthlyExtras && s.monthlyExtras[month]) || {};
     var extra = Number(ex.yousef)||0;
     var extraLabel = ex.label || "";
+    var varExp = varShare(month,"yousef");
     return {aeCollected:aeCollected, oteCollected:oteCollected, aeBilled:aeBilled, oteBilled:oteBilled,
       grossAE:grossAE, grossOTE:grossOTE, aeExpense:aeExpense, oteExpense:oteExpense, gift:gift, net:net,
       extra:extra, extraLabel:extraLabel,
+      potGrossAE:potGrossAE, potGrossOTE:potGrossOTE, potTaken:potGrossAE+potGrossOTE,
       taken:grossAE+grossOTE,
-      remaining:(grossAE-aeExpense)+(grossOTE-oteExpense)-gift-net-extra,
-      potentialRemaining:(potGrossAE-aeExpense)+(potGrossOTE-oteExpense)-gift-net-extra};
+      varExp:varExp,
+      remaining:(grossAE-aeExpense)+(grossOTE-oteExpense)-gift-net-extra-varExp,
+      potentialRemaining:(potGrossAE-aeExpense)+(potGrossOTE-oteExpense)-gift-net-extra-varExp};
   }
   function fatherMonthShare(month){
     var s=state.settings, y=yousefMonthShare(month);
@@ -1558,10 +1906,13 @@
     var potGrossOTE=y.oteBilled*fatherPct;
     var exF=(s.monthlyExtras && s.monthlyExtras[month]) || {};
     var extra=Number(exF.father)||0;
+    var varExp=varShare(month,"father");
     return {oteCollected:y.oteCollected, grossOTE:grossOTE, expense:fatherExpense, aeExpense:aeExpense,
       extra:extra, extraLabel:exF.label||"",
-      taken:grossOTE, remaining:grossOTE-fatherExpense-aeExpense-extra,
-      potentialRemaining:potGrossOTE-fatherExpense-aeExpense-extra};
+      potGrossOTE:potGrossOTE, potTaken:potGrossOTE,
+      varExp:varExp,
+      taken:grossOTE, remaining:grossOTE-fatherExpense-aeExpense-extra-varExp,
+      potentialRemaining:potGrossOTE-fatherExpense-aeExpense-extra-varExp};
   }
   function progressBar(title,current,target){
     var tg=Math.max(0,target||0), cur=current||0;
@@ -1584,21 +1935,22 @@
   }
 
   function renderYousefCard(month){
-    var y=yousefMonthShare(month), s=state.settings;
-    return '<div class="card accented"><h3>'+t("y_title")+' — '+monthLabel(month)+'</h3>' +
+    var y=yousefMonthShare(month), s=state.settings, fut=isFutureMonth(month);
+    return '<div class="card accented"><h3>'+t("y_title")+' — '+monthLabel(month)+(fut?' '+forecastBadge():'')+'</h3>' +
       '<div class="yrow">' +
-        '<div class="ystat"><div class="ylabel">'+t("y_taken")+'</div><div class="yval accent">'+fmt(y.taken)+'</div></div>' +
-        '<div class="ystat"><div class="ylabel">'+t("y_left")+'</div><div class="yval">'+fmt(y.remaining)+'</div></div>' +
+        '<div class="ystat"><div class="ylabel">'+t(fut?"exp_share":"y_taken")+'</div><div class="yval accent">'+fmt(fut?y.potTaken:y.taken)+'</div></div>' +
+        '<div class="ystat"><div class="ylabel">'+t(fut?"exp_net":"y_left")+'</div><div class="yval">'+fmt(fut?y.potentialRemaining:y.remaining)+'</div></div>' +
       '</div>' +
-      progressBar(t("progress_title"), y.remaining, y.potentialRemaining) +
+      (fut?'':progressBar(t("progress_title"), y.remaining, y.potentialRemaining)) +
       '<details class="disclose"><summary>'+t("details_edit")+'</summary><div style="margin-top:6px">' +
-        pline(t("collected_x",{x:"A–E"})+" × "+pct(s.storeAEYousefPct!=null?s.storeAEYousefPct:1), fmt(y.grossAE)) +
-        pline(t("collected_x",{x:"1–8"})+" × "+pct(s.store1to8YousefPct!=null?s.store1to8YousefPct:0.5), fmt(y.grossOTE)) +
+        pline(t(fut?"expected_x":"collected_x",{x:"A–E"})+" × "+pct(s.storeAEYousefPct!=null?s.storeAEYousefPct:1), fmt(fut?y.potGrossAE:y.grossAE)) +
+        pline(t(fut?"expected_x":"collected_x",{x:"1–8"})+" × "+pct(s.store1to8YousefPct!=null?s.store1to8YousefPct:0.5), fmt(fut?y.potGrossOTE:y.grossOTE)) +
         pline(t("y_rent_ae"), "− "+fmt(y.aeExpense)) +
         pline(t("y_rent_ote"), "− "+fmt(y.oteExpense)) +
         pline(t("gift"), "− "+fmt(y.gift)) +
         pline(t("internet"), "− "+fmt(y.net)) +
         (y.extra>0?pline(esc(y.extraLabel)||t("extra_exp"), "− "+fmt(y.extra)):"") +
+        varLines(month,"yousef") +
       '</div><div class="settingsform">' +
         moneyRow(t("y_rent_ae"),"aeYousefExpense",y.aeExpense) +
         moneyRow(t("y_rent_ote"),"oteYousefExpense",y.oteExpense) +
@@ -1607,44 +1959,106 @@
       '</div></details></div>';
   }
   function renderFatherCard(month){
-    var f=fatherMonthShare(month);
-    return '<div class="card accented2"><h3 style="color:var(--accent-2)">'+t("f_title")+' — '+monthLabel(month)+'</h3>' +
+    var f=fatherMonthShare(month), fut=isFutureMonth(month);
+    return '<div class="card accented2"><h3 style="color:var(--accent-2)">'+t("f_title")+' — '+monthLabel(month)+(fut?' '+forecastBadge():'')+'</h3>' +
       '<div class="yrow">' +
-        '<div class="ystat"><div class="ylabel">'+t("f_taken")+'</div><div class="yval accent2">'+fmt(f.taken)+'</div></div>' +
-        '<div class="ystat"><div class="ylabel">'+t("f_left")+'</div><div class="yval">'+fmt(f.remaining)+'</div></div>' +
+        '<div class="ystat"><div class="ylabel">'+t(fut?"exp_share":"f_taken")+'</div><div class="yval accent2">'+fmt(fut?f.potTaken:f.taken)+'</div></div>' +
+        '<div class="ystat"><div class="ylabel">'+t(fut?"exp_net":"f_left")+'</div><div class="yval">'+fmt(fut?f.potentialRemaining:f.remaining)+'</div></div>' +
       '</div>' +
-      progressBar(t("progress_title"), f.remaining, f.potentialRemaining) +
+      (fut?'':progressBar(t("progress_title"), f.remaining, f.potentialRemaining)) +
       '<details class="disclose"><summary style="color:var(--accent-2)">'+t("details_edit")+'</summary><div style="margin-top:6px">' +
-        pline(t("collected_x",{x:"1–8"})+" × "+pct(state.settings.store1to8FatherPct!=null?state.settings.store1to8FatherPct:0.5), fmt(f.grossOTE)) +
+        pline(t(fut?"expected_x":"collected_x",{x:"1–8"})+" × "+pct(state.settings.store1to8FatherPct!=null?state.settings.store1to8FatherPct:0.5), fmt(fut?f.potGrossOTE:f.grossOTE)) +
         pline(t("f_rent_ote"), "− "+fmt(f.expense)) +
         pline(t("f_rent_ae"), "− "+fmt(f.aeExpense)) +
         (f.extra>0?pline(esc(f.extraLabel)||t("extra_exp"), "− "+fmt(f.extra)):"") +
+        varLines(month,"father") +
       '</div><div class="settingsform">' +
         moneyRow(t("f_rent_ote"),"fatherOteExpense",f.expense) +
         moneyRow(t("f_rent_ae"),"aeFatherExpense",f.aeExpense) +
       '</div></details></div>';
   }
+  function renderVarExpCard(month){
+    var items=varExpenses(month);
+    var html='<div class="card" id="vecard"><h3>'+t("ve_title")+' — '+monthLabel(month)+'</h3><div class="hint">'+t("ve_hint")+'</div>';
+    if(!items.length) html+='<div class="hint" style="margin-top:8px">'+t("ve_none")+'</div>';
+    else{
+      html+='<div style="margin-top:8px">';
+      items.forEach(function(x){
+        html+='<div class="verow"><span class="vd">'+esc(x.desc)+'</span><span class="badge">'+t(VE_BY[x.by])+'</span>' +
+          '<span class="va">'+fmt(Number(x.amount))+'</span>' +
+          '<button type="button" class="vx" data-act="vedel" data-id="'+esc(x.id)+'" aria-label="'+t("del")+'" title="'+t("del")+'">×</button></div>';
+      });
+      html+='</div>';
+    }
+    html+='<details class="disclose"'+(state.veOpen?' open':'')+' id="veform"><summary>'+t("ve_add")+'</summary><div class="fgrid" style="margin-top:10px">' +
+        '<div class="field full"><label for="ve-desc">'+t("ve_desc")+'</label><input id="ve-desc" type="text" maxlength="60" placeholder="'+t("ve_desc_ph")+'"></div>' +
+        '<div class="field"><label for="ve-amount">'+t("ve_amount")+'</label><input id="ve-amount" type="number" min="0" placeholder="0"></div>' +
+        '<div class="field"><label for="ve-by">'+t("ve_by")+'</label><select id="ve-by">' +
+          '<option value="yousef">'+t("ve_yousef")+'</option><option value="father">'+t("ve_father")+'</option><option value="split">'+t("ve_split")+'</option></select></div>' +
+      '</div><button type="button" class="btn block" style="margin-top:12px" data-act="veadd">'+t("ve_add")+'</button></details></div>';
+    return html;
+  }
+  function saveVarExpenses(month, list){
+    var all=Object.assign({}, state.settings.variableExpenses||{});
+    if(list.length) all[month]=list; else delete all[month];
+    saveSettings({variableExpenses:all});
+  }
+  // التقرير السنوي (نطاق آخر 12 شهرًا): المحصَّل وصافي ربح كل شريك لكل شهر، بالمعادلات نفسها المستخدمة في بطاقات الشهر
+  function annualRows(months){
+    var first=allMonthsWithData()[0], now=monthKeyNow();
+    return months.map(function(mk){
+      if(mk<first || mk>now) return {month:mk, empty:true};
+      var y=yousefMonthShare(mk), f=fatherMonthShare(mk);
+      return {month:mk, collected:y.aeCollected+y.oteCollected, netY:y.remaining, netF:f.remaining};
+    });
+  }
+  function renderAnnualCard(months){
+    var rows=annualRows(months), tc=0, ty=0, tf=0;
+    function money(v){ return '<td class="num"'+(v<0?' style="color:var(--danger)"':'')+'>'+fmtPlain(Math.round(v))+'</td>'; }
+    var html='<div class="card" id="annualcard"><h3>'+t("an_title")+'</h3><div class="hint">'+statsRangeLabel()+'</div>' +
+      '<div class="scrollx"><table class="stats annual" data-new="1"><thead><tr><th>'+t("an_month")+'</th><th class="num">'+t("an_collected")+'</th><th class="num">'+t("an_net_y")+'</th><th class="num">'+t("an_net_f")+'</th></tr></thead><tbody>';
+    rows.forEach(function(r){
+      if(r.empty){ html+='<tr><td>'+monthLabel(r.month)+'</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>'; return; }
+      tc+=r.collected; ty+=r.netY; tf+=r.netF;
+      html+='<tr><td>'+monthLabel(r.month)+'</td>'+money(r.collected)+money(r.netY)+money(r.netF)+'</tr>';
+    });
+    html+='<tr class="totalrow"><td>'+t("an_total")+'</td>'+money(tc)+money(ty)+money(tf)+'</tr></tbody></table></div>' +
+      '<div class="hint" style="margin-top:10px">'+t("an_note")+'</div></div>';
+    return html;
+  }
+  function renderRankCard(rows){
+    var list=rows.filter(function(r){ return r.overdue>0; }).sort(function(a,b){ return b.overdue-a.overdue || (b.billed-b.paid)-(a.billed-a.paid); });
+    var html='<div class="card" id="rankcard"><h3>'+t("rk_title")+'</h3><div class="hint">'+statsRangeLabel()+'</div>';
+    if(!list.length) return html+'<div class="hint" style="margin-top:8px">'+t("rk_none")+'</div></div>';
+    html+='<div style="margin-top:6px">';
+    list.forEach(function(r,i){
+      html+='<div class="rkrow"><span class="rkn">'+(i+1)+'</span><span class="rkname">'+esc(r.p.name)+'</span>' +
+        '<small>'+t("rk_unpaid",{a:fmt(Math.max(0,r.billed-r.paid))})+'</small><span class="pill overdue">'+r.overdue+'</span></div>';
+    });
+    return html+'</div></div>';
+  }
   function renderProfitCard(){
     var month=state.month, s=state.settings;
-    var y=yousefMonthShare(month), f=fatherMonthShare(month);
-    return '<div class="card"><h3>'+t("profit_title")+' — '+monthLabel(month)+'</h3>' +
+    var y=yousefMonthShare(month), f=fatherMonthShare(month), fut=isFutureMonth(month);
+    return '<div class="card"><h3>'+t("profit_title")+' — '+monthLabel(month)+(fut?' '+forecastBadge():'')+'</h3>' +
       '<div class="hint">'+t("profit_hint")+'</div><div style="margin-top:10px">' +
-        pline(t("c_ae"), fmt(y.aeCollected)) +
-        pline(t("share_y_ae"), fmt(y.grossAE)) +
+        pline(t(fut?"e_ae":"c_ae"), fmt(fut?y.aeBilled:y.aeCollected)) +
+        pline(t("share_y_ae"), fmt(fut?y.potGrossAE:y.grossAE)) +
         pline(t("y_rent_ae"), "− "+fmt(y.aeExpense)) +
-        pline(t("c_ote"), fmt(y.oteCollected)) +
-        pline(t("share_y_ote"), fmt(y.grossOTE)) +
+        pline(t(fut?"e_ote":"c_ote"), fmt(fut?y.oteBilled:y.oteCollected)) +
+        pline(t("share_y_ote"), fmt(fut?y.potGrossOTE:y.grossOTE)) +
         pline(t("y_rent_ote"), "− "+fmt(y.oteExpense)) +
         pline(t("gift"), "− "+fmt(y.gift)) +
         pline(t("internet"), "− "+fmt(y.net)) +
         (y.extra>0?pline((esc(y.extraLabel)||t("extra_exp"))+" — "+t("net_y"), "− "+fmt(y.extra)):"") +
-        pline(t("share_f_ote"), fmt(f.grossOTE)) +
+        pline(t("share_f_ote"), fmt(fut?f.potGrossOTE:f.grossOTE)) +
         pline(t("f_rent_ote"), "− "+fmt(f.expense)) +
         pline(t("f_rent_ae"), "− "+fmt(f.aeExpense)) +
         (f.extra>0?pline((esc(f.extraLabel)||t("extra_exp"))+" — "+t("net_f"), "− "+fmt(f.extra)):"") +
+        varExpenses(month).map(function(x){ return pline(t("ve_line",{n:esc(x.desc), b:t(VE_BY[x.by])}), "− "+fmt(Number(x.amount))); }).join("") +
       '</div>' +
-      '<div class="profittotal"><span class="k">'+t("net_y")+'</span><span class="v">'+fmt(y.remaining)+'</span></div>' +
-      '<div class="profittotal"><span class="k">'+t("net_f")+'</span><span class="v" style="color:var(--accent-2)">'+fmt(f.remaining)+'</span></div>' +
+      '<div class="profittotal"><span class="k">'+t(fut?"net_y_exp":"net_y")+'</span><span class="v">'+fmt(fut?y.potentialRemaining:y.remaining)+'</span></div>' +
+      '<div class="profittotal"><span class="k">'+t(fut?"net_f_exp":"net_f")+'</span><span class="v" style="color:var(--accent-2)">'+fmt(fut?f.potentialRemaining:f.remaining)+'</span></div>' +
       '<details class="disclose"><summary>'+t("edit_shares")+'</summary><div class="settingsform">' +
         settingsRow(t("pct_y_ae"),"storeAEYousefPct", s.storeAEYousefPct!=null?s.storeAEYousefPct:1) +
         settingsRow(t("pct_y_ote"),"store1to8YousefPct", s.store1to8YousefPct!=null?s.store1to8YousefPct:0.5) +
@@ -1658,6 +2072,35 @@
       '</div></details></div>';
   }
 
+  function auditVal(k,v){
+    if(v==null||v==="") return "—";
+    if(k==="billedAmount"||k==="amountPaid") return fmtPlain(v);
+    if(k==="paid") return t(v?"au_yes":"au_no");
+    if(k==="method"||k==="settleMethod") return esc(methodLabel(v));
+    if(k==="settle") return esc(settleLabel(v)||v);
+    return esc(String(v).slice(0,80));
+  }
+  function renderAuditCard(){
+    var html='<div class="card" id="auditcard"><h3>'+t("au_title")+'</h3><div class="hint">'+t("au_hint",{n:AUDIT_SHOW})+'</div>';
+    if(state.auditDenied) return html+'<div class="noteflag" style="margin-top:10px">'+t("au_denied")+'</div></div>';
+    if(!state.audit.length) return html+'<div class="hint" style="margin-top:8px">'+t("au_empty")+'</div></div>';
+    var arrow = LANG==="ar" ? " ← " : " → ";
+    var cls={create:"ok", update:"soon", "delete":"duenow"};
+    html+='<div class="auditlist">';
+    state.audit.forEach(function(e){
+      var name=e.personName || (state.people[e.personId]&&state.people[e.personId].name) || e.personId || "";
+      var act=cls[e.action]?e.action:"update";
+      var chg=AUDIT_FIELDS.filter(function(f){ return e.after && (f[0] in e.after); }).map(function(f){
+        return '<span>'+t(f[1])+':</span> '+auditVal(f[0], e.before?e.before[f[0]]:null)+arrow+'<b>'+auditVal(f[0], e.after[f[0]])+'</b>';
+      }).join(" · ");
+      var when=new Date(e.at); when=isNaN(when.getTime())?"":when.toLocaleString("en-GB",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
+      html+='<div class="auditrow"><div class="ahead"><span>'+esc(name)+(/^\d{4}-\d{2}$/.test(String(e.month))?' · '+monthLabel(e.month):'')+'</span>' +
+        '<span class="badge '+cls[act]+'">'+t("au_"+act)+'</span></div>' +
+        '<div class="achg">'+chg+'</div>' +
+        '<div class="ameta">'+esc(e.email==="local"?t("au_local"):(e.email||""))+' · '+when+'</div></div>';
+    });
+    return html+'</div></div>';
+  }
   function renderStats(){
     var months=statsRangeMonths(), monthSet={};
     months.forEach(function(mk){ monthSet[mk]=true; });
@@ -1670,7 +2113,7 @@
         if(statusOf(p,payDoc(p.id,mk),mk).key==="overdue") overdue++;
       });
       return {p:p,billed:billed,paid:paid,pct:billed>0?paid/billed:0,overdue:overdue};
-    });
+    }).filter(function(r){ return !((r.p.archived||r.p.prevTenantId) && r.billed===0 && r.paid===0); });
     var totalBilled=rows.reduce(function(a,r){return a+r.billed;},0);
     var totalPaid=rows.reduce(function(a,r){return a+r.paid;},0);
     var totalPct=totalBilled>0?totalPaid/totalBilled:0;
@@ -1694,16 +2137,21 @@
     var html=renderMonthbar();
     html+=renderYousefCard(state.month);
     html+=renderFatherCard(state.month);
+    html+=renderVarExpCard(state.month);
+    html+=renderOccupancyCard(state.month);
     html+='<div class="card"><h3>'+t("stats_scope")+'</h3><div class="segrow">' +
-      rangeBtn("1","r_1")+rangeBtn("2","r_2")+rangeBtn("3","r_3")+rangeBtn("all","r_all")+'</div></div>';
+      rangeBtn("1","r_1")+rangeBtn("2","r_2")+rangeBtn("3","r_3")+rangeBtn("12","r_12")+rangeBtn("all","r_all")+'</div></div>';
 
     html+='<div class="card"><h3>'+t("summary")+' — '+statsRangeLabel()+'</h3>' +
       '<div class="kpis" style="margin-top:10px">' +
         kpi(t("total_due"), fmt(totalBilled)) +
         kpi(t("total_collected"), fmt(totalPaid), "ok") +
-        kpi(t("kpi_rate"), pct(totalPct), totalPct>=0.9?"ok":(totalPct>=0.5?"warn":"danger"), totalPct) +
+        (isFutureMonth(state.month)
+          ? kpi(t("kpi_rate"), pct(totalPct), "", totalPct)
+          : kpi(t("kpi_rate"), pct(totalPct), totalPct>=0.9?"ok":(totalPct>=0.5?"warn":"danger"), totalPct)) +
       '</div>' +
       '<button class="btn ghost block" style="margin-top:12px" data-act="exportxlsx">'+t("export_btn")+'</button></div>';
+    if(state.statsRange==="12"){ html+=renderAnnualCard(months); html+=renderRankCard(rows); }
 
     html+='<div class="card"><h3>'+t("by_tenant")+'</h3><div class="hint">'+statsRangeLabel()+'</div>' +
       '<div class="scrollx"><table class="stats"><thead><tr>' +
@@ -1745,17 +2193,105 @@
     }
     html+='</div>';
     html+=renderProfitCard();
+    html+=renderAuditCard();
     if(adsReady()) html+='<div id="mx-ads">'+adsCardHTML()+'</div>';
     return html;
   }
 
+  /* ======================= tenant statement ======================= */
+  // كشف حساب المستأجر: شهرًا بشهر من أول شهر مسجَّل حتى الشهر الحالي (أو شهر نهاية الإشغال)،
+  // مع أي دفعات مقدَّمة لأشهر قادمة. المستحق = إيجار الشهر نفسه دون الترحيل حتى لا يُحتسب مرتين.
+  function methodLabel(v){ for(var i=0;i<METHODS.length;i++) if(METHODS[i][0]===v) return t(METHODS[i][1]); return v||""; }
+  function statementData(p){
+    var now=monthKeyNow(), docMonths=[];
+    Object.keys(state.payments).forEach(function(k){ var d=state.payments[k]; if(d && d.personId===p.id && /^\d{4}-\d{2}$/.test(String(d.month))) docMonths.push(d.month); });
+    docMonths.sort();
+    var first=docMonths[0]||null;
+    if(p.startMonth && (!first || p.startMonth<first)) first=p.startMonth;
+    if(!first) first=now;
+    var last=(p.endMonth && p.endMonth<now) ? p.endMonth : now;
+    var months=[], mk=first, guard=0;
+    while(mk<=last && guard<600){ months.push(mk); mk=shiftMonth(mk,1); guard++; }
+    docMonths.forEach(function(m){ if(m>last && months.indexOf(m)<0) months.push(m); });
+    var bal=0, tDue=0, tPaid=0;
+    var rows=months.map(function(m){
+      var doc=payDoc(p.id,m), due=baseRequiredFor(p,m), paid=sumPaid(p.id,m);
+      tDue+=due; tPaid+=paid; bal+=due-paid;
+      return {month:m, due:due, paid:paid, date:(doc&&doc.paymentDate)||"", method:(doc&&doc.method)||"", balance:bal, advance:m>now};
+    });
+    return {rows:rows, totalDue:tDue, totalPaid:tPaid, balance:tDue-tPaid};
+  }
+  function statementText(p){
+    var s=statementData(p), rows=s.rows, lines=[];
+    lines.push(t("stmt_title",{n:String(p.name||"").trim()})+(p.business?" ("+p.business+")":""));
+    lines.push(t("stmt_asof",{d:new Date().toLocaleDateString("en-GB")}));
+    if(rows.length>12){
+      var cut=rows.length-12;
+      lines.push(t("stmt_prev")+": "+fmt(rows[cut-1].balance));
+      rows=rows.slice(cut);
+    }
+    rows.forEach(function(r){ lines.push(t("stmt_line",{m:monthLabel(r.month), a:fmtPlain(r.due), b:fmtPlain(r.paid), c:fmtPlain(r.balance)})); });
+    lines.push("");
+    lines.push(t("stmt_tdue")+": "+fmt(s.totalDue));
+    lines.push(t("stmt_tpaid")+": "+fmt(s.totalPaid));
+    lines.push((s.balance<0?t("stmt_credit"):t("stmt_balance"))+": "+fmt(Math.abs(s.balance)));
+    return lines.join("\n");
+  }
+  function renderStatement(p){
+    var s=statementData(p), d=digitsOf(p.contact);
+    var balCls = s.balance>0?"danger":"ok";
+    var html='<div class="card" id="stmtcard" style="margin-top:16px"><div class="stmthead">' +
+        '<button type="button" class="btn ghost sm" data-act="stmtback">'+t("back")+'</button>' +
+        '<h3>'+esc(t("stmt_title",{n:p.name||""}))+'</h3></div>' +
+      '<div class="hint">'+(p.business?esc(p.business)+' · ':'')+t("stmt_asof",{d:new Date().toLocaleDateString("en-GB")})+'</div>' +
+      '<div class="kpis">' +
+        kpi(t("stmt_tdue"), fmt(s.totalDue)) +
+        kpi(t("stmt_tpaid"), fmt(s.totalPaid), "ok") +
+        kpi(s.balance<0?t("stmt_credit"):t("stmt_balance"), fmt(Math.abs(s.balance)), balCls) +
+      '</div>';
+    if(!s.rows.length){ html+='<div class="hint" style="margin-top:10px">'+t("stmt_empty")+'</div>'; }
+    else{
+      html+='<div class="scrollx"><table class="stats stmt" id="stmttable"><thead><tr>' +
+        '<th>'+t("stmt_month")+'</th><th class="num">'+t("stmt_due")+'</th><th class="num">'+t("stmt_paid")+'</th><th>'+t("stmt_date")+'</th><th class="num">'+t("stmt_bal")+'</th>' +
+        '</tr></thead><tbody>';
+      s.rows.forEach(function(r){
+        html+='<tr><td>'+monthLabel(r.month)+(r.advance?' <span class="badge">'+t("stmt_adv")+'</span>':'')+'</td>' +
+          '<td class="num">'+fmtPlain(r.due)+'</td><td class="num">'+fmtPlain(r.paid)+'</td>' +
+          '<td>'+(r.date?esc(r.date.split("-").reverse().join("/")):'—')+(r.method?'<small>'+esc(methodLabel(r.method))+'</small>':'')+'</td>' +
+          '<td class="num" style="color:'+(r.balance>0?'var(--danger)':'inherit')+'">'+fmtPlain(r.balance)+'</td></tr>';
+      });
+      html+='<tr class="totalrow"><td>'+t("stmt_total")+'</td><td class="num">'+fmtPlain(s.totalDue)+'</td><td class="num">'+fmtPlain(s.totalPaid)+'</td><td></td><td class="num">'+fmtPlain(s.balance)+'</td></tr>';
+      html+='</tbody></table></div>';
+    }
+    html+='<div class="hint" style="margin-top:10px">'+t("stmt_hint",{m:monthLabel(ARREARS_START_MONTH)})+'</div>' +
+      '<div class="fgrid" style="margin-top:12px">' +
+        '<button type="button" class="btn ghost" data-act="stmtcopy" data-pid="'+p.id+'">'+t("stmt_copy")+'</button>' +
+        (d ? '<a class="btn" style="text-decoration:none;background:#25D366" target="_blank" rel="noopener" id="stmtwa" href="https://wa.me/'+d+'?text='+encodeURIComponent(statementText(p))+'">'+t("stmt_wa")+'</a>'
+           : '<div class="noteflag" style="display:flex;align-items:center">'+t("no_contact")+'</div>') +
+      '</div></div>';
+    return html;
+  }
+  function openStatement(pid){
+    state.statementBack = state.tab;
+    state.tab="people"; state.statementId=pid; render(); window.scrollTo({top:0});
+  }
+
   /* ======================= people ======================= */
   function renderPeople(){
+    if(state.statementId){
+      var sp=state.people[state.statementId];
+      if(sp) return renderStatement(Object.assign({id:state.statementId}, sp));
+      state.statementId=null;
+    }
     var q=state.peopleQuery;
-    var active=peopleList().filter(function(p){return p.active!==false;}).filter(function(p){return matchesQuery(p,q);});
-    var inactive=peopleList().filter(function(p){return p.active===false;}).filter(function(p){return matchesQuery(p,q);});
+    var pf=DC_TESTS[state.peopleFilter]?state.peopleFilter:null;
+    var active=peopleList().filter(function(p){return p.active!==false && !p.archived;}).filter(function(p){return matchesQuery(p,q);});
+    var inactive=peopleList().filter(function(p){return p.active===false && !p.archived;}).filter(function(p){return matchesQuery(p,q);});
+    var archived=pf?[]:peopleList().filter(function(p){return !!p.archived;}).filter(function(p){return matchesQuery(p,q);});
+    if(pf){ active=active.filter(function(p){ return p.type==="store" && DC_TESTS[pf](p); }); inactive=[]; }
     var html='<div class="searchbar" style="margin-top:16px"><span class="si">'+ICON.search+'</span><input type="text" id="peopleq" placeholder="'+t("search_people")+'" value="'+esc(q)+'"></div>';
-    html+='<div class="section-title"><h2>'+t("people_active")+'</h2><span class="count">'+active.length+'</span></div>';
+    html+=renderCompleteness();
+    html+='<div class="section-title"><h2>'+(pf?t("dc_showing",{f:t("dc_"+pf)}):t("people_active"))+'</h2><span class="count">'+active.length+'</span></div>';
     if(active.length===0){ html+='<div class="empty">'+t("no_results")+'</div>'; }
     html+='<div class="rowlist">';
     active.forEach(function(p){ html+=renderPersonEdit(p); });
@@ -1768,7 +2304,14 @@
       inactive.forEach(function(p){ html+=renderPersonEdit(p); });
       html+='</div>';
     }
-    var trashed=trashedPeopleList().filter(function(p){return matchesQuery(p,q);});
+    if(archived.length){
+      html+='<div class="section-title"><h2>'+t("oc_archive")+'</h2><span class="count">'+archived.length+'</span></div>';
+      html+='<div class="hint" style="margin-bottom:8px;font-size:12px;color:var(--text-muted)">'+t("oc_archive_hint")+'</div>';
+      html+='<div class="rowlist" id="archivelist">';
+      archived.forEach(function(p){ html+=renderArchivedRow(p); });
+      html+='</div>';
+    }
+    var trashed=pf?[]:trashedPeopleList().filter(function(p){return matchesQuery(p,q);});
     if(trashed.length){
       html+='<div class="section-title"><h2>'+t("trash")+'</h2><span class="count">'+trashed.length+'</span></div>';
       html+='<div class="hint" style="margin-bottom:8px;font-size:12px;color:var(--text-muted)">'+t("trash_hint")+'</div>';
@@ -1786,6 +2329,8 @@
         '<option value="AE">'+t("grp_ae")+'</option>' +
         '<option value="partner">'+t("grp_partner")+'</option>' +
       '</select></div>' +
+      '<div class="field full"><label for="np-unit">'+t("oc_unit")+'</label><select id="np-unit"><option value="">'+t("oc_unit_auto")+'</option>' +
+        allCells().map(function(c){ return '<option value="'+c.id+'"'+(state.addUnit===c.id?" selected":"")+'>'+c.id+'</option>'; }).join("")+'</select></div>' +
     '</div><button class="btn block" style="margin-top:12px" data-act="addperson">'+t("add_btn")+'</button></div>';
     html+='<div class="card"><h3>'+t("data_title")+'</h3>' +
       '<div class="hint">'+(state.mode==="cloud"?t("mode_cloud",{e:esc(state.user&&state.user.email||"")}):t("mode_local"))+'</div>' +
@@ -1815,7 +2360,10 @@
       extra='<div class="field"><label for="cterm-'+p.id+'">'+t("f_term")+'</label><select id="cterm-'+p.id+'" data-act="pcontractterm" data-pid="'+p.id+'">'+termOpts+'</select></div>' +
         '<div class="field"><label for="cstart-'+p.id+'">'+t("f_start")+'</label><input id="cstart-'+p.id+'" type="date" data-act="pcontractstart" data-pid="'+p.id+'" value="'+(p.contractStart||"")+'"></div>' +
         '<div class="field"><label for="deptype-'+p.id+'">'+t("f_dep_type")+'</label><select id="deptype-'+p.id+'" data-act="pdeposittype" data-pid="'+p.id+'">'+depOpts+'</select></div>' +
-        '<div class="field"><label for="depamt-'+p.id+'">'+t("f_dep_amt")+'</label><input id="depamt-'+p.id+'" type="number" min="0" data-act="pdepositamount" data-pid="'+p.id+'" value="'+(p.depositAmount||"")+'" placeholder="0"></div>';
+        '<div class="field"><label for="depamt-'+p.id+'">'+t("f_dep_amt")+'</label><input id="depamt-'+p.id+'" type="number" min="0" data-act="pdepositamount" data-pid="'+p.id+'" value="'+(p.depositAmount||"")+'" placeholder="0"></div>' +
+        '<div class="field full"><label for="unit-'+p.id+'">'+t("oc_unit")+'</label><select id="unit-'+p.id+'" data-act="punit" data-pid="'+p.id+'">' +
+          '<option value="">'+t("oc_unit_auto")+(!p.unit&&unitFor(p)?' ('+unitFor(p)+')':'')+'</option>' +
+          allCells().map(function(c){ return '<option value="'+c.id+'"'+(String(p.unit||"").toUpperCase()===c.id?" selected":"")+'>'+c.id+'</option>'; }).join("")+'</select></div>';
       var r=renewalInfo(p), bits=[];
       if(!digitsOf(p.contact)) bits.push('<span style="color:var(--danger);font-weight:700">'+t("no_contact")+'</span>');
       if(!p.dueDay) bits.push('<span style="color:var(--warning);font-weight:700">'+t("no_dueday")+'</span>');
@@ -1826,19 +2374,36 @@
       if(missingDeposit(p)) bits.push('<span style="color:var(--danger);font-weight:700">'+t("b_nodeposit")+'</span>');
       if(bits.length) statusLine='<div class="hint">'+bits.join(" · ")+'</div>';
     }
-    var confirming = state.confirmDeleteId===p.id;
-    var deleteHtml = confirming
-      ? '<button class="btn danger sm" data-act="deleteconfirm" data-pid="'+p.id+'">'+t("del_confirm")+'</button><button class="btn ghost sm" data-act="deletecancel" data-pid="'+p.id+'">'+t("cancel")+'</button>'
-      : '<button class="btn ghostdanger sm" data-act="deletestart" data-pid="'+p.id+'">'+t("del")+'</button>';
-
-    return '<div class="personrow" data-pid="'+p.id+'">' +
+    if(p.type==="partner"){
+      extra='<div class="field"><label for="obs-'+p.id+'">'+t("ob_start")+'</label><input id="obs-'+p.id+'" type="month" dir="ltr" placeholder="YYYY-MM" data-act="pmonth" data-key="startMonth" data-pid="'+p.id+'" value="'+esc(p.startMonth||"")+'"></div>' +
+        '<div class="field"><label for="obe-'+p.id+'">'+t("ob_end")+'</label><input id="obe-'+p.id+'" type="month" dir="ltr" placeholder="YYYY-MM" data-act="pmonth" data-key="endMonth" data-pid="'+p.id+'" value="'+esc(p.endMonth||"")+'"></div>';
+      statusLine='<div class="hint"><b>'+obRangeText(p)+'</b> · '+t("ob_hint")+'</div>';
+    }
+    var editing = state.editPersonId===p.id;
+    // البطاقة مطوية افتراضيًا: عرض فقط. الحقول والحذف والتفعيل لا تظهر إلا بعد «تعديل»
+    if(!editing){
+      var sub=(p.business?esc(p.business)+' · ':'')+'<b>'+fmt(p.rent||0)+'</b> '+t("per_month");
+      var line = p.type==="partner" ? '<div class="hint">'+obRangeText(p)+'</div>' : statusLine;
+      return '<div class="personrow" data-pid="'+p.id+'">' +
+        '<div class="prtop">' +
+          '<div class="avatar">'+esc(initials(p.name))+'</div>' +
+          '<div class="pmain"><div class="pname2">'+esc(p.name)+depBadge(p)+(p.active===false?'<span class="badge">'+t("enable_q")+'</span>':'')+'</div>' +
+            '<div class="psub">'+sub+'</div></div>' +
+          ((isStore||digitsOf(p.contact)) ? appBtns(p, state.month) : '') +
+        '</div>' +
+        line +
+        '<div class="pactions">' +
+          '<button type="button" class="btn ghost sm" data-act="editperson" data-pid="'+p.id+'">'+t("edit")+'</button>' +
+          (isStore?'<button type="button" class="btn ghost sm" data-act="openstmt" data-pid="'+p.id+'">'+t("stmt")+'</button>':'') +
+        '</div>' +
+      '</div>';
+    }
+    return '<div class="personrow editing" data-pid="'+p.id+'">' +
       '<div class="prtop">' +
         '<div class="avatar">'+esc(initials(p.name))+'</div>' +
         '<span class="pname2">'+esc(p.name)+depBadge(p)+'</span>' +
-        '<button class="togglechip'+(p.active!==false?" on":"")+'" data-act="toggleactive" data-pid="'+p.id+'">'+(p.active!==false?t("enabled"):t("enable_q"))+'</button>' +
-        deleteHtml +
+        '<button type="button" class="btn sm" data-act="editdone">'+t("done")+'</button>' +
       '</div>' +
-      (confirming?'<div class="hint" style="color:var(--danger)">'+t("del_hint")+'</div>':'') +
       '<div class="fgrid">' +
         '<div class="field"><label for="biz-'+p.id+'">'+t("f_business")+'</label><input id="biz-'+p.id+'" type="text" data-act="pbiz" data-pid="'+p.id+'" value="'+esc(p.business||"")+'"></div>' +
         '<div class="field"><label for="rent2-'+p.id+'">'+t("f_rent")+'</label><input id="rent2-'+p.id+'" type="number" data-act="prent" data-pid="'+p.id+'" value="'+(p.rent||0)+'"></div>' +
@@ -1846,10 +2411,63 @@
         '<div class="field"><label for="contact-'+p.id+'">'+t("f_contact")+'</label><input id="contact-'+p.id+'" type="text" data-act="pcontact" data-pid="'+p.id+'" value="'+esc(p.contact||"")+'" placeholder="'+t("contact_ph")+'"></div>' +
         extra +
       '</div>' +
-      (p.contact?appBar(p, state.month):"") +
       statusLine +
       '<div class="hint">'+typeLabel+(p.note?" · "+esc(p.note):"")+'</div>' +
+      (isStore && p.active!==false ? (state.endOccId===p.id ? renderEndOccPanel(p)
+        : '<button type="button" class="btn ghost sm block" data-act="occstart" data-pid="'+p.id+'">'+t("oc_end")+'</button>') : '') +
+      '<div class="editfoot">' +
+        '<button type="button" class="togglechip'+(p.active!==false?" on":"")+'" data-act="toggleactive" data-pid="'+p.id+'">'+t("status_lbl")+': '+(p.active!==false?t("enabled"):t("enable_q"))+'</button>' +
+        '<button type="button" class="btn ghostdanger sm" data-act="deleteperson" data-pid="'+p.id+'">'+t("del")+'</button>' +
+      '</div>' +
     '</div>';
+  }
+  function renderEndOccPanel(p){
+    var nextM=shiftMonth(monthKeyNow(),1);
+    return '<div class="occpanel" id="occpanel" data-pid="'+p.id+'"><h4>'+esc(t("oc_end_title",{n:p.name||""}))+'</h4>' +
+      '<div class="fgrid">' +
+        '<div class="field"><label for="oc-date">'+t("oc_end_date")+'</label><input id="oc-date" type="date" value="'+todayISO()+'"></div>' +
+        '<div class="field"><label for="oc-next">'+t("oc_after")+'</label><select id="oc-next"><option value="vacant">'+t("oc_vacant")+'</option><option value="new">'+t("oc_new")+'</option></select></div>' +
+      '</div>' +
+      '<div class="fgrid" id="oc-newfields" hidden>' +
+        '<div class="field full"><label for="oc-name">'+t("oc_new_name")+'</label><input id="oc-name" type="text"></div>' +
+        '<div class="field"><label for="oc-biz">'+t("f_business")+'</label><input id="oc-biz" type="text" placeholder="'+t("optional")+'"></div>' +
+        '<div class="field"><label for="oc-rent">'+t("f_rent")+'</label><input id="oc-rent" type="number" value="'+(p.rent||0)+'"></div>' +
+        '<div class="field"><label for="oc-due">'+t("f_due")+'</label><input id="oc-due" type="number" min="1" max="28" value="'+(p.dueDay||"")+'"></div>' +
+        '<div class="field"><label for="oc-first">'+t("oc_first_month")+'</label><input id="oc-first" type="month" dir="ltr" placeholder="YYYY-MM" value="'+nextM+'"></div>' +
+      '</div>' +
+      '<div class="fgrid"><button type="button" class="btn danger" data-act="occconfirm" data-pid="'+p.id+'">'+t("oc_confirm")+'</button>' +
+        '<button type="button" class="btn ghost" data-act="occcancel">'+t("cancel")+'</button></div></div>';
+  }
+  function renderArchivedRow(p){
+    var s=statementData(p);
+    function dmy(v){ return String(v).slice(0,10).split("-").reverse().join("/"); }
+    var a=p.contractStart ? dmy(p.contractStart) : (p.startMonth?monthLabel(p.startMonth):(s.rows[0]?monthLabel(s.rows[0].month):"—"));
+    var b=p.endDate ? dmy(p.endDate) : (p.endMonth?monthLabel(p.endMonth):"—");
+    return '<div class="personrow" data-pid="'+p.id+'" style="opacity:.9"><div class="prtop">' +
+        '<div class="avatar">'+esc(initials(p.name))+'</div>' +
+        '<div class="pmain"><div class="pname2">'+esc(p.name)+'<span class="badge">'+t("oc_archived")+'</span>'+(p.unit?'<span class="badge">'+t("oc_unit")+' '+esc(p.unit)+'</span>':'')+'</div>' +
+          '<div class="psub">'+(p.business?esc(p.business)+' · ':'')+t("oc_period",{a:esc(a), b:esc(b)})+'</div></div>' +
+      '</div>' +
+      '<div class="hint">'+t("oc_paid_total",{a:fmt(s.totalPaid)})+' · '+(s.balance>0?'<span style="color:var(--danger);font-weight:700">'+t("oc_owed",{a:fmt(s.balance)})+'</span>':t("oc_settled"))+'</div>' +
+      '<div class="pactions">' +
+        '<button type="button" class="btn ghost sm" data-act="openstmt" data-pid="'+p.id+'">'+t("stmt")+'</button>' +
+        '<button type="button" class="btn ghost sm" data-act="occundo" data-pid="'+p.id+'">'+t("oc_undo")+'</button>' +
+      '</div></div>';
+  }
+  function renderOccupancyCard(month){
+    var o=occupancyFor(month);
+    var html='<div class="card" id="occcard"><h3>'+t("oc_rate")+' — '+monthLabel(month)+'</h3>';
+    if(o.occupied===0 && allStorePeople().length){ return html+'<div class="noteflag" style="margin-top:10px">'+t("oc_nomap")+'</div></div>'; }
+    html+='<div class="kpis" style="grid-template-columns:1fr">'+kpi(t("oc_occupied",{a:o.occupied, b:o.total}), pct(o.rate), o.rate>=0.9?"ok":(o.rate>=0.6?"warn":""), o.rate)+'</div>' +
+      '<div class="hint" style="margin-top:10px">'+(o.vacant.length ? t("oc_vacant_list")+' '+o.vacant.map(function(v){ return '<span class="badge">'+esc(v)+'</span>'; }).join(" ") : t("oc_full"))+'</div></div>';
+    return html;
+  }
+  function obRangeText(p){
+    if(!p.startMonth && !p.endMonth) return t("ob_open");
+    var a=[];
+    if(p.startMonth) a.push(t("ob_from",{a:monthLabel(p.startMonth)}));
+    if(p.endMonth) a.push(t("ob_to",{b:monthLabel(p.endMonth)}));
+    return a.join(" ");
   }
   function renderTrashedRow(p){
     var when=p.trashedAt?p.trashedAt.slice(0,10):"";
@@ -1945,11 +2563,28 @@
     on('[data-act="settingmoney"]',"change",function(el){
       var patch={}; patch[el.getAttribute("data-key")]=Math.max(0,Number(el.value)||0); saveSettings(patch);
     });
+    on('#veform',"toggle",function(el){ state.veOpen=el.open; });
+    on('[data-act="veadd"]',"click",function(){
+      var desc=document.getElementById("ve-desc").value.trim().slice(0,60);
+      var amount=Number(document.getElementById("ve-amount").value)||0;
+      var by=document.getElementById("ve-by").value;
+      if(!desc || !(amount>0) || !VE_BY[by]){ toast(t("ve_need")); return; }
+      var list=((state.settings.variableExpenses||{})[state.month]||[]).slice();
+      list.push({id:"ve_"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), desc:desc, amount:amount, by:by});
+      state.veOpen=false;
+      saveVarExpenses(state.month, list);
+    });
+    on('[data-act="vedel"]',"click",function(el){
+      var id=el.getAttribute("data-id"), list=((state.settings.variableExpenses||{})[state.month]||[]);
+      var hit=list.filter(function(x){ return x && x.id===id; })[0];
+      if(!hit || !confirm(t("ve_del_q",{n:hit.desc}))) return;
+      saveVarExpenses(state.month, list.filter(function(x){ return x && x.id!==id; }));
+    });
     on('[data-act="exportxlsx"]',"click",function(){ exportExcel(); });
     on('[data-act="backup"]',"click",function(){ exportBackup(); });
     on('[data-act="restore"]',"click",function(){ document.getElementById("restorefile").click(); });
     on('#restorefile',"change",function(el){ if(el.files[0]) importBackup(el.files[0]); el.value=""; });
-    on('[data-act="logout"]',"click",function(){ logout(); });
+    on('[data-act="logout"]',"click",function(){ askLogout(); });
     on('[data-act="gssave"]',"click",function(){
       var url=document.getElementById("gs-url").value.trim(), token=document.getElementById("gs-token").value.trim();
       if(!isSheetScriptUrl(url) || !token){ toast(t("gs_not_set")); return; }
@@ -1970,6 +2605,10 @@
     var peopleq=c.querySelector("#peopleq");
     if(peopleq) peopleq.addEventListener("input",function(){ state.peopleQuery=peopleq.value; render(); focusAfterRender("peopleq"); });
 
+    on('[data-act="pfilter"]',"click",function(el){
+      var f=el.getAttribute("data-f")||null;
+      state.peopleFilter = (f && state.peopleFilter!==f) ? f : null; render();
+    });
     on('[data-act="toggleactive"]',"click",function(el){
       var pid=el.getAttribute("data-pid"), p=state.people[pid];
       var patch={active:!(p.active!==false)};
@@ -1983,13 +2622,64 @@
     on('[data-act="pcontractterm"]',"change",function(el){ savePerson(el.getAttribute("data-pid"),{contractTerm:el.value||null}); });
     on('[data-act="pcontractstart"]',"change",function(el){ savePerson(el.getAttribute("data-pid"),{contractStart:el.value||null}); });
     on('[data-act="pdeposittype"]',"change",function(el){ savePerson(el.getAttribute("data-pid"),{depositType:el.value||null}); });
+    on('[data-act="pmonth"]',"change",function(el){
+      var pid=el.getAttribute("data-pid"), key=el.getAttribute("data-key"), v=(el.value||"").trim(), p=state.people[pid]||{};
+      if(v && !/^\d{4}-(0[1-9]|1[0-2])$/.test(v)){ toast(t("ob_bad_month")); render(); return; }
+      var s0 = key==="startMonth" ? v : (p.startMonth||""), e0 = key==="endMonth" ? v : (p.endMonth||"");
+      if(s0 && e0 && e0<s0){ toast(t("ob_bad_range")); render(); return; }
+      var patch={}; patch[key]=v||null; savePerson(pid,patch);
+    });
     on('[data-act="pdepositamount"]',"change",function(el){ savePerson(el.getAttribute("data-pid"),{depositAmount:el.value?Number(el.value):null}); });
-    on('[data-act="deletestart"]',"click",function(el){ state.confirmDeleteId=el.getAttribute("data-pid"); render(); });
-    on('[data-act="deletecancel"]',"click",function(){ state.confirmDeleteId=null; render(); });
-    on('[data-act="deleteconfirm"]',"click",function(el){ trashPerson(el.getAttribute("data-pid")); });
+    on('[data-act="openstmt"]',"click",function(el){ openStatement(el.getAttribute("data-pid")); });
+    on('[data-act="stmtback"]',"click",function(){
+      state.statementId=null;
+      if(state.statementBack==="pay"||state.statementBack==="stats") state.tab=state.statementBack;
+      state.statementBack=null; render();
+    });
+    on('[data-act="stmtcopy"]',"click",async function(el){
+      var pid=el.getAttribute("data-pid"), sp=state.people[pid]; if(!sp) return;
+      try{ await navigator.clipboard.writeText(statementText(Object.assign({id:pid}, sp))); toast(t("stmt_copied")); }
+      catch(e){ toast(t("copy_fail")); }
+    });
+    on('[data-act="occstart"]',"click",function(el){ state.endOccId=el.getAttribute("data-pid"); render(); });
+    on('[data-act="occcancel"]',"click",function(){ state.endOccId=null; render(); });
+    on('#oc-next',"change",function(el){ var nf=document.getElementById("oc-newfields"); if(nf) nf.hidden = el.value!=="new"; });
+    on('[data-act="occconfirm"]',"click",function(el){
+      var pid=el.getAttribute("data-pid"), p=state.people[pid]||{};
+      var date=(document.getElementById("oc-date").value||"").trim();
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(date) || isNaN(new Date(date+"T00:00:00").getTime())){ toast(t("oc_bad_date")); return; }
+      var next=null;
+      if(document.getElementById("oc-next").value==="new"){
+        var name=document.getElementById("oc-name").value.trim();
+        if(!name){ toast(t("name_required")); return; }
+        var first=(document.getElementById("oc-first").value||"").trim();
+        if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(first)){ toast(t("ob_bad_month")); return; }
+        if(first<date.slice(0,7)){ toast(t("oc_bad_first")); return; }
+        next={name:name, business:document.getElementById("oc-biz").value.trim()||null,
+              rent:Number(document.getElementById("oc-rent").value)||0, dueDay:Number(document.getElementById("oc-due").value)||null, startMonth:first};
+      }
+      if(!confirm(t("oc_confirm_q",{n:p.name||"", d:date.split("-").reverse().join("/")}))) return;
+      endOccupancy(pid, date, next);
+    });
+    on('[data-act="occundo"]',"click",function(el){
+      var pid=el.getAttribute("data-pid"), p=state.people[pid]||{};
+      if(!confirm(t("oc_undo_q",{n:p.name||""}))) return;
+      savePerson(pid,{archived:false, endDate:null, endMonth:null});
+    });
+    on('[data-act="punit"]',"change",function(el){ savePerson(el.getAttribute("data-pid"),{unit:el.value||null}); });
+    on('[data-act="editperson"]',"click",function(el){ state.editPersonId=el.getAttribute("data-pid"); render(); });
+    on('[data-act="editdone"]',"click",function(){ state.editPersonId=null; state.endOccId=null; render(); });
+    on('[data-act="deleteperson"]',"click",function(el){
+      var pid=el.getAttribute("data-pid"), p=state.people[pid]||{};
+      if(!confirm(t("del_q",{n:p.name||""})+"\n\n"+t("del_hint"))) return;
+      trashPerson(pid);
+    });
     on('[data-act="restoreperson"]',"click",function(el){ restorePerson(el.getAttribute("data-pid")); });
     on('[data-act="gotopeople"]',"click",function(el){
-      state.tab="people"; state.peopleQuery=el.getAttribute("data-name")||"";
+      state.tab="people"; state.peopleQuery=el.getAttribute("data-name")||""; state.peopleFilter=null;
+      // «إضافة الرقم» تفتح بطاقة المستأجر في وضع التعديل مباشرة
+      var hit=peopleList().filter(function(p){ return p.name===state.peopleQuery; })[0];
+      if(hit) state.editPersonId=hit.id;
       render(); window.scrollTo({top:0,behavior:"smooth"});
     });
     on('[data-act="statsrange"]',"click",function(el){ state.statsRange=el.getAttribute("data-range"); render(); });
@@ -2026,7 +2716,11 @@
       var rent=Number(document.getElementById("np-rent").value)||0;
       var due=Number(document.getElementById("np-due").value)||null;
       var grp=document.getElementById("np-group").value;
-      addPerson(name,grp==="partner"?"partner":"store",rent,due,biz,grp==="partner"?null:grp);
+      var unit=document.getElementById("np-unit").value||null;
+      if(grp==="partner") unit=null;
+      if(unit && cellGroup(unit)) grp=cellGroup(unit);   // المخزن يحدّد الهنجر
+      state.addUnit=null;
+      addPerson(name,grp==="partner"?"partner":"store",rent,due,biz,grp==="partner"?null:grp, unit?{unit:unit}:null);
       ["np-name","np-biz","np-rent","np-due"].forEach(function(id){ document.getElementById(id).value=""; });
     });
 
@@ -2065,10 +2759,10 @@
         paidAmt,Math.max(0,required-paidAmt),daysLate,st.text,paidDay,(doc&&doc.method)||"",p.contact||"",(doc&&doc.notes)||p.note||"",
         p.type==="store"?settleLabel(doc&&doc.settle):"",(doc&&doc.settleDate)||"",(doc&&doc.settleMethod)||""]);
     }
-    var partners=activePartners();
+    var partners=activePartners(mk);
     if(partners.length){ partners.forEach(addPersonRow); rows.push([]); }
-    var ae=activeByGroup("AE"); ae.forEach(addPersonRow); rows.push([]);
-    var ote=activeByGroup("ONE_TO_EIGHT"); ote.forEach(addPersonRow); rows.push([]);
+    var ae=activeByGroup("AE",mk); ae.forEach(addPersonRow); rows.push([]);
+    var ote=activeByGroup("ONE_TO_EIGHT",mk); ote.forEach(addPersonRow); rows.push([]);
     var allStores=ae.concat(ote);
     var totalRequired=allStores.reduce(function(a,p){return a+requiredFor(p,mk);},0);
     var totalPaid=allStores.reduce(function(a,p){return a+sumPaid(p.id,mk);},0);
@@ -2354,6 +3048,7 @@
   });
 
   /* ======================= boot ======================= */
+  document.getElementById("acctbtn").addEventListener("click", function(){ askLogout(); });
   document.querySelectorAll(".lang button").forEach(function(b){
     b.addEventListener("click",function(){
       LANG=b.getAttribute("data-lang");
