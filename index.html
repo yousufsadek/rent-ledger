@@ -229,6 +229,7 @@
   .badge.soon{background:var(--warning-soft);color:var(--warning)}
   .badge.duenow{background:var(--danger-soft);color:var(--danger)}
   .badge.ok{background:var(--success-soft);color:var(--success)}
+  .badge.landlord{background:var(--accent-2-soft);color:var(--accent-2)}
 
   .peditor{padding:2px 12px 14px;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:11px}
   .switchrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;margin-top:10px;background:var(--surface-2);border-radius:var(--r);}
@@ -438,10 +439,12 @@
       paid_q:"تم السداد", base_rent:"قيمة الإيجار", amount_paid:"المبلغ المسدَّد",
       payment_date:"تاريخ السداد", method:"وسيلة السداد", note:"ملاحظات", optional:"اختياري",
       m_cash:"نقدًا", m_cheque:"شيك", m_fawran:"فوران",
-      settle:"التخالص مع الوالد", st_pending:"لم يتم التخالص بعد", st_f2y:"الوالد حوّل لي", st_y2f:"أنا حوّلت للوالد", st_na:"لا يلزم تخالص",
-      b_st_pending:"بانتظار التخالص", b_st_done:"تم التخالص", settle_date:"تاريخ التخالص", settle_col:"التخالص مع الوالد",
-      settle_hint:"المبلغ المتوقع تحويله: {a}", settle_kpi:"بانتظار التخالص مع الوالد",
+      settle:"التخالص مع الوالد", st_pending:"لم يتم التخالص بعد", st_f2y:"الوالد حوّل لي", st_y2f:"أنا حوّلت للوالد", st_na:"لا يلزم تخالص", st_landlord:"راحت لإيجار الشيخ",
+      b_st_pending:"بانتظار التخالص", b_st_done:"تم التخالص", b_st_landlord:"لإيجار الشيخ", settle_date:"تاريخ التخالص", settle_col:"التخالص مع الوالد",
+      settle_hint:"المبلغ المتوقع تحويله: {a}", settle_kpi:"بانتظار التخالص مع الوالد", lr_payment_hint:"راحت كاملة لإيجار الشيخ: {a}",
       settle_method:"وسيلة التخالص", settle_report:"التخالص مع الوالد", sr_f2y:"الوالد حوّل لي", sr_y2f:"أنا حوّلت للوالد", sr_other:"غير محدد", sr_total:"الإجمالي", sr_net:"الصافي", sr_net_me:"لصالحي", sr_net_father:"لصالح الوالد", sr_hint:"المبالغ محسوبة من المدفوع ونِسب الحصص",
+      lr_title:"إيجار الشيخ", lr_hint:"علّم دفعة المستأجر بـ«راحت لإيجار الشيخ» (في قائمة التخالص مع الوالد) إذا كان أبوك سيستردّ منها إيجار الشيخ اللي قدّمه من جيبه — بدل ما تُحسب ضمن القسمة العادية بينك وبينه. المبالغ المعلَّمة تتجمع هون أوتوماتيكيًا.",
+      lr_required:"المطلوب هذا الشهر", lr_covered:"تغطّى من دفعات المستأجرين", lr_remaining:"الباقي حتى يسترد أبوك كامل حقه", lr_over:"تغطّى أكثر من المطلوب بمقدار", lr_none:"لسا ما فيه دفعة معلّمة بـ«راحت لإيجار الشيخ» هذا الشهر", lr_setting:"إيجار الشيخ الشهري (الإجمالي)",
       carry_line:"رصيد مُرحَّل: {c} · إجمالي المستحق هذا الشهر: {t}",
       b_renewal:"استحقاق تجديد", b_cheque:"شيك تأمين", b_deposit:"مبلغ تأمين", b_nodeposit:"بدون ضمان",
       act_call:"اتصال", act_wa:"واتساب", act_sms:"رسالة", act_copy:"نسخ نص الرسالة",
@@ -588,10 +591,12 @@
       paid_q:"Payment received", base_rent:"Rent amount", amount_paid:"Amount received",
       payment_date:"Date received", method:"Payment method", note:"Notes", optional:"Optional",
       m_cash:"Cash", m_cheque:"Cheque", m_fawran:"Fawran",
-      settle:"Settlement with father", st_pending:"Not settled yet", st_f2y:"Father transferred to me", st_y2f:"I transferred to father", st_na:"No settlement needed",
-      b_st_pending:"Awaiting settlement", b_st_done:"Settled", settle_date:"Settlement date", settle_col:"Settlement with father",
-      settle_hint:"Expected transfer: {a}", settle_kpi:"Awaiting settlement with father",
+      settle:"Settlement with father", st_pending:"Not settled yet", st_f2y:"Father transferred to me", st_y2f:"I transferred to father", st_na:"No settlement needed", st_landlord:"Went to landlord rent",
+      b_st_pending:"Awaiting settlement", b_st_done:"Settled", b_st_landlord:"To landlord rent", settle_date:"Settlement date", settle_col:"Settlement with father",
+      settle_hint:"Expected transfer: {a}", settle_kpi:"Awaiting settlement with father", lr_payment_hint:"Went in full to landlord rent: {a}",
       settle_method:"Settlement method", settle_report:"Settlement with father", sr_f2y:"Father transferred to me", sr_y2f:"I transferred to father", sr_other:"Unspecified", sr_total:"Total", sr_net:"Net", sr_net_me:"in my favour", sr_net_father:"in father's favour", sr_hint:"Amounts are computed from the paid amount and share percentages",
+      lr_title:"Landlord rent", lr_hint:"Mark a tenant payment as “Went to landlord rent” (in the settlement-with-father list) when your father will recover from it the landlord rent he fronted out of pocket — instead of it being split the normal way between you two. Marked amounts total up here automatically.",
+      lr_required:"Required this month", lr_covered:"Covered from tenant payments", lr_remaining:"Remaining until father is fully reimbursed", lr_over:"Covered more than required by", lr_none:"No payment marked “Went to landlord rent” yet this month", lr_setting:"Monthly landlord rent (total)",
       carry_line:"Carried-over balance: {c} · total due this month: {t}",
       b_renewal:"Renewal due", b_cheque:"Security cheque", b_deposit:"Deposit", b_nodeposit:"No deposit",
       act_call:"Call", act_wa:"WhatsApp", act_sms:"Message", act_copy:"Copy message text",
@@ -764,16 +769,35 @@
 
   /* ======================= state ======================= */
   var METHODS = [["Cash","m_cash"],["Cheque","m_cheque"],["Fawran","m_fawran"]];
-  // التخالص مع الوالد: pending لم يتم · f2y الوالد حوّل ليوسف · y2f يوسف حوّل للوالد · na لا يلزم
-  var SETTLES = [["pending","st_pending"],["f2y","st_f2y"],["y2f","st_y2f"],["na","st_na"]];
+  // التخالص مع الوالد: pending لم يتم · f2y الوالد حوّل ليوسف · y2f يوسف حوّل للوالد · na لا يلزم · landlord راحت لإيجار الشيخ
+  var SETTLES = [["pending","st_pending"],["f2y","st_f2y"],["y2f","st_y2f"],["na","st_na"],["landlord","st_landlord"]];
   var SETTLE_METHODS = [["Cash","m_cash"],["Fawran","m_fawran"]];
   function settleLabel(v){ for(var i=0;i<SETTLES.length;i++) if(SETTLES[i][0]===v) return t(SETTLES[i][1]); return ""; }
-  // المبلغ المتوقع تحويله حسب الاتجاه ونِسب الحصص في الإعدادات
+  // المبلغ المتوقع تحويله حسب الاتجاه ونِسب الحصص في الإعدادات (لا يشمل "landlord" — تلك دفعة كاملة لإيجار الشيخ، لا تُقسم بين يوسف والوالد)
   function settleAmount(p,doc){
     var paid=doc?(doc.amountPaid||0):0, s=state.settings, v=doc&&doc.settle;
     if(!paid||(v!=="f2y"&&v!=="y2f")) return 0;
     var yPct = p.group==="AE" ? (s.storeAEYousefPct!=null?s.storeAEYousefPct:1) : (s.store1to8YousefPct!=null?s.store1to8YousefPct:0.5);
     return Math.round(paid*(v==="f2y"?yPct:(1-yPct)));
+  }
+  // إجمالي ما عُلّم هذا الشهر بأنه "راح لإيجار الشيخ" من دفعات المستأجرين (علم على مستوى الدفعة، لا يُقسم)
+  function landlordMonthAmount(month){
+    var total=0;
+    Object.keys(state.payments).forEach(function(k){
+      var d=state.payments[k]; if(!d || d.month!==month || d.settle!=="landlord") return;
+      var sp=state.people[d.personId]; if(!sp || sp.type!=="store") return;
+      total += Number(d.amountPaid)||0;
+    });
+    return total;
+  }
+  function landlordContributions(month){
+    var list=[];
+    Object.keys(state.payments).forEach(function(k){
+      var d=state.payments[k]; if(!d || d.month!==month || d.settle!=="landlord") return;
+      var sp=state.people[d.personId]; if(!sp || sp.type!=="store") return;
+      list.push({name:sp.name, amount:Number(d.amountPaid)||0});
+    });
+    return list;
   }
   var ARREARS_START_MONTH = "2026-09";
   var RENEWAL_WARN_DAYS = 30;
@@ -788,7 +812,7 @@
     people:{}, payments:{},
     settings:{ currency:"QAR", storeAEYousefPct:1, store1to8YousefPct:0.5, store1to8FatherPct:0.5,
                aeYousefExpense:5500, oteYousefExpense:3000, fatherOteExpense:3000, aeFatherExpense:500,
-               motherGiftExpense:1500, internetExpense:250, monthlyExtras:{} },
+               motherGiftExpense:1500, internetExpense:250, landlordRentAmount:6000, monthlyExtras:{} },
     audit:[], auditDenied:false,
     dbReady:false, dbMissing:false, mode:null, user:null, needLogin:false, authError:"", fresh:{},
     openRow:null, payQuery:"", peopleQuery:"", peopleFilter:null, editPersonId:null, endOccId:null, addUnit:null, statementId:null, statementBack:null, statsRange:"1",
@@ -1629,6 +1653,7 @@
     if(p.type==="store"){
       if(settle==="pending") badges+='<span class="badge soon">'+t("b_st_pending")+'</span>';
       else if(settle==="f2y"||settle==="y2f") badges+='<span class="badge ok">'+t("b_st_done")+'</span>';
+      else if(settle==="landlord") badges+='<span class="badge landlord">'+t("b_st_landlord")+'</span>';
     }
     var settleOpts='<option value="">—</option>'+SETTLES.map(function(m){
       return '<option value="'+m[0]+'"'+(settle===m[0]?" selected":"")+'>'+t(m[1])+'</option>';
@@ -1643,7 +1668,8 @@
       '<div class="field"><label for="stl-'+rid+'">'+t("settle")+'</label><select id="stl-'+rid+'" data-act="settle" data-pid="'+p.id+'" data-m="'+month+'">'+settleOpts+'</select></div>' +
       '<div class="field"><label for="stld-'+rid+'">'+t("settle_date")+'</label><input type="date" id="stld-'+rid+'" data-act="settledate" data-pid="'+p.id+'" data-m="'+month+'" value="'+settleDate+'"></div>' +
       (settleDone?'<div class="field full"><label for="stlm-'+rid+'">'+t("settle_method")+'</label><select id="stlm-'+rid+'" data-act="settlemethod" data-pid="'+p.id+'" data-m="'+month+'">'+settleMethOpts+'</select></div>':'') +
-      (settleAmt>0?'<div class="field full"><div class="noteflag">'+t("settle_hint",{a:fmt(settleAmt)})+'</div></div>':'');
+      (settleAmt>0?'<div class="field full"><div class="noteflag">'+t("settle_hint",{a:fmt(settleAmt)})+'</div></div>':'') +
+      (settle==="landlord"&&amountPaid>0?'<div class="field full"><div class="noteflag">'+t("lr_payment_hint",{a:fmt(amountPaid)})+'</div></div>':'');
     if(p.archived) badges+='<span class="badge">'+t("oc_archived")+'</span>';
     if(r&&r.dueSoon&&!p.archived) badges+='<span class="badge '+(r.daysLeft<0?"duenow":"soon")+'">'+t("b_renewal")+'</span>';
 
@@ -1977,6 +2003,31 @@
         moneyRow(t("f_rent_ae"),"aeFatherExpense",f.aeExpense) +
       '</div></details></div>';
   }
+  // بطاقة إيجار الشيخ: المطلوب شهريًا مقابل ما عُلّم من دفعات المستأجرين بـ"راحت لإيجار الشيخ"
+  function renderLandlordCard(month){
+    var s=state.settings, required=s.landlordRentAmount!=null?s.landlordRentAmount:6000;
+    var covered=landlordMonthAmount(month), remaining=required-covered;
+    var items=landlordContributions(month);
+    var p = required>0 ? Math.max(0,Math.min(1,covered/required)) : (covered>0?1:0);
+    var html='<div class="card" id="lrcard"><h3>'+t("lr_title")+' — '+monthLabel(month)+'</h3>' +
+      '<div class="hint">'+t("lr_hint")+'</div>' +
+      '<div class="yrow" style="margin-top:10px">' +
+        '<div class="ystat"><div class="ylabel">'+t("lr_required")+'</div><div class="yval">'+fmt(required)+'</div></div>' +
+        '<div class="ystat"><div class="ylabel">'+t("lr_covered")+'</div><div class="yval accent">'+fmt(covered)+'</div></div>' +
+      '</div>' +
+      '<div style="margin-top:14px"><div style="height:10px;border-radius:99px;background:var(--neutral-soft);overflow:hidden">' +
+        '<div style="height:100%;border-radius:99px;background:var(--accent);width:'+Math.round(p*100)+'%;transition:width .35s"></div>' +
+      '</div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-top:5px">' +
+        '<span>'+pct(p)+'</span><span>'+(remaining>0?(t("lr_remaining")+': '+fmt(remaining)):(covered>required?(t("lr_over")+' '+fmt(covered-required)):""))+'</span>' +
+      '</div></div>' +
+      '<details class="disclose"><summary>'+t("details_edit")+'</summary><div style="margin-top:6px">';
+    if(!items.length) html+='<div class="hint">'+t("lr_none")+'</div>';
+    else items.forEach(function(x){ html+=pline(esc(x.name), fmt(x.amount)); });
+    html+='</div><div class="settingsform">' +
+        moneyRow(t("lr_setting"),"landlordRentAmount",required) +
+      '</div></details></div>';
+    return html;
+  }
   function renderVarExpCard(month){
     var items=varExpenses(month);
     var html='<div class="card" id="vecard"><h3>'+t("ve_title")+' — '+monthLabel(month)+'</h3><div class="hint">'+t("ve_hint")+'</div>';
@@ -2137,6 +2188,7 @@
     var html=renderMonthbar();
     html+=renderYousefCard(state.month);
     html+=renderFatherCard(state.month);
+    html+=renderLandlordCard(state.month);
     html+=renderVarExpCard(state.month);
     html+=renderOccupancyCard(state.month);
     html+='<div class="card"><h3>'+t("stats_scope")+'</h3><div class="segrow">' +
@@ -2532,6 +2584,19 @@
   function on(sel,evt,fn){
     document.getElementById("content").querySelectorAll(sel).forEach(function(el){ el.addEventListener(evt,function(e){ fn(el,e); }); });
   }
+  // حقول التاريخ: المتصفح يطلق change مع كل رقم يُكتب (السنة 0002 ثم 0020…)، فكان الحفظ وإعادة الرسم يقطعان الكتابة.
+  // عند الكتابة بلوحة المفاتيح نؤجّل الحفظ حتى الخروج من الحقل أو Enter؛ والاختيار من التقويم يُحفظ فورًا كالسابق.
+  function onDate(sel, fn){
+    on(sel,"keydown",function(el,e){
+      if(e.key==="Enter"){ if(el._dirty){ el._dirty=false; el._typed=false; fn(el); } }
+      else if(e.key!=="Tab") el._typed=true;
+    });
+    on(sel,"change",function(el){
+      if(el._typed){ el._dirty=true; return; }
+      fn(el);
+    });
+    on(sel,"blur",function(el){ var d=el._dirty; el._dirty=false; el._typed=false; if(d) fn(el); });
+  }
   function wireEvents(){
     on('[data-act="togglepaid"]',"change",function(el){
       var pid=el.getAttribute("data-pid"), m=el.getAttribute("data-m");
@@ -2544,7 +2609,7 @@
     });
     on('[data-act="billed"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{billedAmount:Number(el.value)||0}); });
     on('[data-act="amount"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{amountPaid:Number(el.value)||0}); });
-    on('[data-act="date"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{paymentDate:el.value||null}); });
+    onDate('[data-act="date"]',function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{paymentDate:el.value||null}); });
     on('[data-act="method"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{method:el.value||null}); });
     on('[data-act="settle"]',"change",function(el){
       var pid=el.getAttribute("data-pid"), m=el.getAttribute("data-m"), v=el.value||null;
@@ -2553,7 +2618,7 @@
       savePayment(pid,m,{settle:v, settleDate: done ? (ex.settleDate||todayISO()) : null, settleMethod: done ? (ex.settleMethod||null) : null});
     });
     on('[data-act="settlemethod"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{settleMethod:el.value||null}); });
-    on('[data-act="settledate"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{settleDate:el.value||null}); });
+    onDate('[data-act="settledate"]',function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{settleDate:el.value||null}); });
     on('[data-act="notes"]',"change",function(el){ savePayment(el.getAttribute("data-pid"),el.getAttribute("data-m"),{notes:el.value||null}); });
     on("details.prow","toggle",function(el){ state.openRow = el.open?el.getAttribute("data-rid"):null; });
 
@@ -2620,9 +2685,9 @@
     on('[data-act="pdue"]',"change",function(el){ savePerson(el.getAttribute("data-pid"),{dueDay:el.value?Number(el.value):null}); });
     on('[data-act="pcontact"]',"change",function(el){ savePerson(el.getAttribute("data-pid"),{contact:el.value||null}); });
     on('[data-act="pcontractterm"]',"change",function(el){ savePerson(el.getAttribute("data-pid"),{contractTerm:el.value||null}); });
-    on('[data-act="pcontractstart"]',"change",function(el){ savePerson(el.getAttribute("data-pid"),{contractStart:el.value||null}); });
+    onDate('[data-act="pcontractstart"]',function(el){ savePerson(el.getAttribute("data-pid"),{contractStart:el.value||null}); });
     on('[data-act="pdeposittype"]',"change",function(el){ savePerson(el.getAttribute("data-pid"),{depositType:el.value||null}); });
-    on('[data-act="pmonth"]',"change",function(el){
+    onDate('[data-act="pmonth"]',function(el){
       var pid=el.getAttribute("data-pid"), key=el.getAttribute("data-key"), v=(el.value||"").trim(), p=state.people[pid]||{};
       if(v && !/^\d{4}-(0[1-9]|1[0-2])$/.test(v)){ toast(t("ob_bad_month")); render(); return; }
       var s0 = key==="startMonth" ? v : (p.startMonth||""), e0 = key==="endMonth" ? v : (p.endMonth||"");
