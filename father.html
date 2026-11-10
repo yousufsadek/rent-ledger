@@ -106,14 +106,12 @@ function view(){
     var acc=L.fatherAccount(m), bt=L.balanceText(acc.balance,"father"), fm=L.fatherMonth(m), sh=L.shares(m);
     h+='<section class="sec"><div class="sec-h"><h2>حسابك مع يوسف</h2></div>' +
       '<div class="verdict '+(bt.dir==="zero"?"zero":(bt.dir==="y2f"?"f2y":"y2f"))+'"><small>حتى نهاية '+monthLabel(m)+'</small><b>'+esc(bt.text)+'</b>' +
-      '<p>'+(bt.dir==="y2f"?'يعني يوسف لازم يحوّلك هالمبلغ.':(bt.dir==="f2y"?'يعني قبضت من المستأجرين أكثر من حقك، والزيادة ليوسف.':'كل شي مسدّد.'))+'</p></div>' +
-      '<div class="mine"><div><b class="num">'+fmtPlain(fm.entitled)+'</b><span>حقك هالشهر</span></div><div><b class="num">'+fmtPlain(fm.withFather)+'</b><span>قبضته بإيدك</span></div></div>' +
+      '<p>'+(bt.dir==="y2f"?'يعني يوسف لازم يحوّلك هالمبلغ.':(bt.dir==="f2y"?'يعني قبضت من المستأجرين أكثر من المطلوب، والزيادة ليوسف.':'كل شي مسدّد.'))+'</p></div>' +
       '<div class="panel pad" style="margin-top:10px"><div class="sumline"><span>المبلغ الثابت من يوسف (A–E و 1–8)</span><b>'+qar(fm.fixed.total)+'</b></div>' +
-      '<div class="sumline"><span>نصّك من دفعات مخازن 1–8</span><b>+ '+qar(fm.shareIncome)+'</b></div>' +
-      '<div class="sumline total"><span>حقك هالشهر</span><b>'+qar(fm.entitled)+'</b></div>' +
+      '<div class="sumline"><span>نصّك من دفعات مخازن 1–8</span><b>'+qar(fm.shareIncome)+'</b></div>' +
       (fm.transfers.length?'<div style="margin-top:12px;font-weight:600;font-size:14.5px">تحويلات هالشهر</div>'+fm.transfers.map(function(x){ return '<div class="sumline"><span>'+(x.dir==="y2f"?'يوسف حوّلك':'حوّلت ليوسف')+(x.date?' · '+R.dmy(x.date):'')+'</span><b>'+qar(x.amount)+'</b></div>'; }).join(""):'') +
       '</div>';
-    if(acc.rows.length>1) h+='<div class="panel" style="margin-top:10px"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>الشهر</th><th class="n">حقك</th><th class="n">قبضت</th><th class="n">الرصيد</th></tr></thead><tbody>' +
+    if(acc.rows.length>1) h+='<div class="panel" style="margin-top:10px"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>الشهر</th><th class="n">المستحق</th><th class="n">قبضت</th><th class="n">الرصيد</th></tr></thead><tbody>' +
       acc.rows.map(function(r){ var v=-Math.round(r.running); return '<tr><td>'+monthLabel(r.month)+'</td><td class="n num">'+fmtPlain(r.entitled)+'</td><td class="n num">'+fmtPlain(r.withFather)+'</td><td class="n num'+(v<0?' neg':'')+'">'+fmtPlain(v)+'</td></tr>'; }).join("")+
       '</tbody></table></div><p class="note" style="padding:0 14px 12px">الرصيد الموجب: إلك عند يوسف · السالب: ليوسف عندك.</p></div>';
     h+='<p class="note" style="margin:10px 4px 0">صافي ربحك من مخازن 1–8 هالشهر بعد إيجارك: '+qar(sh.father.net)+'</p></section>';
