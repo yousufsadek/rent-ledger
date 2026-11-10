@@ -204,7 +204,7 @@ svg.plan{direction:ltr;display:block;width:100%;height:auto;max-height:520px;fon
 .sheet-h .t{flex:1;min-width:0}
 .sheet-h h3{font-size:18px}
 .sheet-h small{color:var(--ink-2);font-size:13px}
-@media (prefers-reduced-motion: reduce){ .sheet,.scrim{transition:none} }
+@media (prefers-reduced-motion: reduce){ .sheet,.scrim,.v-more svg{transition:none} }
 
 .sumline{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 0;font-size:14px}
 .sumline + .sumline{border-top:1px dashed var(--line)}
@@ -225,6 +225,20 @@ svg.plan{direction:ltr;display:block;width:100%;height:auto;max-height:520px;fon
 .verdict p{margin:8px 0 0;font-size:13.5px;opacity:.9;line-height:1.6}
 .verdict .btn{margin-top:14px;background:rgba(255,255,255,.18);color:#fff}
 .verdict.zero .btn{background:var(--roof-soft);color:var(--roof-ink)}
+.v-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+.v-actions .btn{margin-top:0}
+.v-more{border:0;background:none;color:inherit;opacity:.9;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:8px 2px;min-height:40px}
+.v-more svg{width:16px;height:16px;transition:transform .2s}
+.v-more[aria-expanded="true"] svg{transform:rotate(180deg)}
+.v-detail{margin-top:10px;border-top:1px solid rgba(255,255,255,.25);padding-top:4px;font-size:13.5px}
+.verdict.zero .v-detail{border-color:var(--line)}
+.v-month{padding:10px 0;border-bottom:1px dashed rgba(255,255,255,.22)}
+.verdict.zero .v-month{border-color:var(--line)}
+.v-month > b{display:block;font-size:14px;font-weight:600;margin:0 0 4px;letter-spacing:0}
+.v-line{display:flex;justify-content:space-between;gap:12px;padding:2px 0;opacity:.92}
+.v-res{font-weight:600;opacity:1;margin-top:2px}
+.v-total{font-weight:600;font-size:15px;padding-top:10px;opacity:1}
+.v-warn{margin:6px 0 0;font-size:12.5px;opacity:.85}
 
 /* معادلة الشهر: خطوات متتالية فعلًا، لذلك مرقّمة */
 .eq{list-style:none;margin:0;padding:0;counter-reset:eq}

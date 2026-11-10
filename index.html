@@ -274,7 +274,20 @@ function dadView(){
   h+='<section class="verdict '+bt.dir+'" style="margin-top:14px"><small>الحساب حتى نهاية '+monthLabel(upto)+'</small>' +
     '<b>'+esc(bt.text)+'</b>' +
     '<p>'+(bt.dir==="y2f"?'الوالد ما وصله كامل حقه من الدفعات اللي قبضها، والباقي عندك.':(bt.dir==="f2y"?'الوالد قبض أكثر من حقه، والزيادة إلك.':'كل شي مسدّد بين الطرفين.'))+'</p>' +
-    (bt.dir!=="zero"?'<button type="button" class="btn" data-act="newtransfer">تسجيل تحويل '+(bt.dir==="y2f"?'للوالد':'من الوالد')+'</button>':'') + '</section>';
+    '<div class="v-actions">'+(bt.dir!=="zero"?'<button type="button" class="btn" data-act="newtransfer">تسجيل تحويل '+(bt.dir==="y2f"?'للوالد':'من الوالد')+'</button>':'<span></span>') +
+      '<button type="button" class="v-more" data-act="dadmore" aria-expanded="'+(!!A.dadMore)+'" aria-controls="v-detail">تفصيل المبلغ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button></div>' +
+    (A.dadMore ? '<div class="v-detail" id="v-detail">'+acc.rows.map(function(r){
+        var mt=L.balanceText(r.balance), tr=r.y2f-r.f2y;
+        return '<div class="v-month"><b>'+monthLabel(r.month)+'</b>' +
+          '<div class="v-line"><span>حق الوالد (8,500 ثابت + نص دفعات 1–8)</span><span class="num">'+fmtPlain(r.entitled)+'</span></div>' +
+          '<div class="v-line"><span>قبضه الوالد بإيده</span><span class="num">'+fmtPlain(r.withFather)+'</span></div>' +
+          (r.y2f?'<div class="v-line"><span>حوّلت للوالد</span><span class="num">+ '+fmtPlain(r.y2f)+'</span></div>':'') +
+          (r.f2y?'<div class="v-line"><span>الوالد حوّلي</span><span class="num">− '+fmtPlain(r.f2y)+'</span></div>':'') +
+          '<div class="v-line v-res"><span>نتيجة الشهر</span><span>'+esc(mt.dir==="zero"?"مسكّر":mt.text)+'</span></div></div>';
+      }).join("") +
+      '<div class="v-line v-total"><span>المجموع من '+monthLabel(acc.start)+'</span><span>'+esc(bt.dir==="zero"?"مسكّر":bt.text)+'</span></div>' +
+      (L.fatherMonth(upto).unknown.length?'<p class="v-warn">في دفعات ما تحدد مين قبضها — مش داخلة بالحساب.</p>':'') +
+    '</div>' : '') + '</section>';
 
   if(!started){
     h+='<div class="panel pad" style="margin-top:12px"><p class="note">الحساب مع الوالد بلّش من '+monthLabel(acc.start)+'. الأشهر قبلها مسكّرة.</p></div>';
@@ -625,6 +638,7 @@ document.addEventListener("click", function(e){
     case "mnext": A.month=R.shiftMonth(A.month,1); A.showPaid=false; render(); break;
     case "mnow": A.month=R.monthKeyNow(); render(); break;
     case "showpaid": A.showPaid=true; render(); break;
+    case "dadmore": A.dadMore=!A.dadMore; render(); break;
     case "settings": openSheet({kind:"settings"}); break;
     case "closesheet": closeSheet(); break;
     case "openpay": if(pid && S().people[pid]) openSheet(payDraft(pid, A.month)); break;
