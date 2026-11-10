@@ -327,20 +327,34 @@ function dadCard(acc, bt, upto){
       '<button type="button" class="v-more" data-act="dadmore" aria-expanded="'+open+'" aria-controls="dad-receipt">تفصيل المبلغ'+CHEV+'</button>' +
     '</div></div>';
   if(open){
-    h+='<div class="receipt" id="dad-receipt"><div class="rc-h">كيف طلع الرقم<span>'+period+'</span></div>' +
-      '<div class="rc-row"><span class="rc-l">حق الوالد<small>ثابت <span class="num">'+fmtPlain(FX)+'</span>'+(n>1?' عن '+n+' أشهر':'')+' + نص دفعات 1–8 (<span class="num">'+fmtPlain(SH)+'</span>)</small></span><span class="rc-op"></span><span class="rc-v">'+fmtPlain(E)+'</span></div>' +
-      '<div class="rc-row"><span class="rc-l">قبضه الوالد بإيده<small>دفعات المستأجرين اللي راحت له</small></span><span class="rc-op">−</span><span class="rc-v">'+fmtPlain(F)+'</span></div>' +
-      '<div class="rc-row rc-sub"><span class="rc-l">'+(gap>=0?'الفرق عليك':'الفرق إلك')+'</span><span class="rc-op">=</span><span class="rc-v">'+fmtPlain(Math.abs(gap))+'</span></div>';
-    if(Y) h+='<div class="rc-row"><span class="rc-l">حوّلت للوالد</span><span class="rc-op">−</span><span class="rc-v">'+fmtPlain(Y)+'</span></div>';
-    if(Fy) h+='<div class="rc-row"><span class="rc-l">الوالد حوّلك</span><span class="rc-op">+</span><span class="rc-v">'+fmtPlain(Fy)+'</span></div>';
-    if(!Y && !Fy) h+='<div class="rc-row rc-muted"><span class="rc-l">ما في تحويلات بهالفترة</span><span class="rc-op"></span><span class="rc-v"></span></div>';
-    h+='<div class="rc-row rc-total '+(owe>0.5?'rc-y2f':(owe<-0.5?'rc-f2y':''))+'"><span class="rc-l">'+(Math.abs(owe)<1?'الحساب مسكّر':(owe>0?'عليك للوالد':'إلك عند الوالد'))+'</span><span class="rc-op">=</span><span class="rc-v">'+fmtPlain(Math.abs(owe))+'</span></div><p class="rc-cur">المبالغ بالريال القطري</p>';
-    if(n>1){
-      h+='<div class="rc-months"><div class="rc-m rc-mh"><span>شهر بشهر</span><span>نتيجة الشهر</span><span class="rc-run">الرصيد لنهايته</span></div>'+rows.map(function(r){ var o=-r.balance, c=-r.running;
-        return '<div class="rc-m"><span>'+monthLabel(r.month)+'</span><span class="'+(o>0.5?'rc-dad':(o<-0.5?'rc-me':''))+'">'+(Math.abs(o)<1?'مسكّر':(o>0?'عليك ':'إلك ')+fmtPlain(Math.abs(o)))+'</span><span class="rc-run">'+(Math.abs(c)<1?'0':(c>0?'عليك ':'إلك ')+fmtPlain(Math.abs(c)))+'</span></div>'; }).join("") +
-        '</div>';
-    }
-    if(unknown) h+='<button type="button" class="rc-warn" data-act="tab" data-tab="month">'+I.warn+'<span>'+payCount(unknown)+' ما تحدد مين قبضها، فمش داخلة بالحساب. حدّدها ليطلع الرقم صح.</span></button>';
+    // كل مبلغ بسطر: قديش منه ليوسف وقديش ليعقوب، ومين ماسكه، وأثره على الحساب
+    // الأثر: موجب = عليك للوالد · سالب = إلك عند الوالد. مجموع الآثار = الرقم بالبطاقة.
+    function fx(v, lbl){ v=Math.round(v); if(Math.abs(v)<1) return '<span class="fx zero"><small>بدون أثر</small>—</span>';
+      return '<span class="fx '+(v>0?'y2f':'f2y')+'"><small>'+(lbl||(v>0?'عليك':'إلك'))+'</small>'+fmtPlain(Math.abs(v))+'</span>'; }
+    function split(y,f){ return '<span class="sp"><span class="sp-y">ليوسف <b class="num">'+fmtPlain(y)+'</b></span><span class="sp-f">ليعقوب <b class="num">'+fmtPlain(f)+'</b></span></span>'; }
+    h+='<div class="receipt" id="dad-receipt"><div class="rc-h">تفصيل المبالغ<span>'+period+'</span></div>';
+    rows.forEach(function(r){
+      if(n>1) h+='<div class="it-month">'+monthLabel(r.month)+'</div>';
+      // المبلغ الثابت
+      h+='<div class="it"><span class="it-ic fixed">ث</span><span class="it-m"><b>المبلغ الثابت للوالد</b><small>'+fmtPlain(r.fixed.ae)+' عن A–E + '+fmtPlain(r.fixed.ote)+' عن 1–8</small></span>'+fx(r.fixed.total)+'</div>';
+      // الدفعات
+      r.lines.forEach(function(x){
+        var kind=x.method==="Cheque"?"شيك":(x.method==="Fawran"?"فوران":(x.method==="Cash"?"كاش":"دفعة"));
+
+        var effect = x.receiver==="me" ? x.fatherShare : (x.receiver==="father" ? -x.yousefShare : 0);
+        var why = x.receiver==="me" ? (x.fatherShare>0?'قبضتها أنت، فحصة يعقوب معك':'قبضتها أنت، وكلها إلك') : (x.receiver==="father" ? (x.yousefShare>0?'قبضها يعقوب، فحصتك معه':'قبضها يعقوب، وكلها إله') : '<span class="neg">ما تحدد مين قبضها، فمش محسوبة</span>');
+        h+='<button type="button" class="it it-btn" data-act="openpay" data-pid="'+x.p.id+'" data-month="'+x.month+'"><span class="it-ic">'+esc(unitLabel(x.p))+'</span>' +
+          '<span class="it-m"><b>'+kind+' <span class="num">'+fmtPlain(x.paid)+'</span> <small class="it-n"><bdi>'+esc(x.p.name)+'</bdi>'+(x.date?' · '+R.dayMonth(x.date):'')+'</small></b>' +
+          split(x.yousefShare, x.fatherShare)+'<small>'+why+'</small></span>'+fx(effect)+'</button>';
+      });
+      // التحويلات
+      r.transfers.forEach(function(t){
+        h+='<div class="it"><span class="it-ic tr">'+(t.dir==="y2f"?I.toDad:I.fromDad)+'</span><span class="it-m"><b>'+(t.dir==="y2f"?'حوّلت ليعقوب':'يعقوب حوّلك')+' <span class="num">'+fmtPlain(t.amount)+'</span></b><small>'+[t.date?R.dmy(t.date):'', methodAr(t.method), esc(t.note)].filter(Boolean).join(' · ')+'</small></span>'+fx(t.dir==="y2f"?-t.amount:t.amount, t.dir==="y2f"?'سدّدت':'رجع عليك')+'</div>';
+      });
+    });
+    h+='<div class="it-total"><span>'+(Math.abs(owe)<1?'الحساب مسكّر':(owe>0?'عليك ليعقوب':'إلك عند يعقوب'))+'</span><b><span class="num">'+fmtPlain(Math.abs(owe))+'</span> ر.ق</b></div>' +
+      '<p class="rc-cur">«عليك» بتزيد اللي عليك ليعقوب، و«إلك» و«سدّدت» بينقصوه. مجموع العمود هو الرقم بالبطاقة.</p>';
+    if(unknown) h+='<button type="button" class="rc-warn" data-act="tab" data-tab="month">'+I.warn+'<span>'+payCount(unknown)+' ما تحدد مين قبضها، فمش داخلة بالحساب. اضغط عليها بالقائمة وحدّد.</span></button>';
     h+='</div>';
   }
   return h+'</section>';
@@ -656,7 +670,7 @@ document.addEventListener("click", function(e){
     case "dadmore": A.dadMore=!A.dadMore; render(); break;
     case "settings": openSheet({kind:"settings"}); break;
     case "closesheet": closeSheet(); break;
-    case "openpay": if(pid && S().people[pid]) openSheet(payDraft(pid, A.month)); break;
+    case "openpay": if(pid && S().people[pid]) openSheet(payDraft(pid, el.getAttribute("data-month")||A.month)); break;
     case "pick": if(s){ var k=el.getAttribute("data-k"), v=el.getAttribute("data-v"); s.d[k] = s.d[k]===v && k!=="receiver" && k!=="dir" && k!=="type" && k!=="next" && k!=="by" ? "" : v; renderSheet(); } break;
     case "fullamt": if(s){ s.d.amount=el.getAttribute("data-v"); renderSheet(); } break;
     case "savepay": savePayFromSheet(); break;

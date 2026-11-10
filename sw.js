@@ -1,7 +1,7 @@
 // يحفظ ملفات الموقع ليفتح ويعمل بدون إنترنت
 // ملفات الموقع: الشبكة أولًا ثم النسخة المحفوظة (لتصلك التحديثات فورًا)
 // مكتبات CDN ذات الإصدار الثابت (Excel، Firebase، الخطوط): المحفوظة أولًا
-const CACHE = "rentbook-v12";
+const CACHE = "rentbook-v14";
 const SHELL = ["./", "index.html", "father.html", "core.js", "store.js", "styles.css", "firebase-config.js", "manifest.webmanifest", "icon.svg"];
 const CDN = ["cdnjs.cloudflare.com", "www.gstatic.com", "fonts.googleapis.com", "fonts.gstatic.com"];
 

@@ -255,9 +255,11 @@
         var raw=state.people[d.personId]; if(!raw || raw.type!=="store") return;
         var p=Object.assign({id:d.personId}, raw), paid=Number(d.amountPaid)||0; if(!(paid>0)) return;
         var fShare=Math.round(paid*(1-L.yousefPct(p))), r=L.receiverOf(d);
-        shareIncome+=fShare;
-        if(r==="father") withFather+=paid; else if(r==="me") withMe+=paid; else unknown.push(p);
-        lines.push({p:p, paid:paid, fatherShare:fShare, receiver:r, date:d.paymentDate||""});
+        // دفعة ما تحدد مين قبضها ما بتدخل بالحساب أبدًا لحد ما تتحدد (لا بحصة الوالد ولا باللي معه)
+        if(r==="father"){ withFather+=paid; shareIncome+=fShare; }
+        else if(r==="me"){ withMe+=paid; shareIncome+=fShare; }
+        else unknown.push(p);
+        lines.push({p:p, paid:paid, fatherShare:fShare, yousefShare:paid-fShare, receiver:r, method:d.method||"", date:d.paymentDate||"", month:m});
       });
       lines.sort(function(a,b){ return String(a.date||"9").localeCompare(String(b.date||"9")); });
       var tr=L.transfers(m), f2y=0, y2f=0;
