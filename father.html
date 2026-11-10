@@ -125,7 +125,7 @@ function view(){
 
 function infoSheet(pid){
   var p=L.person(pid), m=A.month, st=L.status(p,m), d=L.payDoc(pid,m), rc=L.receiverOf(d), dg=digitsOf(p.contact), r=L.renewal(p);
-  var h='<div class="grab"></div><div class="sheet-h"><span class="unit '+st+'">'+esc(unitOf(p))+'</span><div class="t"><h3>'+esc(p.business||p.name)+'</h3><small>'+esc(p.name)+' · '+monthLabel(m)+'</small></div><button type="button" class="xbtn" data-act="close" aria-label="إغلاق">×</button></div>' +
+  var h='<div class="grab"></div><div class="sheet-h"><span class="unit '+st+'">'+esc(unitOf(p))+'</span><div class="t"><h3>'+esc(p.business||p.name)+'</h3><small>'+'<bdi>'+esc(p.name)+'</bdi> · '+monthLabel(m)+'</small></div><button type="button" class="xbtn" data-act="close" aria-label="إغلاق">×</button></div>' +
     '<div class="panel pad" style="box-shadow:inset 0 0 0 1px var(--line-2)">' +
     '<div class="sumline"><span>الحالة</span><b><span class="st '+st+'">'+L.STATUS_TEXT[st]+'</span></b></div>' +
     '<div class="sumline"><span>الإيجار الشهري</span><b>'+qar(L.baseRequired(p,m))+'</b></div>' +

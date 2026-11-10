@@ -20,6 +20,7 @@
   --part:#A86A0C; --part-soft:#F7E8CF;
   --due:#5E6D73;  --due-soft:#E3E8EA;
   --dad:#2E4F78; --dad-soft:#DCE5F0;   /* لون الوالد */
+  --dad-deep:#2E4F78; --roof-deep:#1C6A4C; /* خلفيات البطاقات الملوّنة — ما بتتغير بالوضع الليلي */
   --wa:#1FAF55;
   --r:14px; --r-sm:10px;
   --font:"Readex Pro","Noto Sans Arabic",Tahoma,sans-serif;
@@ -120,6 +121,7 @@ h1,h2,h3,h4{margin:0;font-weight:600;line-height:1.25}
 .unit.partial{background:var(--part-soft);color:var(--part);box-shadow:none}
 .row-main{flex:1;min-width:0}
 .row-main b{display:block;font-weight:500;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-main b{unicode-bidi:plaintext;text-align:right}
 .row-main small{display:block;font-size:12.5px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row-end{text-align:end;flex:none}
 .row-end b{display:block;font-weight:600;font-size:15px}
@@ -204,7 +206,7 @@ svg.plan{direction:ltr;display:block;width:100%;height:auto;max-height:520px;fon
 .sheet-h .t{flex:1;min-width:0}
 .sheet-h h3{font-size:18px}
 .sheet-h small{color:var(--ink-2);font-size:13px}
-@media (prefers-reduced-motion: reduce){ .sheet,.scrim,.v-more svg{transition:none} }
+@media (prefers-reduced-motion: reduce){ .sheet,.scrim,.v-more svg{transition:none} .receipt{animation:none} }
 
 .sumline{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 0;font-size:14px}
 .sumline + .sumline{border-top:1px dashed var(--line)}
@@ -216,29 +218,58 @@ svg.plan{direction:ltr;display:block;width:100%;height:auto;max-height:520px;fon
 .neg{color:var(--late)}
 
 /* ---------- حساب الوالد ---------- */
-.verdict{border-radius:18px;padding:18px;color:#fff;background:var(--dad);box-shadow:var(--shadow)}
-.verdict.y2f{background:var(--dad)}
-.verdict.f2y{background:var(--roof)}
+.verdict{border-radius:18px;padding:18px;color:#fff;background:var(--dad-deep);box-shadow:var(--shadow)}
+.verdict.y2f{background:var(--dad-deep)}
+.verdict.f2y{background:var(--roof-deep)}
 .verdict.zero{background:var(--slab);color:var(--ink)}
 .verdict small{display:block;font-size:13px;opacity:.85}
 .verdict b{display:block;font-size:26px;font-weight:600;margin-top:2px;letter-spacing:-.3px}
 .verdict p{margin:8px 0 0;font-size:13.5px;opacity:.9;line-height:1.6}
 .verdict .btn{margin-top:14px;background:rgba(255,255,255,.18);color:#fff}
 .verdict.zero .btn{background:var(--roof-soft);color:var(--roof-ink)}
-.v-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
-.v-actions .btn{margin-top:0}
-.v-more{border:0;background:none;color:inherit;opacity:.9;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:8px 2px;min-height:40px}
+.dadcard{margin-top:14px;border-radius:20px;box-shadow:var(--shadow)}
+.dadcard .verdict{box-shadow:none;border-radius:20px;position:relative;z-index:1}
+.dadcard.open .verdict{border-radius:20px 20px 0 0}
+.v-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.verdict .v-primary{margin-top:0;background:#fff;color:var(--dad-deep)}
+.verdict.f2y .v-primary{color:var(--roof-deep)}
+.v-ok{font-size:13px;opacity:.8}
+.v-more{flex:none;border:0;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px 0 10px;border-radius:99px;font-size:13px;font-weight:500;color:inherit;background:rgba(255,255,255,.16)}
+.verdict.zero .v-more{background:var(--slab-2);box-shadow:inset 0 0 0 1px var(--line)}
 .v-more svg{width:16px;height:16px;transition:transform .2s}
+.v-more[aria-expanded="true"]{background:rgba(255,255,255,.28)}
 .v-more[aria-expanded="true"] svg{transform:rotate(180deg)}
-.v-detail{margin-top:10px;border-top:1px solid rgba(255,255,255,.25);padding-top:4px;font-size:13.5px}
-.verdict.zero .v-detail{border-color:var(--line)}
-.v-month{padding:10px 0;border-bottom:1px dashed rgba(255,255,255,.22)}
-.verdict.zero .v-month{border-color:var(--line)}
-.v-month > b{display:block;font-size:14px;font-weight:600;margin:0 0 4px;letter-spacing:0}
-.v-line{display:flex;justify-content:space-between;gap:12px;padding:2px 0;opacity:.92}
-.v-res{font-weight:600;opacity:1;margin-top:2px}
-.v-total{font-weight:600;font-size:15px;padding-top:10px;opacity:1}
-.v-warn{margin:6px 0 0;font-size:12.5px;opacity:.85}
+
+/* وصل الحساب: يطلع من تحت البطاقة بحافة مقصوصة */
+.receipt{position:relative;background:var(--slab);border-radius:0 0 20px 20px;padding:20px 18px 18px;
+  -webkit-mask:radial-gradient(circle 6px at 50% 0,#0000 98%,#000) 0 0/16px 100% repeat-x;mask:radial-gradient(circle 6px at 50% 0,#0000 98%,#000) 0 0/16px 100% repeat-x;margin-top:-1px;animation:rc-in .22s ease-out}
+@keyframes rc-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.rc-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:600;font-size:14.5px;margin-bottom:6px}
+.rc-h span{font-weight:400;font-size:12.5px;color:var(--ink-2)}
+.rc-row{display:grid;grid-template-columns:1fr 22px 104px;align-items:baseline;column-gap:8px;padding:9px 0}
+.rc-row + .rc-row{border-top:1px solid var(--line-2)}
+.rc-l{font-size:14px;min-width:0}
+.rc-l small{display:block;font-size:12px;color:var(--ink-2);margin-top:1px}
+.rc-op{text-align:center;color:var(--ink-3);font-weight:600;font-size:15px}
+.rc-v{text-align:left;font-weight:600;font-size:15px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rc-cur{margin:6px 0 0;font-size:11.5px;color:var(--ink-3);text-align:left}
+.rc-sub .rc-l,.rc-sub .rc-v{color:var(--ink-2);font-weight:500}
+.rc-muted .rc-l{color:var(--ink-3);font-size:13px}
+.rc-row.rc-total{border-top:2px solid var(--ink);margin-top:2px;padding-top:12px}
+.rc-total .rc-l{font-weight:600;font-size:15px}
+.rc-total .rc-v{font-size:21px}
+.rc-total.rc-y2f .rc-l,.rc-total.rc-y2f .rc-v{color:var(--dad)}
+.rc-total.rc-f2y .rc-l,.rc-total.rc-f2y .rc-v{color:var(--roof)}
+.rc-months{margin-top:14px;background:var(--slab-2);border-radius:12px;padding:10px 12px}
+.rc-m.rc-mh{font-size:11.5px;color:var(--ink-3);font-weight:500;padding-top:0}
+.rc-dad{color:var(--dad);font-weight:500}
+.rc-me{color:var(--roof);font-weight:500}
+.rc-m{display:grid;grid-template-columns:1fr 92px 96px;gap:10px;font-size:13px;padding:6px 0;align-items:baseline}
+.rc-m > span:not(:first-child){text-align:left}
+.rc-m + .rc-m{border-top:1px dashed var(--line)}
+.rc-run{color:var(--ink-2)}
+.rc-warn{margin-top:12px;display:flex;gap:8px;align-items:flex-start;width:100%;text-align:start;border:0;cursor:pointer;background:var(--late-soft);color:var(--late);border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.6}
+.rc-warn svg{width:16px;height:16px;flex:none;margin-top:2px}
 
 /* معادلة الشهر: خطوات متتالية فعلًا، لذلك مرقّمة */
 .eq{list-style:none;margin:0;padding:0;counter-reset:eq}
@@ -312,6 +343,13 @@ table.tbl tr:last-child td{border-bottom:0}
 .check input{width:18px;height:18px;accent-color:var(--roof)}
 .linkbtn{border:0;background:none;color:var(--roof);font-size:13.5px;cursor:pointer;padding:4px 0;text-decoration:underline}
 
+@media (max-width:400px){
+  .row{gap:10px;padding:11px 12px}
+  .contact{gap:5px}
+  .contact a,.contact button{width:34px;height:34px;border-radius:10px}
+  .contact svg{width:17px;height:17px}
+  .unit{width:38px;height:38px;font-size:15px}
+}
 @media (min-width:720px){
   .hero-big{font-size:40px}
   .sheet{border-radius:22px;bottom:16px;left:16px;right:16px}

@@ -64,6 +64,7 @@ function money(v, cls){ return '<span class="num'+(cls?" "+cls:"")+'">'+fmtPlain
 function qar(v){ return '<span class="num">'+fmtPlain(v)+'</span> ر.ق'; }
 function stText(s){ return L.STATUS_TEXT[s]||""; }
 function unitLabel(p){ return L.unitFor(p) || (p.name||"").slice(0,2); }
+function payCount(n){ return n===1?'دفعة وحدة':(n===2?'دفعتين':n+' دفعات'); }
 function uid(prefix){ return prefix+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
 function isStore(p){ return p && p.type==="store"; }
 
@@ -145,7 +146,7 @@ async function runDataFixes(){
 
 /* ============================ الهيكل ============================ */
 function shell(inner){
-  var tabs=[["month","الشهر",I.month],["dad","الحساب مع الوالد",I.dad],["rep","التقارير",I.rep],["ppl","المستأجرون",I.ppl]];
+  var tabs=[["month","الشهر",I.month],["dad","حساب الوالد",I.dad],["rep","التقارير",I.rep],["ppl","المستأجرون",I.ppl]];
   var m=A.month, now=R.monthKeyNow();
   return '<div class="wrap"><header class="top"><div class="top-row">' +
       '<div class="brand">'+I.mark+'<div><b>دفتر الإيجارات</b><small>مخازن الصادق · الريان القديم</small></div></div>' +
@@ -202,7 +203,7 @@ function monthView(){
 
   // تنبيهات تحتاج قرار
   var noRecv=[]; sum.paid.concat(sum.unpaid).forEach(function(r){ if(r.paidAmt>0 && !L.receiverOf(r.doc)) noRecv.push(r.p); });
-  if(noRecv.length) h+='<div style="margin-top:12px"><button type="button" class="alert bad" data-act="openpay" data-pid="'+noRecv[0].id+'">'+I.warn+'<span><b>'+noRecv.length+' دفعة ما تحدد مين قبضها</b> — بدونها حساب الوالد ناقص. اضغط لتحديدها.</span></button></div>';
+  if(noRecv.length) h+='<div style="margin-top:12px"><button type="button" class="alert bad" data-act="openpay" data-pid="'+noRecv[0].id+'">'+I.warn+'<span><b>'+payCount(noRecv.length)+' ما تحدد مين قبضها.</b> حساب الوالد ناقص لحد ما تحددها، اضغط هون.</span></button></div>';
   if(!fut){
     var acc=L.fatherAccount(m), bt=L.balanceText(acc.balance);
     h+='<div style="margin-top:10px"><button type="button" class="alert info" data-act="tab" data-tab="dad">'+I.dad+'<span>الحساب مع الوالد: <b>'+esc(bt.text)+'</b></span></button></div>';
@@ -262,7 +263,7 @@ function payRow(r, m, withContact){
     ? '<span class="row-end"><b>'+qar(r.paidAmt)+'</b><small>'+who+'</small></span>'
     : '<span class="row-end"><b class="'+(r.status==="late"?'neg':'')+'">'+qar(r.left)+'</b><small><span class="st '+r.status+'">'+stText(r.status)+'</span>'+who+'</small></span>';
   return '<div class="row" data-act="openpay" data-pid="'+p.id+'" role="button" tabindex="0"><span class="unit '+r.status+'">'+esc(unitLabel(p))+'</span>' +
-    '<span class="row-main"><b>'+esc(p.business||p.name)+'</b><small>'+(p.business?esc(p.name)+' · ':'')+sub.join(' · ')+'</small></span>' +
+    '<span class="row-main"><b>'+esc(p.business||p.name)+'</b><small>'+(p.business?'<bdi>'+esc(p.name)+'</bdi> · ':'')+sub.join(' · ')+'</small></span>' +
     end + (withContact && r.status!=="upcoming" ? contactBtns(p,m) : '') + '</div>';
 }
 function methodAr(v){ return {Cash:"نقدًا", Cheque:"شيك", Fawran:"فوران", Bank:"تحويل بنكي"}[v]||v||""; }
@@ -271,23 +272,7 @@ function methodAr(v){ return {Cash:"نقدًا", Cheque:"شيك", Fawran:"فور
 function dadView(){
   var m=A.month, now=R.monthKeyNow(), upto=m>now?now:m, acc=L.fatherAccount(upto), bt=L.balanceText(acc.balance), fm=L.fatherMonth(m), fx=fm.fixed, h="";
   var started = m>=acc.start;
-  h+='<section class="verdict '+bt.dir+'" style="margin-top:14px"><small>الحساب حتى نهاية '+monthLabel(upto)+'</small>' +
-    '<b>'+esc(bt.text)+'</b>' +
-    '<p>'+(bt.dir==="y2f"?'الوالد ما وصله كامل حقه من الدفعات اللي قبضها، والباقي عندك.':(bt.dir==="f2y"?'الوالد قبض أكثر من حقه، والزيادة إلك.':'كل شي مسدّد بين الطرفين.'))+'</p>' +
-    '<div class="v-actions">'+(bt.dir!=="zero"?'<button type="button" class="btn" data-act="newtransfer">تسجيل تحويل '+(bt.dir==="y2f"?'للوالد':'من الوالد')+'</button>':'<span></span>') +
-      '<button type="button" class="v-more" data-act="dadmore" aria-expanded="'+(!!A.dadMore)+'" aria-controls="v-detail">تفصيل المبلغ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button></div>' +
-    (A.dadMore ? '<div class="v-detail" id="v-detail">'+acc.rows.map(function(r){
-        var mt=L.balanceText(r.balance), tr=r.y2f-r.f2y;
-        return '<div class="v-month"><b>'+monthLabel(r.month)+'</b>' +
-          '<div class="v-line"><span>حق الوالد (8,500 ثابت + نص دفعات 1–8)</span><span class="num">'+fmtPlain(r.entitled)+'</span></div>' +
-          '<div class="v-line"><span>قبضه الوالد بإيده</span><span class="num">'+fmtPlain(r.withFather)+'</span></div>' +
-          (r.y2f?'<div class="v-line"><span>حوّلت للوالد</span><span class="num">+ '+fmtPlain(r.y2f)+'</span></div>':'') +
-          (r.f2y?'<div class="v-line"><span>الوالد حوّلي</span><span class="num">− '+fmtPlain(r.f2y)+'</span></div>':'') +
-          '<div class="v-line v-res"><span>نتيجة الشهر</span><span>'+esc(mt.dir==="zero"?"مسكّر":mt.text)+'</span></div></div>';
-      }).join("") +
-      '<div class="v-line v-total"><span>المجموع من '+monthLabel(acc.start)+'</span><span>'+esc(bt.dir==="zero"?"مسكّر":bt.text)+'</span></div>' +
-      (L.fatherMonth(upto).unknown.length?'<p class="v-warn">في دفعات ما تحدد مين قبضها — مش داخلة بالحساب.</p>':'') +
-    '</div>' : '') + '</section>';
+  h+=dadCard(acc, bt, upto);
 
   if(!started){
     h+='<div class="panel pad" style="margin-top:12px"><p class="note">الحساب مع الوالد بلّش من '+monthLabel(acc.start)+'. الأشهر قبلها مسكّرة.</p></div>';
@@ -301,7 +286,7 @@ function dadView(){
     '<li><span class="eq-t"><b>التحويلات بينكم</b><small>'+(fm.y2f?'حوّلت للوالد '+fmtPlain(fm.y2f):'')+(fm.y2f&&fm.f2y?' · ':'')+(fm.f2y?'الوالد حوّلك '+fmtPlain(fm.f2y):'')+(!fm.y2f&&!fm.f2y?'ما في تحويلات هالشهر':'')+'</small></span><span class="eq-v">'+qar(fm.y2f-fm.f2y)+'</span></li>' +
     '<li class="res"><span class="eq-t"><b>نتيجة الشهر</b><small>(4 + 5) − 3</small></span><span class="eq-v '+(fm.balance<0?'neg':'')+'">'+esc(L.balanceText(fm.balance).text.replace(/^الحساب مسكّر.*/,"مسكّر"))+'</span></li>' +
   '</ol>' +
-  (fm.unknown.length?'<div class="alert bad" style="margin-top:8px;cursor:default">'+I.warn+'<span>'+fm.unknown.length+' دفعة ما تحدد مين قبضها ('+fm.unknown.map(function(p){ return esc(p.name); }).join("، ")+') — مش محسوبة بالخطوة 4.</span></div>':'') +
+  (fm.unknown.length?'<div class="alert bad" style="margin-top:8px;cursor:default">'+I.warn+'<span>'+payCount(fm.unknown.length)+' ما تحدد مين قبضها ('+fm.unknown.map(function(p){ return esc(p.name); }).join("، ")+')، فمش محسوبة بالخطوة 4.</span></div>':'') +
   (fm.withMe>0?'<p class="note" style="margin-top:10px">ملاحظة: دفعات قبضتها أنت هالشهر <span class="num">'+fmtPlain(fm.withMe)+'</span> ر.ق — حصة الوالد منها داخلة بالخطوة 2.</p>':'') +
   '</div></section>';
 
@@ -322,13 +307,43 @@ function dadView(){
       '</tbody></table></div></div></section>';
   }
 
-  // كشف الحساب الجاري
-  h+='<section class="sec"><div class="sec-h"><h2>كشف الحساب الجاري</h2><span class="count">من '+monthLabel(acc.start)+'</span></div><div class="panel"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>الشهر</th><th class="n">حق الوالد</th><th class="n">قبض</th><th class="n">تحويلات</th><th class="n">الرصيد</th></tr></thead><tbody>' +
-    acc.rows.map(function(r){ return '<tr><td>'+monthLabel(r.month)+'</td><td class="n">'+money(r.entitled)+'</td><td class="n">'+money(r.withFather)+'</td><td class="n">'+money(r.y2f-r.f2y)+'</td><td class="n">'+money(r.running, r.running<0?"neg":"")+'</td></tr>'; }).join("") +
-    '</tbody></table></div><p class="note" style="padding:0 14px 12px">الرصيد الموجب: إلك عند الوالد · السالب (أحمر): عليك للوالد.</p></div></section>';
-
   h+='<section class="sec"><div class="panel pad"><div class="field"><label for="ss">بداية الحساب مع الوالد</label><input id="ss" type="month" dir="ltr" data-change="settlestart" value="'+esc(S().settings.settleStart||R.SETTLE_FLOOR)+'"></div><p class="help" style="margin-top:6px">الأشهر قبل هالتاريخ ما بتدخل بالحساب. غيّره بس إذا بدك تبدأ الحساب من شهر ثاني.</p></div></section>';
   return h;
+}
+
+/* بطاقة الحساب مع الوالد + «تفصيل المبلغ» على شكل وصل حساب */
+var CHEV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+function dadCard(acc, bt, upto){
+  var open=!!A.dadMore, rows=acc.rows, n=rows.length;
+  var E=0,F=0,Y=0,Fy=0,SH=0,FX=0, unknown=0;
+  rows.forEach(function(r){ E+=r.entitled; F+=r.withFather; Y+=r.y2f; Fy+=r.f2y; SH+=r.shareIncome; FX+=r.fixed.total; unknown+=r.unknown.length; });
+  var owe=E-F-Y+Fy;           // موجب = عليك للوالد · سالب = إلك عنده
+  var gap=E-F;
+  var period = n>1 ? 'من '+monthLabel(acc.start)+' لحد '+monthLabel(upto) : monthLabel(upto);
+  var h='<section class="dadcard'+(open?' open':'')+'">' +
+    '<div class="verdict '+bt.dir+'"><small>الحساب مع الوالد حتى نهاية '+monthLabel(upto)+'</small><b>'+esc(bt.text)+'</b>' +
+    '<div class="v-actions">' +
+      (bt.dir!=="zero"?'<button type="button" class="btn v-primary" data-act="newtransfer">تسجيل تحويل '+(bt.dir==="y2f"?'للوالد':'من الوالد')+'</button>':'<span class="v-ok">ما في شي مطلوب</span>') +
+      '<button type="button" class="v-more" data-act="dadmore" aria-expanded="'+open+'" aria-controls="dad-receipt">تفصيل المبلغ'+CHEV+'</button>' +
+    '</div></div>';
+  if(open){
+    h+='<div class="receipt" id="dad-receipt"><div class="rc-h">كيف طلع الرقم<span>'+period+'</span></div>' +
+      '<div class="rc-row"><span class="rc-l">حق الوالد<small>ثابت <span class="num">'+fmtPlain(FX)+'</span>'+(n>1?' عن '+n+' أشهر':'')+' + نص دفعات 1–8 (<span class="num">'+fmtPlain(SH)+'</span>)</small></span><span class="rc-op"></span><span class="rc-v">'+fmtPlain(E)+'</span></div>' +
+      '<div class="rc-row"><span class="rc-l">قبضه الوالد بإيده<small>دفعات المستأجرين اللي راحت له</small></span><span class="rc-op">−</span><span class="rc-v">'+fmtPlain(F)+'</span></div>' +
+      '<div class="rc-row rc-sub"><span class="rc-l">'+(gap>=0?'الفرق عليك':'الفرق إلك')+'</span><span class="rc-op">=</span><span class="rc-v">'+fmtPlain(Math.abs(gap))+'</span></div>';
+    if(Y) h+='<div class="rc-row"><span class="rc-l">حوّلت للوالد</span><span class="rc-op">−</span><span class="rc-v">'+fmtPlain(Y)+'</span></div>';
+    if(Fy) h+='<div class="rc-row"><span class="rc-l">الوالد حوّلك</span><span class="rc-op">+</span><span class="rc-v">'+fmtPlain(Fy)+'</span></div>';
+    if(!Y && !Fy) h+='<div class="rc-row rc-muted"><span class="rc-l">ما في تحويلات بهالفترة</span><span class="rc-op"></span><span class="rc-v"></span></div>';
+    h+='<div class="rc-row rc-total '+(owe>0.5?'rc-y2f':(owe<-0.5?'rc-f2y':''))+'"><span class="rc-l">'+(Math.abs(owe)<1?'الحساب مسكّر':(owe>0?'عليك للوالد':'إلك عند الوالد'))+'</span><span class="rc-op">=</span><span class="rc-v">'+fmtPlain(Math.abs(owe))+'</span></div><p class="rc-cur">المبالغ بالريال القطري</p>';
+    if(n>1){
+      h+='<div class="rc-months"><div class="rc-m rc-mh"><span>شهر بشهر</span><span>نتيجة الشهر</span><span class="rc-run">الرصيد لنهايته</span></div>'+rows.map(function(r){ var o=-r.balance, c=-r.running;
+        return '<div class="rc-m"><span>'+monthLabel(r.month)+'</span><span class="'+(o>0.5?'rc-dad':(o<-0.5?'rc-me':''))+'">'+(Math.abs(o)<1?'مسكّر':(o>0?'عليك ':'إلك ')+fmtPlain(Math.abs(o)))+'</span><span class="rc-run">'+(Math.abs(c)<1?'0':(c>0?'عليك ':'إلك ')+fmtPlain(Math.abs(c)))+'</span></div>'; }).join("") +
+        '</div>';
+    }
+    if(unknown) h+='<button type="button" class="rc-warn" data-act="tab" data-tab="month">'+I.warn+'<span>'+payCount(unknown)+' ما تحدد مين قبضها، فمش داخلة بالحساب. حدّدها ليطلع الرقم صح.</span></button>';
+    h+='</div>';
+  }
+  return h+'</section>';
 }
 
 /* ============================ تبويب: التقارير ============================ */
@@ -448,7 +463,7 @@ function personRow(p){
     if(!p.depositType||p.depositType==="none") bits.push('<span class="chq">بدون ضمان</span>');
   }
   return '<button type="button" class="row" data-act="editperson" data-pid="'+p.id+'"><span class="unit">'+esc(isStore(p)?unitLabel(p):(p.name||"").slice(0,2))+'</span>' +
-    '<span class="row-main"><b>'+esc(p.business||p.name)+'</b><small>'+(p.business?esc(p.name)+' · ':'')+bits.join(' · ')+'</small></span>' +
+    '<span class="row-main"><b>'+esc(p.business||p.name)+'</b><small>'+(p.business?'<bdi>'+esc(p.name)+'</bdi> · ':'')+bits.join(' · ')+'</small></span>' +
     '<span class="row-end"><b>'+qar(p.rent||0)+'</b><small>شهريًا'+(p.dueDay?' · يوم '+p.dueDay:'')+'</small></span></button>';
 }
 
@@ -495,7 +510,7 @@ function paySheet(s){
     else if(d.receiver==="me") hint = dadShare>0 ? 'نصّها ('+fmtPlain(dadShare)+') حق الوالد — بينضاف على حسابه.' : 'المبلغ كله إلك (مخازن A–E).';
     else hint='<span class="neg">حدّد مين قبض الدفعة — هيك بيطلع حساب الوالد صح.</span>';
   }
-  var h='<div class="sheet-h"><span class="unit '+st+'">'+esc(store_?unitLabel(p):(p.name||"").slice(0,2))+'</span><div class="t"><h3>'+esc(p.business||p.name)+'</h3><small>'+(p.business?esc(p.name)+' · ':'')+monthLabel(m)+' · <span class="st '+st+'">'+stText(st)+'</span></small></div>' +
+  var h='<div class="sheet-h"><span class="unit '+st+'">'+esc(store_?unitLabel(p):(p.name||"").slice(0,2))+'</span><div class="t"><h3>'+esc(p.business||p.name)+'</h3><small>'+(p.business?'<bdi>'+esc(p.name)+'</bdi> · ':'')+monthLabel(m)+' · <span class="st '+st+'">'+stText(st)+'</span></small></div>' +
     '<button type="button" class="xbtn" data-act="closesheet" aria-label="إغلاق">×</button></div><div class="stack">';
   h+='<div class="panel pad" style="box-shadow:inset 0 0 0 1px var(--line-2)"><div class="sumline"><span>إيجار '+R.monthName(m)+'</span><b>'+qar(d.billed)+'</b></div>' +
     (carry>0?'<div class="sumline"><span>متأخر من الأشهر الماضية</span><b class="neg">+ '+qar(carry)+'</b></div>':'') +
