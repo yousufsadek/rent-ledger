@@ -17,6 +17,7 @@
 <script src="firebase-config.js"></script>
 <script src="core.js"></script>
 <script src="store.js"></script>
+<script src="coffee.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -45,6 +46,7 @@ var I = {
   search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>',
   warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>',
   toDad:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>',
+  cup:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M8 3.5c0 1 1 1.5 1 2.5M12 3.5c0 1 1 1.5 1 2.5"/></svg>',
   fromDad:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 };
 
@@ -53,7 +55,7 @@ var A = {
   tab:"month", month:R.monthKeyNow(), sheet:null, q:"", filter:"", range:"1", showPaid:false,
   phase:"boot", err:"", loginBusy:false, loginErr:""
 };
-try{ var st=localStorage.getItem("rl2_tab"); if(["month","dad","rep","ppl"].indexOf(st)>=0) A.tab=st; }catch(e){}
+try{ var st=localStorage.getItem("rl2_tab"); if(["month","dad","cf","rep","ppl"].indexOf(st)>=0) A.tab=st; }catch(e){}
 var store, L;
 function S(){ return store.state; }
 function lastReceiver(){ try{ return localStorage.getItem("rl2_recv")||""; }catch(e){ return ""; } }
@@ -146,12 +148,12 @@ async function runDataFixes(){
 
 /* ============================ الهيكل ============================ */
 function shell(inner){
-  var tabs=[["month","الشهر",I.month],["dad","حساب الوالد",I.dad],["rep","التقارير",I.rep],["ppl","المستأجرون",I.ppl]];
+  var tabs=[["month","الشهر",I.month],["dad","حساب الوالد",I.dad],["cf","القهوة",I.cup],["rep","التقارير",I.rep],["ppl","المستأجرون",I.ppl]];
   var m=A.month, now=R.monthKeyNow();
   return '<div class="wrap"><header class="top"><div class="top-row">' +
       '<div class="brand">'+I.mark+'<div><b>دفتر الإيجارات</b><small>مخازن الصادق · الريان القديم</small></div></div>' +
       '<button type="button" class="iconbtn" data-act="settings" aria-label="الإعدادات">'+I.gear+'</button></div>' +
-    (A.tab==="ppl" ? '' : '<div class="month">' +
+    (A.tab==="ppl"||A.tab==="cf" ? '' : '<div class="month">' +
       '<button type="button" class="step" data-act="mprev" aria-label="الشهر السابق">'+I.prev+'</button>' +
       '<div class="mname"><b>'+monthLabel(m)+'</b>'+(m>now?'<span class="tag">قادم</span>':'')+
         (m!==now?'<button type="button" data-act="mnow">رجوع للشهر الحالي</button>':'')+'</div>' +
@@ -167,7 +169,7 @@ function render(){
   if(A.phase==="login"){ root.innerHTML=loginView(); return; }
   if(A.phase!=="ready"){ root.innerHTML='<div class="login"><p>جارٍ التحميل…</p></div>'; return; }
   L=R.Ledger(S());
-  var v = A.tab==="dad" ? dadView() : A.tab==="rep" ? repView() : A.tab==="ppl" ? pplView() : monthView();
+  var v = A.tab==="cf" ? CF.view() : A.tab==="dad" ? dadView() : A.tab==="rep" ? repView() : A.tab==="ppl" ? pplView() : monthView();
   var y=window.scrollY;
   root.innerHTML=shell(v);
   window.scrollTo(0,y);
@@ -204,6 +206,7 @@ function monthView(){
   // تنبيهات تحتاج قرار
   var noRecv=[]; sum.paid.concat(sum.unpaid).forEach(function(r){ if(r.paidAmt>0 && !L.receiverOf(r.doc)) noRecv.push(r.p); });
   if(noRecv.length) h+='<div style="margin-top:12px"><button type="button" class="alert bad" data-act="openpay" data-pid="'+noRecv[0].id+'">'+I.warn+'<span><b>'+payCount(noRecv.length)+' ما تحدد مين قبضها.</b> حساب الوالد ناقص لحد ما تحددها، اضغط هون.</span></button></div>';
+  var cfa=CF.alerts(); if(cfa) h+='<div class="stack" style="margin-top:10px;gap:8px">'+cfa+'</div>';
   if(!fut){
     var acc=L.fatherAccount(m), bt=L.balanceText(acc.balance);
     h+='<div style="margin-top:10px"><button type="button" class="alert info" data-act="tab" data-tab="dad">'+I.dad+'<span>الحساب مع الوالد: <b>'+esc(bt.text)+'</b></span></button></div>';
@@ -492,7 +495,7 @@ function closeSheet(){
 function renderSheet(anim){
   var s=A.sheet, root=document.getElementById("sheetroot"); if(!s){ root.innerHTML=""; return; }
   var body = s.kind==="pay"?paySheet(s) : s.kind==="person"?personSheet(s) : s.kind==="stmt"?stmtSheet(s) : s.kind==="transfer"?transferSheet(s)
-    : s.kind==="expense"?expenseSheet(s) : s.kind==="shares"?sharesSheet(s) : s.kind==="settings"?settingsSheet(s) : s.kind==="endocc"?endOccSheet(s) : "";
+    : String(s.kind).indexOf("cf")===0?CF.sheet(s) : s.kind==="expense"?expenseSheet(s) : s.kind==="shares"?sharesSheet(s) : s.kind==="settings"?settingsSheet(s) : s.kind==="endocc"?endOccSheet(s) : "";
   var keep=document.querySelector(".sheet"), sc=keep?keep.scrollTop:0;
   root.innerHTML='<div class="scrim'+(anim?'':' on')+'" data-act="closesheet"></div><div class="sheet'+(anim?'':' on')+'" role="dialog" aria-modal="true"><div class="grab"></div>'+body+'</div>';
   document.body.style.overflow="hidden";
@@ -671,7 +674,7 @@ document.addEventListener("click", function(e){
     case "settings": openSheet({kind:"settings"}); break;
     case "closesheet": closeSheet(); break;
     case "openpay": if(pid && S().people[pid]) openSheet(payDraft(pid, el.getAttribute("data-month")||A.month)); break;
-    case "pick": if(s){ var k=el.getAttribute("data-k"), v=el.getAttribute("data-v"); s.d[k] = s.d[k]===v && k!=="receiver" && k!=="dir" && k!=="type" && k!=="next" && k!=="by" ? "" : v; renderSheet(); } break;
+    case "pick": if(s){ var k=el.getAttribute("data-k"), v=el.getAttribute("data-v"); s.d[k] = s.d[k]===v && (k==="method"||k==="payMethod") ? "" : v; CF.onPick(k); renderSheet(); } break;
     case "fullamt": if(s){ s.d.amount=el.getAttribute("data-v"); renderSheet(); } break;
     case "savepay": savePayFromSheet(); break;
     case "clearpay": if(s && confirm("إلغاء الدفعة المسجّلة لـ "+(S().people[s.pid].name||"")+"؟")){
@@ -715,6 +718,7 @@ document.addEventListener("click", function(e){
     case "pwshow": var pw=document.getElementById("li-p"); pw.type=pw.type==="password"?"text":"password"; el.textContent=pw.type==="password"?"إظهار":"إخفاء"; break;
     case "forgot": var em=document.getElementById("li-e").value.trim(); if(!em){ A.loginErr="اكتب بريدك أولًا"; render(); break; }
       store.resetPassword(em).then(function(){ toast("إذا البريد مسجّل، وصلك رابط إعادة التعيين"); }, function(){ toast("إذا البريد مسجّل، وصلك رابط إعادة التعيين"); }); break;
+    default: if(a.indexOf("cf")===0) CF.act(a, el);
   }
 });
 // الضغط على الصف بلوحة المفاتيح
@@ -871,6 +875,7 @@ function buildSheets(){
   out.push({name:"ملخص المستأجرين", rows:summ.concat([[],["آخر تحديث", new Date().toLocaleString("en-GB")]])});
   out.push({name:"الحساب مع الوالد", rows:dad});
   out.push({name:"المستأجرون", rows:ppl});
+  out.push({name:"ماكينات القهوة", rows:CF.sheetRows()});
   months.slice().reverse().forEach(function(mk){ out.push({name:(R.EN_MONTHS[parseInt(mk.split("-")[1],10)-1]+" "+mk.split("-")[0]), rows:monthRows(mk)}); });
   return out;
 }
@@ -934,13 +939,21 @@ async function loadAds(){ meta.adsLoading=true; meta.adsErr=""; paintAds(); try{
 async function setCampaign(el,on){ if(!armed(el)){ toast(on?"اضغط مرة ثانية للتفعيل — بيبدأ الصرف":"اضغط مرة ثانية للإيقاف"); return; } el.disabled=true;
   try{ await metaCall(on?"ads_activate":"ads_pause",{campaignId:el.getAttribute("data-cid")}); toast(on?"تم تفعيل الحملة":"تم إيقاف الحملة"); await loadAds(); }catch(e){ meta.adsErr=metaErr(e); paintAds(); } }
 
+/* ============================ قسم القهوة ============================ */
+var CF = window.RLCoffee({
+  S:function(){ return store.state; }, get store(){ return store; }, refresh:refresh, toast:toast,
+  openSheet:function(s){ if(A.sheet){ A.sheet=s; renderSheet(); var sh=document.querySelector(".sheet"); if(sh) sh.scrollTop=0; } else openSheet(s); },
+  closeSheet:closeSheet, renderSheet:function(){ renderSheet(); }, sheet:function(){ return A.sheet; }, choice:choice, saveSettings:saveSettings,
+  tab:function(){ return A.tab; }, goTab:function(t){ A.tab=t; try{ localStorage.setItem("rl2_tab",t); }catch(x){} render(); window.scrollTo(0,0); }
+});
+
 /* ============================ تشغيل ============================ */
 store = RLStore({
   audit:true,
   onAuth:function(u){ A.phase = u ? "loading" : "login"; A.loginBusy=false; render(); },
   onError:function(code){ if(code==="perm"){ toast("ما عندك صلاحية على البيانات — راجع قواعد Firestore"); } else { A.phase="error"; A.err="تعذّر تحميل Firebase. تحقّق من الإنترنت ثم أعد المحاولة."; render(); } },
   onChange:function(st){
-    if(st.ready){ A.phase="ready"; runDataFixes();
+    if(st.ready){ A.phase="ready"; runDataFixes(); CF.seed();
       if(!sheet.booted && sheetsCfg() && st.fresh.people && st.fresh.payments){ sheet.booted=true; scheduleSheetSync(); }
       if(!meta.checked && metaUrl() && store.mode==="cloud") checkMeta(); }
     render();

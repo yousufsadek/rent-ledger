@@ -82,8 +82,10 @@
         .filter(filter||function(){ return true; })
         .sort(function(a,b){ return (a.order||0)-(b.order||0); });
     }
-    L.people = function(){ return list(function(p){ return !p.trashed; }); };
-    L.trashed = function(){ return list(function(p){ return !!p.trashed; }); };
+    // سجلات ماكينات القهوة (cfMachine, cfRental, cfLead, cfImage) محفوظة بنفس المجموعة وما إلها علاقة بالمستودعات
+    function isCoffee(p){ return /^cf/.test(String(p.type||"")); }
+    L.people = function(){ return list(function(p){ return !p.trashed && !isCoffee(p); }); };
+    L.trashed = function(){ return list(function(p){ return !!p.trashed && !isCoffee(p); }); };
     L.person = function(id){ return state.people[id] ? Object.assign({id:id}, state.people[id]) : null; };
 
     function payDoc(pid,m){ return state.payments[pid+"__"+m]||null; }
