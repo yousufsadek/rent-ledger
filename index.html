@@ -47,6 +47,7 @@ var I = {
   warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>',
   toDad:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>',
   cup:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M8 3.5c0 1 1 1.5 1 2.5M12 3.5c0 1 1 1.5 1 2.5"/></svg>',
+  mach:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="16" height="7" rx="1.5"/><path d="M6 10.5v9.5M18 10.5v9.5M4 20h16"/><path d="M10 13.5h4v3h-4z"/></svg>',
   fromDad:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 };
 
@@ -55,7 +56,15 @@ var A = {
   tab:"month", month:R.monthKeyNow(), sheet:null, q:"", filter:"", range:"1", showPaid:false,
   phase:"boot", err:"", loginBusy:false, loginErr:""
 };
-try{ var st=localStorage.getItem("rl2_tab"); if(["month","dad","cf","rep","ppl"].indexOf(st)>=0) A.tab=st; }catch(e){}
+// شغلين منفصلين: المستودعات (store) وماكينات القهوة (coffee)، ولكل واحد تبويباته
+var TABS={
+  store:[["month","الشهر","month"],["dad","حساب الوالد","dad"],["rep","التقارير","rep"],["ppl","المستأجرون","ppl"]],
+  coffee:[["cf_rent","الإيجارات","cup"],["cf_mach","الماكينات","mach"],["cf_lead","بالانتظار","ppl"],["cf_rep","التقارير","rep"]]
+};
+function bizOf(t){ return String(t).indexOf("cf_")===0 ? "coffee" : "store"; }
+A.biz="store";
+try{ var st=localStorage.getItem("rl2_tab"); if(TABS.store.concat(TABS.coffee).some(function(x){ return x[0]===st; })){ A.tab=st; A.biz=bizOf(st); } }catch(e){}
+function setTab(t){ A.tab=t; A.biz=bizOf(t); A.filter=""; try{ localStorage.setItem("rl2_tab",t); localStorage.setItem("rl2_tab_"+A.biz,t); }catch(x){} render(); window.scrollTo(0,0); }
 var store, L;
 function S(){ return store.state; }
 function lastReceiver(){ try{ return localStorage.getItem("rl2_recv")||""; }catch(e){ return ""; } }
@@ -148,19 +157,22 @@ async function runDataFixes(){
 
 /* ============================ الهيكل ============================ */
 function shell(inner){
-  var tabs=[["month","الشهر",I.month],["dad","حساب الوالد",I.dad],["cf","القهوة",I.cup],["rep","التقارير",I.rep],["ppl","المستأجرون",I.ppl]];
-  var m=A.month, now=R.monthKeyNow();
-  return '<div class="wrap"><header class="top"><div class="top-row">' +
-      '<div class="brand">'+I.mark+'<div><b>دفتر الإيجارات</b><small>مخازن الصادق · الريان القديم</small></div></div>' +
+  var tabs=TABS[A.biz], m=A.month, now=R.monthKeyNow(), coffee=A.biz==="coffee";
+  var showMonth = !coffee && A.tab!=="ppl";
+  return '<div class="wrap'+(coffee?' biz-coffee':'')+'"><header class="top"><div class="top-row">' +
+      '<div class="brand">'+I.mark+'<div><b>دفتر الإيجارات</b><small>'+(coffee?'تأجير ماكينات القهوة':'مخازن الصادق · الريان القديم')+'</small></div></div>' +
       '<button type="button" class="iconbtn" data-act="settings" aria-label="الإعدادات">'+I.gear+'</button></div>' +
-    (A.tab==="ppl"||A.tab==="cf" ? '' : '<div class="month">' +
+    '<div class="biz" role="tablist" aria-label="نوع الشغل">' +
+      '<button type="button" role="tab" data-act="biz" data-v="store" aria-selected="'+!coffee+'">'+I.month+'<span>المستودعات</span></button>' +
+      '<button type="button" role="tab" data-act="biz" data-v="coffee" aria-selected="'+coffee+'">'+I.cup+'<span>ماكينات القهوة</span></button></div>' +
+    (!showMonth ? '' : '<div class="month">' +
       '<button type="button" class="step" data-act="mprev" aria-label="الشهر السابق">'+I.prev+'</button>' +
       '<div class="mname"><b>'+monthLabel(m)+'</b>'+(m>now?'<span class="tag">قادم</span>':'')+
         (m!==now?'<button type="button" data-act="mnow">رجوع للشهر الحالي</button>':'')+'</div>' +
       '<button type="button" class="step" data-act="mnext" aria-label="الشهر التالي">'+I.next+'</button></div>') +
     '</header><main id="view">'+inner+'</main></div>' +
-    '<nav class="tabbar" aria-label="الأقسام"><div class="tabbar-in">'+tabs.map(function(t){
-      return '<button type="button" data-act="tab" data-tab="'+t[0]+'"'+(A.tab===t[0]?' aria-current="page"':'')+'>'+t[2]+'<span>'+t[1]+'</span></button>'; }).join("")+'</div></nav>';
+    '<nav class="tabbar'+(coffee?' biz-coffee':'')+'" aria-label="الأقسام"><div class="tabbar-in">'+tabs.map(function(t){
+      return '<button type="button" data-act="tab" data-tab="'+t[0]+'"'+(A.tab===t[0]?' aria-current="page"':'')+'>'+I[t[2]]+'<span>'+t[1]+'</span></button>'; }).join("")+'</div></nav>';
 }
 
 function render(){
@@ -169,7 +181,7 @@ function render(){
   if(A.phase==="login"){ root.innerHTML=loginView(); return; }
   if(A.phase!=="ready"){ root.innerHTML='<div class="login"><p>جارٍ التحميل…</p></div>'; return; }
   L=R.Ledger(S());
-  var v = A.tab==="cf" ? CF.view() : A.tab==="dad" ? dadView() : A.tab==="rep" ? repView() : A.tab==="ppl" ? pplView() : monthView();
+  var v = A.biz==="coffee" ? CF.view(A.tab.slice(3)) : A.tab==="dad" ? dadView() : A.tab==="rep" ? repView() : A.tab==="ppl" ? pplView() : monthView();
   var y=window.scrollY;
   root.innerHTML=shell(v);
   window.scrollTo(0,y);
@@ -206,7 +218,7 @@ function monthView(){
   // تنبيهات تحتاج قرار
   var noRecv=[]; sum.paid.concat(sum.unpaid).forEach(function(r){ if(r.paidAmt>0 && !L.receiverOf(r.doc)) noRecv.push(r.p); });
   if(noRecv.length) h+='<div style="margin-top:12px"><button type="button" class="alert bad" data-act="openpay" data-pid="'+noRecv[0].id+'">'+I.warn+'<span><b>'+payCount(noRecv.length)+' ما تحدد مين قبضها.</b> حساب الوالد ناقص لحد ما تحددها، اضغط هون.</span></button></div>';
-  var cfa=CF.alerts(); if(cfa) h+='<div class="stack" style="margin-top:10px;gap:8px">'+cfa+'</div>';
+  var cfa=CF.summaryLine(); if(cfa) h+='<div style="margin-top:10px">'+cfa+'</div>';
   if(!fut){
     var acc=L.fatherAccount(m), bt=L.balanceText(acc.balance);
     h+='<div style="margin-top:10px"><button type="button" class="alert info" data-act="tab" data-tab="dad">'+I.dad+'<span>الحساب مع الوالد: <b>'+esc(bt.text)+'</b></span></button></div>';
@@ -665,7 +677,8 @@ document.addEventListener("click", function(e){
   var el=e.target.closest("[data-act]"); if(!el) return;
   var a=el.getAttribute("data-act"), pid=el.getAttribute("data-pid"), s=A.sheet;
   switch(a){
-    case "tab": A.tab=el.getAttribute("data-tab"); A.filter=""; try{ localStorage.setItem("rl2_tab",A.tab); }catch(x){} render(); window.scrollTo(0,0); break;
+    case "tab": setTab(el.getAttribute("data-tab")); break;
+    case "biz": var bz=el.getAttribute("data-v"); if(bz!==A.biz){ var last=null; try{ last=localStorage.getItem("rl2_tab_"+bz); }catch(x){} setTab(last && bizOf(last)===bz ? last : TABS[bz][0][0]); } break;
     case "mprev": A.month=R.shiftMonth(A.month,-1); A.showPaid=false; render(); break;
     case "mnext": A.month=R.shiftMonth(A.month,1); A.showPaid=false; render(); break;
     case "mnow": A.month=R.monthKeyNow(); render(); break;
@@ -944,7 +957,7 @@ var CF = window.RLCoffee({
   S:function(){ return store.state; }, get store(){ return store; }, refresh:refresh, toast:toast,
   openSheet:function(s){ if(A.sheet){ A.sheet=s; renderSheet(); var sh=document.querySelector(".sheet"); if(sh) sh.scrollTop=0; } else openSheet(s); },
   closeSheet:closeSheet, renderSheet:function(){ renderSheet(); }, sheet:function(){ return A.sheet; }, choice:choice, saveSettings:saveSettings,
-  tab:function(){ return A.tab; }, goTab:function(t){ A.tab=t; try{ localStorage.setItem("rl2_tab",t); }catch(x){} render(); window.scrollTo(0,0); }
+  tab:function(){ return A.tab; }, goTab:setTab
 });
 
 /* ============================ تشغيل ============================ */

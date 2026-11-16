@@ -12,8 +12,7 @@
 
 window.RLCoffee = function(api){
   var R=window.RL, esc=R.esc, fmtPlain=R.fmtPlain;
-  var C={ seg:"rent", showEnded:false };
-  try{ var sg=localStorage.getItem("rl2_cfseg"); if(sg) C.seg=sg; }catch(e){}
+  var C={ showEnded:false };
   var REMIND_DAYS=3;   // التذكير قبل نهاية الإيجار بـ3 أيام
 
   /* ---------------- أيقونات ---------------- */
@@ -172,27 +171,30 @@ window.RLCoffee = function(api){
   }
 
   /* ================= العرض الرئيسي ================= */
-  function view(){
+  // seg: rent (الإيجارات) · mach (الماكينات) · lead (بالانتظار) · rep (التقارير)
+  function view(seg){
     var ms=machines(), rs=rentals(), ls=leads(), h="";
-    var act=rs.filter(function(r){ return r.status!=="ended"; });
     var free=ms.filter(function(m){ return machineState(m)==="free"; });
+    if(seg==="mach") return machinesView(ms);
+    if(seg==="lead") return leadsView(ls, free);
+    if(seg==="rep") return reportView(ms, rs);
+    var act=rs.filter(function(r){ return r.status!=="ended"; });
     var waiting=ls.filter(function(l){ return l.status==="new"||l.status==="contacted"||!l.status; });
     var owed=act.reduce(function(a,r){ var b=money(r).balance; return a+(b>0?b:0); },0);
-
     h+='<section class="hero cf-hero"><div class="hero-line"><span class="hero-big num">'+act.length+'</span><span class="hero-of">من '+ms.length+' ماكينات مؤجرة الآن</span></div>' +
       '<div class="hero-sub">'+(free.length?free.length+' متاحة للإيجار':'ما في ماكينة متاحة')+(waiting.length?' · '+waiting.length+' زبون بالانتظار':'')+(owed>0?' · مستحق على المستأجرين '+qar(owed):'')+'</div>' +
-      '<div class="cf-fleet" aria-hidden="true">'+ms.map(function(m){ return '<i class="'+machineState(m)+'"></i>'; }).join("")+'</div></section>';
-
+      '<div class="cf-fleet" aria-hidden="true">'+ms.map(function(m){ return '<i class="'+machineState(m)+'"></i>'; }).join("")+'</div>' +
+      '<div class="legend"><span><i style="background:var(--bean)"></i>مؤجرة</span><span><i style="background:var(--roof)"></i>متاحة</span><span><i style="background:var(--part)"></i>بالصيانة</span></div></section>';
     var al=alerts(true); if(al) h+='<div class="stack" style="margin-top:12px;gap:8px">'+al+'</div>';
-
-    h+='<div class="seg" role="group" aria-label="قسم القهوة" style="margin-top:16px">'+[["rent","الإيجارات"],["mach","الماكينات"],["lead","بالانتظار"+(waiting.length?" ("+waiting.length+")":"")],["rep","رجعت حقها؟"]].map(function(x){
-      return '<button type="button" data-act="cfseg" data-v="'+x[0]+'" aria-pressed="'+(C.seg===x[0])+'">'+x[1]+'</button>'; }).join("")+'</div>';
-
-    if(C.seg==="mach") h+=machinesView(ms);
-    else if(C.seg==="lead") h+=leadsView(ls, free);
-    else if(C.seg==="rep") h+=reportView(ms);
-    else h+=rentalsView(rs);
-    return h;
+    return h+rentalsView(rs);
+  }
+  // سطر صغير بصفحة المستودعات حتى ما يضيع تذكير القهوة
+  function summaryLine(){
+    var ending=0, overdue=0, owed=0;
+    rentals().forEach(function(r){ if(r.status==="ended") return; var st=rentalState(r); if(st==="ending") ending++; if(st==="overdue") overdue++; var mo=money(r); if(mo.rateKnown && mo.balance>0 && r.start<=today()) owed+=mo.balance; });
+    var parts=[]; if(ending) parts.push(ending===1?'إيجار بينتهي خلال '+REMIND_DAYS+' أيام':ending+' إيجارات بتنتهي خلال '+REMIND_DAYS+' أيام'); if(overdue) parts.push(overdue===1?'إيجار خلصت مدته':overdue+' إيجارات خلصت مدتها'); if(owed) parts.push('مستحق '+qar(owed));
+    if(!parts.length) return "";
+    return '<button type="button" class="alert cf-mini" data-act="cfgo" data-v="rent"><span>'+I.cup+'</span><span><b>ماكينات القهوة:</b> '+parts.join('، ')+'</span></button>';
   }
 
   // تنبيهات: قرّب ينتهي (3 أيام)، انتهت المدة، مبلغ مستحق، ماكينة متاحة وفي زبون ناطر
@@ -265,9 +267,9 @@ window.RLCoffee = function(api){
   }
 
   /* ---------------- التقارير: رجعت حقها؟ ---------------- */
-  function reportView(ms){
+  function reportView(ms, rs){
     var h="", T={need:0,got:0};
-    h+='<section class="sec"><div class="sec-h"><h2>كل ماكينة: رجعت حقها؟</h2></div>';
+    h+='<section class="sec" style="margin-top:14px"><div class="sec-h"><h2>كل ماكينة: رجعت حقها؟</h2></div>';
     if(!ms.length) return h+'<div class="panel empty">ما في ماكينات</div></section>';
     h+=ms.map(function(m){
       var p=payback(m); T.need+=p.need; T.got+=p.got;
@@ -281,6 +283,18 @@ window.RLCoffee = function(api){
         '<div class="sumline"><span>الإشغال</span><b>'+Math.round(p.occ*100)+'% <small class="note">('+p.rentedDays+' من '+p.totalDays+' يوم)</small></b></div></div>';
     }).join("");
     h+='<div class="panel pad" style="margin-top:10px"><div class="sumline total"><span>المجموع: حصّلت '+qar(T.got)+'</span><b>'+(T.need?Math.round(T.got/T.need*100)+'% من '+qar(T.need):'')+'</b></div></div></section>';
+    // التحصيل شهر بشهر من كل الإيجارات
+    var byM={}; (rs||[]).forEach(function(r){ (r.payments||[]).forEach(function(p){ var k=String(p.date||"").slice(0,7); if(!k) return; byM[k]=(byM[k]||0)+(Number(p.amount)||0); }); });
+    var ks=Object.keys(byM).sort().reverse();
+    h+='<section class="sec"><div class="sec-h"><h2>التحصيل شهر بشهر</h2></div>' + (ks.length ? '<div class="panel"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>الشهر</th><th class="n">المحصّل</th></tr></thead><tbody>' +
+      ks.map(function(k){ return '<tr><td>'+R.monthLabel(k)+'</td><td class="n num">'+fmtPlain(byM[k])+'</td></tr>'; }).join("") +
+      '<tr class="tot"><td>المجموع</td><td class="n num">'+fmtPlain(T.got)+'</td></tr></tbody></table></div></div>' : '<div class="panel empty">ما في دفعات مسجلة لسا</div>') + '</section>';
+    // الإيجارات الحالية: مين عليه شي
+    var act=(rs||[]).filter(function(r){ return r.status!=="ended"; });
+    if(act.length) h+='<section class="sec"><div class="sec-h"><h2>الإيجارات الحالية</h2></div><div class="panel"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>المستأجر والماكينة</th><th>لحد</th><th class="n">الباقي عليه</th></tr></thead><tbody>' +
+      act.map(function(r){ var m=get(r.machineId)||{}, mo=money(r); return '<tr data-act="cfopenrental" data-id="'+r.id+'" style="cursor:pointer"><td style="white-space:normal">'+esc(r.company||r.tenant||"بدون اسم")+'<br><small class="note"><bdi>'+esc(m.name||"")+'</bdi></small></td><td>'+R.dmy(r.end)+'</td><td class="n num'+(mo.balance>0?' neg':'')+'">'+(mo.rateKnown?fmtPlain(Math.max(0,mo.balance)):'—')+'</td></tr>'; }).join("") +
+      '</tbody></table></div></div></section>';
+    h+='<div class="btnrow" style="margin-top:10px"><button type="button" class="btn line" data-act="excel">تنزيل ملف Excel</button></div>';
     return h;
   }
 
@@ -459,7 +473,7 @@ window.RLCoffee = function(api){
   function act(a, el){
     var s=api.sheet(), id=el.getAttribute("data-id");
     switch(a){
-      case "cfseg": C.seg=el.getAttribute("data-v"); try{ localStorage.setItem("rl2_cfseg", C.seg); }catch(e){} if(api.tab()!=="cf") api.goTab("cf"); else api.refresh(); return true;
+      case "cfseg": case "cfgo": api.goTab("cf_"+el.getAttribute("data-v")); return true;
       case "cfshowended": C.showEnded=true; api.refresh(); return true;
       case "cfphoto": var t=el.getAttribute("data-t"), i=el.getAttribute("data-i"); pickPhoto(t, i==null?null:(i==="new"?"new":Number(i))); return true;
       case "cfrmphoto": var tt=el.getAttribute("data-t"), pid=el.getAttribute("data-id"), key=tt==="out"?"photosOut":"photosIn"; s.d[key]=(s.d[key]||[]).filter(function(x){ return x!==pid; }); api.renderSheet(); return true;
@@ -611,7 +625,7 @@ window.RLCoffee = function(api){
     }catch(e){ seedTried=false; }
   }
 
-  return { view:view, sheet:sheet, act:act, onPick:onPick, alerts:function(){ return alerts(false); }, sheetRows:sheetRows, seed:seed,
+  return { view:view, sheet:sheet, act:act, onPick:onPick, alerts:function(){ return alerts(false); }, summaryLine:summaryLine, sheetRows:sheetRows, seed:seed,
     isCoffee:function(p){ return p && /^cf/.test(String(p.type||"")); } };
 };
 })();

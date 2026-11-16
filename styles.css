@@ -67,7 +67,7 @@ h1,h2,h3,h4{margin:0;font-weight:600;line-height:1.25}
 
 /* ---------- التبويب السفلي ---------- */
 .tabbar{position:fixed;bottom:0;left:0;right:0;z-index:25;background:color-mix(in srgb,var(--slab) 94%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
-.tabbar-in{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:2px}
+.tabbar-in{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
 .tabbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:12px;cursor:pointer;color:var(--ink-3);font-size:11.5px;font-weight:500}
 .tabbar svg{width:22px;height:22px}
 .tabbar button[aria-current="page"]{color:var(--roof-ink);background:var(--roof-soft)}
@@ -386,7 +386,6 @@ table.tbl tr:last-child td{border-bottom:0}
    ===================================================================== */
 :root{ --bean:#6B4226; --bean-soft:#F1E6DC; }
 @media (prefers-color-scheme: dark){ :root{ --bean:#D9A77E; --bean-soft:#33251B; } }
-.tabbar button{font-size:11px}
 .cf-fleet{display:flex;gap:4px;margin-top:14px}
 .cf-fleet i{flex:1;max-width:64px;height:12px;border-radius:3px;background:var(--line)}
 .cf-fleet i.rented{background:var(--bean)}
@@ -471,3 +470,16 @@ span.cf-gimg.cf-noimg{display:flex}
 .cf-pct{font-size:24px;font-weight:600}
 .alert .contact{flex:none}
 .alert > span:first-child svg{width:18px;height:18px}
+
+/* مفتاح نوع الشغل: المستودعات / ماكينات القهوة */
+.biz{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;padding:4px;border-radius:14px;background:var(--slab);box-shadow:inset 0 0 0 1px var(--line)}
+.biz button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:42px;border:0;border-radius:11px;background:none;cursor:pointer;font-weight:500;font-size:14px;color:var(--ink-2)}
+.biz button svg{width:19px;height:19px}
+.biz button[aria-selected="true"]{background:var(--roof);color:#fff}
+.biz button[data-v="coffee"][aria-selected="true"]{background:var(--bean-deep)}
+:root{ --bean-deep:#6B4226; }
+/* بوضع القهوة: التبويب المختار بلون الإسبريسو */
+.tabbar.biz-coffee button[aria-current="page"]{color:var(--bean);background:var(--bean-soft)}
+.cf-mini{background:var(--bean-soft);color:var(--bean)}
+.wrap.biz-coffee .brand-mark rect{fill:var(--bean-deep)}
+.wrap.biz-coffee .brand-mark path:last-child{stroke:var(--bean-deep)}
