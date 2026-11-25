@@ -190,9 +190,12 @@ window.RLCoffee = function(api){
   }
   // سطر صغير بصفحة المستودعات حتى ما يضيع تذكير القهوة
   function summaryLine(){
-    var ending=0, overdue=0, owed=0;
-    rentals().forEach(function(r){ if(r.status==="ended") return; var st=rentalState(r); if(st==="ending") ending++; if(st==="overdue") overdue++; var mo=money(r); if(mo.rateKnown && mo.balance>0 && r.start<=today()) owed+=mo.balance; });
-    var parts=[]; if(ending) parts.push(ending===1?'إيجار بينتهي خلال '+REMIND_DAYS+' أيام':ending+' إيجارات بتنتهي خلال '+REMIND_DAYS+' أيام'); if(overdue) parts.push(overdue===1?'إيجار خلصت مدته':overdue+' إيجارات خلصت مدتها'); if(owed) parts.push('مستحق '+qar(owed));
+    var ending=[], overdue=[], owed=0;
+    rentals().forEach(function(r){ if(r.status==="ended") return; var st=rentalState(r), who=esc(r.company||r.tenant||"المستأجر"), dl=daysLeft(r);
+      if(st==="ending") ending.push(who+' بينتهي '+(dl===0?'<b>اليوم</b>':(dl===1?'بكرا':'بعد '+dl+' أيام'))+' ('+R.dmy(r.end)+')');
+      if(st==="overdue") overdue.push(who+' خلصت مدته من '+(-dl)+' يوم');
+      var mo=money(r); if(mo.rateKnown && mo.balance>0 && r.start<=today()) owed+=mo.balance; });
+    var parts=ending.concat(overdue); if(owed) parts.push('مستحق '+qar(owed));
     if(!parts.length) return "";
     return '<button type="button" class="alert cf-mini" data-act="cfgo" data-v="rent"><span>'+I.cup+'</span><span><b>ماكينات القهوة:</b> '+parts.join('، ')+'</span></button>';
   }
