@@ -93,8 +93,10 @@
     L.payDoc = payDoc; L.sumPaid = sumPaid;
 
     // المستأجر الجديد لا يُحتسب عليه شيء قبل شهر بدايته، والمنتهي لا يُحتسب عليه بعد شهر نهايته
-    function beforeStart(p,m){ return !!(p && p.startMonth && m<p.startMonth && !payDoc(p.id,m)); }
-    function afterEnd(p,m){ return !!(p && p.endMonth && m>p.endMonth && !payDoc(p.id,m)); }
+    // سجل دفعة فاضي (بدون مبلغ) ما بيخلّي المستأجر مطالب بشهر خارج فترة إيجاره
+    function hasMoney(pid,m){ return sumPaid(pid,m)>0; }
+    function beforeStart(p,m){ return !!(p && p.startMonth && m<p.startMonth && !hasMoney(p.id,m)); }
+    function afterEnd(p,m){ return !!(p && p.endMonth && m>p.endMonth && !hasMoney(p.id,m)); }
     function inOccupancy(p,m){
       if(!m) return !p.archived;
       if(afterEnd(p,m)) return false;
