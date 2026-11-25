@@ -143,8 +143,10 @@
       var d=payDoc(p.id,m), req=required(p,m), paid=sumPaid(p.id,m);
       if(d && (d.paid===true || (d.paid!==false && paid>=req && req>0))) return "paid";
       if(req===0 && paid===0 && p.type==="store") return "paid";
-      if(paid>0) return "partial";
       var now=monthKeyNow();
+      // عليه متأخر من شهر سابق: متأخر (أحمر) حتى لو دفع جزء
+      if(m<=now && carryover(p,m)>0 && outstanding(p,m)>0) return "late";
+      if(paid>0) return "partial";
       if(m>now) return "upcoming";
       if(m<now) return "late";
       if(p.dueDay && new Date().getDate()>p.dueDay) return "late";
