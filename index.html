@@ -791,10 +791,32 @@ function savePersonFromSheet(){
     var sm=d.startMonth||null, emn=d.endMonth||null; if(sm&&emn&&emn<sm){ toast("شهر النهاية قبل البداية"); return; }
     patch.startMonth=sm; patch.endMonth=emn;
   }
+  var cm=/^\d{4}-\d{2}-\d{2}$/.test(d.contractStart||"") ? d.contractStart.slice(0,7) : null;
   if(!s.pid){
     if(d.type!=="partner" && !d.unit){ toast("اختر المخزن"); return; }
-    addPerson(Object.assign({type:d.type==="partner"?"partner":"store", group:d.type==="partner"?null:(patch.group||"ONE_TO_EIGHT")}, patch));
-  } else savePerson(s.pid, patch);
+    var data=Object.assign({type:d.type==="partner"?"partner":"store", group:d.type==="partner"?null:(patch.group||"ONE_TO_EIGHT")}, patch);
+    if(d.type!=="partner"){
+      // أول شهر إيجار = شهر بداية العقد (مش الشهر الحالي)
+      var first=cm||R.monthKeyNow(); data.startMonth=first;
+      // إذا المخزن فيه مستأجر حالي: ننهي إيجاره بنهاية الشهر اللي قبل بداية الجديد
+      var unitU=String(d.unit).toUpperCase(), lastM=R.shiftMonth(first,-1);
+      var prev=L.allStores().filter(function(p){ return !p.archived && L.unitFor(p)===unitU && !(p.startMonth && p.startMonth>=first); })[0];
+      if(prev && confirm("مخزن "+unitU+" فيه «"+prev.name+"». أنهي إيجاره بنهاية "+monthLabel(lastM)+" ويبلّش الجديد من "+monthLabel(first)+"؟")){
+        var y=+lastM.slice(0,4), mo=+lastM.slice(5,7), ld=new Date(y,mo,0).getDate();
+        savePerson(prev.id, {archived:true, endMonth:lastM, endDate:lastM+"-"+String(ld).padStart(2,"0"), archivedAt:new Date().toISOString(), unit:unitU}, true);
+        data.prevTenantId=prev.id;
+      }
+    }
+    addPerson(data);
+  } else {
+    // تصحيح: مستأجر انضاف قبل بداية عقده، فانحسب عليه شهر ما سكنه
+    var cur=S().people[s.pid]||{};
+    if(d.type!=="partner" && cm && (!cur.startMonth || cm>cur.startMonth)){
+      var early=Object.keys(S().payments).some(function(k){ var x=S().payments[k]; return x && x.personId===s.pid && String(x.month)<cm && (Number(x.amountPaid)||0)>0; });
+      if(!early) patch.startMonth=cm;
+    }
+    savePerson(s.pid, patch);
+  }
   closeSheet();
 }
 async function confirmEndOcc(){

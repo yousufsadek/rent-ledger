@@ -292,6 +292,7 @@
       var months=TERM_MONTHS[p.contractTerm]; if(!months) return null;
       var start=new Date(p.contractStart+"T00:00:00"); if(isNaN(start.getTime())) return null;
       var now=new Date(), ren=new Date(start.getTime()), g=0;
+      if(start.getTime()>now.getTime()) ren.setMonth(ren.getMonth()+months);   // عقد لسا ما بلّش: نهايته بعد مدة العقد
       while(ren.getTime()<=now.getTime() && g<600){ ren.setMonth(ren.getMonth()+months); g++; }
       if(g>1){ var prev=new Date(ren.getTime()); prev.setMonth(prev.getMonth()-months); if(now-prev<=60*86400000) ren=prev; }
       var daysLeft=Math.round((ren-now)/86400000), act=new Date(ren.getTime()); act.setMonth(act.getMonth()-1);
